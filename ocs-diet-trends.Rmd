@@ -1,0 +1,1788 @@
+---
+title: "Open Case Studies : Exploring global patterns of dietary behaviors associated with health risk "
+css: style.css
+output:
+  html_document:
+    self_contained: yes
+    code_download: yes
+    highlight: tango
+    number_sections: no
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
+                      message = FALSE, warning = FALSE, cache = FALSE,
+                      fig.align = "center", out.width = '90%')
+library(here)
+library(knitr)
+```
+
+
+
+```{r, echo = FALSE, eval = FALSE}
+knitr::include_graphics(here::here("img", "mainplot.png"))
+```
+
+## {.disclaimer_block}
+
+**Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given dataset, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
+
+## Motivation
+An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} was recently published in the lancet journal that evaluates global dietary trends and the relationship of these dietary factors with mortality and fertility.
+
+```{r, echo = FALSE}
+knitr::include_graphics(here::here("img", "thepaper.png"))
+```
+
+#### {.reference_block}
+GBD 2017 Diet Collaborators. Health effects of dietary risks in 195 countries, 1990–2017: a systematic analysis for the Global Burden of Disease Study 2017. *The Lancet* 393, 1958–1972 (2019).
+
+####
+
+This article evaluated food consumption patterns in 195 countries for 15 different dietary risk factors that have probable associations with non-communicable disease (NCD). For example, overconsumption of sodium is associated with high blood pressure. These consumption levels were then used to estimate levels of mortality and morbidity due NCD, as well as disability-adjusted life-years (DALYs) attributible to suboptimal consumption of foods related to these dietary risk factors. The authors found that: 
+
+> "High intake of sodium ..., low intake of whole grains ..., and low intake of fruits ... were the leading dietary risk factors for deaths and DALYs globally and in many countries." 
+
+This figure from the supplement shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths and illustartes how the top 3 risk factors are often issues for many different countries.
+
+```{r, echo = FALSE, out.width= "700 px"}
+knitr::include_graphics(here("img", "deaths.png"))
+```
+
+This case study will evaluate the data reported in this article to explore regional, age, and gender specific differences in dietary consumption patterns around the world in 2017. 
+
+### Main Questions
+
+#### {.main_question_block}
+<b><u> Our main questions are: </u></b>
+
+1) What are the global trends for potentially harmful diets?
+2) How do males and females compare?
+3) How do different age groups compare for these dietary factors?
+4) How do different countries compare? In particular, how does the US compare to other contries in terms of diet trends?
+
+####
+
+### Learning Objectives 
+
+In this case study, we’ll walk you through importing data from a pdf, cleaning data, wrangling data, visualizing the data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The Tidyverse is a library of packages created by the chief scientist at RStudio, Hadley Wickham. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+
+
+
+```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
+include_graphics("https://tidyverse.tidyverse.org/logo.png")
+```
+
+
+
+We will begin by loading the packages that we will need:
+
+```{r}
+library(here)
+library(readr)
+library(dplyr)
+library(skimr)
+library(pdftools)
+library(stringr)
+library(magrittr)
+library(purrr)
+library(tibble)
+library(tidyr)
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+```
+
+
+ Package   | Use                                                                         
+---------- |-------------
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
+[readr](https://readr.tidyverse.org/){target="_blank"}      | to import the csv file data
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data 
+[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
+[pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a pdf into R   
+[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the pdf of the data
+[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator
+[purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble
+[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with dplyr/stringr/tidyr/purrr
+[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers
+[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined
+___
+
+
+[glue](https://www.tidyverse.org/blog/2017/10/glue-1.2.0/){target="_blank"}  | to paste or combine character strings and data together
+
+
+The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
+
+
+### Context
+
+Here is an excerpt from the article itself about the context of the work:
+```{r, echo = FALSE}
+knitr::include_graphics(here("img", "context.png"))
+```
+
+Many dietary factors have well-estabished associations with health risk. The authors that generated this dataset identified 15 dietary factors that have probably health risk based on literature search.
+
+Here you can see a table of the sources for the health risks associated with the dietary factors. RCT stands for randomized control trials.
+
+
+```{r, echo = FALSE, out.width= "700 px"}
+knitr::include_graphics(here("img", "dietaryrisk.png"))
+```
+
+
+In the article the authors found that most of the mortality associated with each factor is related to cardiovascular disease.
+
+```{r, echo = FALSE, out.width= "500 px"}
+knitr::include_graphics(here("img", "cardiorisk.png"))
+```
+
+### Limitations
+
+There are some important limitations regarding the data from this article to keep in mind.  The definition of certain dietary factors varied across some of the collection sources. Intakes of certain healthy foods like vegitables and fruits are likely positively correlated and likely negatively correlated with intakes of unhealthy foods. Much of the data was collected with 24 hour recall surveys which are prone to issues due to inaccuracy of memory recall or other biases such as a tendency for some people to report healthier behaviriors. The guidelines in the table are based are not parsed by gender even though it is known that there are different dietary requirements for optimal health for certain nutrients. The article discusses some limitations about accounting for overall food consumption when calculting consumption of particular foods:
+
+> "To remove the effect of energy intake as a potential confounder and address measurement error in dietary assessment tools, most cohorts have adjusted for total energy intake in their statistical models. This energy adjustment means that diet components are defined as risks in terms of the share of diet and not as absolute levels of exposure. In other words, an increase in intake of foods and macronutrients should be compensated by a decrease in intake of other dietary factors to hold total energy intake constant. Thus, the relative risk of change in each component of diet depends on the other components for which it is substituted. However, the relative risks estimated from meta-analyses of cohort studies do not generally specify the type of substitution.
+
+There are also important nuances to keep in mind regrading some of the dietary factors. For example calcium consumption was calculated based on consumption of dairy products, however calcium can be aquired from other sources including plant-based sources. However in these data, the influence of plant-based consumption of calcium was also not accounted for, nor was supplementation through vitamin sources. 
+
+## What are the data?
+
+We will be using data that we requested from the [GBD](http://www.healthdata.org/gbd){target="_blank"} about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two csv files. The first one includes consumption levels at the global level and for different countries for all ages combined.
+
+Looking at the csv file in excel:
+
+```{r, echo = FALSE, out.width="700px"}
+knitr::include_graphics(here::here("img","csv.png"))
+```
+
+Here you can see that the data contains mean consumption values for both men and women in various countries at the national level in 2017 for various foods that may be problematic for health. The units for the food varies. So for example, the mean column in row that says "Diet low in fiber" indicates the average consumption level per person in that region and of that gender of fiber in grams per day.
+
+The second csv file has similar data, but consumption levels for different age groups are separated.
+
+```{r, echo = FALSE, out.width="700px"}
+knitr::include_graphics(here::here("img","age_sep3.png"))
+```
+
+The authors of this article obtained the data from a variety of sources including household budjet surveys and nutritional surveys regarding 24 hour recall of food consumption and 24 hour unrinary sodium analysis. The ata was derived from sales data from Euromonitor, data from the United Nations Food and Agriculture Organization (FAO), estimates about national availability of specific nutrients, from the Supply Utilazation Accounts(SUA), and the United States Department of Agriculture's National Nutrition Database.
+
+
+<u>Note:</u> While [gender](https://www.genderspectrum.org/quick-links/understanding-gender/){target="_blank"} and [sex](https://www.who.int/genomics/gender/en/index1.html){target="_blank"} are not actually binary, the data presented that is used in this analysis only contains data for groups of individuals described as men or women. 
+
+## Data Import
+
+Let's import our data into R now so that we can explore the data further.
+
+```{r}
+diet_data <-readr::read_csv(here("dietary_risk_exposure_all_ages_2017.csv"))
+sep_age_diet_data <-read_csv(here("dietary_risk_exposure_sep_ages_2017.csv"))
+```
+
+
+First let's just get a general sense of our data. We can do that using the `glimpse()` function of the `dplyr` package (it is also in the `tibble` package).
+
+```{r}
+dplyr::glimpse(diet_data)
+```
+
+```{r}
+glimpse(sep_age_diet_data)
+```
+Here we can tell that the `sep_age_diet_data` is much larger than the `diet_data`. There are 88,200 rows! The diet_data has only 5,880 rows.
+However, both files appear to have the same column structure with 11 variables each.
+
+
+
+The `skim()` function of the `skimr` package is also really helpful for getting a general sense of your data.
+
+```{R}
+skim(diet_data)
+```
+
+Notice how there is a column about the values that are missing. It looks like our data is very complete and we do not have any missing data.
+We also get a sense about the size of our data.
+
+The `n_unqiue` column shows us the number of unqiue values for each of our columns.
+
+Let's take a look at `sep_age_diet_data`.
+
+```{R}
+skim(sep_age_diet_data)
+```
+
+We can see that there are many more rows in this dataset.
+
+
+Let's take a look at the different dietary risk factors considered.
+To do this we will use the `distinct()` function of the `dplyr` package.
+
+This function grabs only the distinct or unique rows from a given variable (rei_name, in our case) of a given data frame (diet_data, in our case).
+
+```{r}
+#distinct(tibble_name, column_name)
+  dplyr::distinct(diet_data, rei_name)
+```
+
+We will be using the `%>%` pipe for sequential steps in our code later on.
+This will make more sense when we have multiple sequential steps using the same data object.
+
+
+We could do the same code as above using this notation. For example we first grab the diet_data, then we select the distinct values of the rei_name variable.
+
+```{r}
+diet_data %>%
+  distinct(rei_name)
+```
+
+Ok, so that gives us an idea of what dietary factors we can explore. 
+
+Let's see if the location_name values are the same between both csv files. To do this we will use the `setequal()` function of `dplyr`.
+```{r}
+dplyr::setequal(
+  distinct(diet_data,location_name), 
+  distinct(sep_age_diet_data, location_name)) 
+```
+
+Ok, we got the value of TRUE, so it looks like the same locations are in both files.
+
+Note: In this case were comparing two different objects so using the pipe is not as useful.
+
+Let's take a look at the locations included in the data.
+
+#### {.scrollable }
+```{r}
+#scroll through the output!
+sep_age_diet_data %>%
+ distinct(location_name)%>%
+  pull()
+```
+####
+
+
+OK, so there are global values, as well as values for 185 countries.
+
+
+Let's take a look at the data when we order it by the mean consumption rate column:
+
+```{r}
+diet_data %>%
+  arrange(mean) %>%
+  glimpse()
+
+```
+Ok, so it looks like people in Lebanon dont eat very many trans fatty acids.
+
+
+Let's also figure out how many values there are in each age group of the data that is separated by age.
+```{r}
+sep_age_diet_data %>%
+dplyr::count(age_group_name)
+```
+That's a lot of values!
+
+Let's look a bit deeper to try to understand why.
+We can use the count function again but get the number of values for each category within sex, age_group_name and location_name of the data.
+```{r}
+sep_age_diet_data%>%
+  count(sex,age_group_name, location_name)
+```
+
+Ok, so it looks like there are probably the consumption values for each of the different dietary factors(which there were 15 different factors) for each age group, for each gender, and for each country.
+
+We can confirm this by filtering the data to one of the age groups, for a single gender, and for a single location.
+
+```{r}
+sep_age_diet_data %>%
+filter( sex == "Female",
+        age_group_name == "25 to 29",
+        location_name == "Afghanistan")
+```
+
+
+Let's also get the data from the PDF of the paper so that we can calculate consumption of these dietary factors as percentage of daily requirement, which would be more interpretable.
+
+We are interested in this table on page 3:
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here::here("img", "Table.png"))
+```
+
+
+First let's import the PDF using the `pdftools` package.
+```{r}
+paper<-pdftools::pdf_text(here("Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"))
+```
+
+We can use the `base` `summary()` function to get a sense of what the data looks like. By `base` we mean that these functions are part of the `base` package and are loaded automatically.Thus `library(base)` is not required.
+```{r}
+summary(paper)
+#This is equivalent to the following, but this is unecessary:
+#base::summary(paper)
+```
+
+We can see that we have 15 different character strings. Each one contains the text on each of the 15 different pages of the PDF.
+
+
+## Data Wrangling
+
+Again, the table we are interested in is on the third page, so let's grab just that portion of the PDF.
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here::here("img", "page3.png"))
+```
+
+```{r}
+#Here we will select the 3rd value in the paper object
+table <- paper[3]
+
+summary(table)
+
+
+glimpse(table, nchar.max = 800)
+
+
+```
+
+Here we can see that the `table` object now contains the text from the 3rd page as a *single large character string*. However the text is difficult to read beacuse of the column structure in the pdf. Now let's try to grab just the text in the table.
+
+One way to approach this is to split the string by some pattern that we notice in the table.
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here::here("img", "Table.png"))
+```
+
+Only the capitalized form of the word "Diet" apears to be within the table, and is not present in the preceding text (altough "diet" is). All the rows of interest of the table appear to start with the word "Diet".
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here::here("img", "Diet_on_page3.png"))
+```
+
+
+Let's use the `str_split()` function of the `stringr` package to split the data within the object called `table`by the word "Diet".  Only lines from page 3 that contain the word `Diet` will be selected (and not "diet" as this function is case-sensitive). Each section of the text that contians "Diet" will be split into individual pieces everytime the world "Diet" occurs and the word itself will be removed.
+
+In this case we are also using the magrittr assignment pipe or double pipe that looks like this `%<>%`. This allows us use the table data as input to the later steps but also reassign the output to the same data object name.
+
+```{r}
+table %<>%
+  stringr::str_split(pattern = 'Diet')
+```
+
+Using  the `base::summary()` and `dplyr::glimpse()` function we can see that we created a list of the rows in the table that contain the word "Diet". We can see that we start with the row that contains "Diet low in fruits". 
+
+```{r}
+table %>%
+ summary()
+```
+
+```{r}
+table %>%
+  glimpse()
+```
+RStudio creates really cheatsheets like this one which shows you all the major functions in `stringr`. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here::here("img", "strings-1_str_split.png"))
+```
+
+You can see that we could have also used the `str_split_fixed()` function which would also separate the substrings into different columns of a matrix, however we would need to know the number of substrings or pieces that we would like returned.
+
+For more information about `str_split()` see [here](http://rfunction.com/archives/1499){target="_blank"}.
+
+
+Let's separte the values within the list using the base `unlist` function, this will allow us to easily select the different substrings within the object called `table`.
+
+```{r}
+table %<>%
+  unlist()
+```
+
+It's important to realize that the first split will split the text before the first occurance of `Data` as the first value in the output. We could use the `first()` function of the `dplyr` package to look at this value. However, we will suppress the output as this is quite large.
+
+```{r, eval = FALSE}
+dplyr::first(table)
+```
+
+Instead we can take a look at the second element of the list. using the `nth()` function of `dplyr`.
+
+```{r}
+nth(table, 2)
+```
+
+Indeed this looks like the first row of interest in our table:
+
+```{r,echo = FALSE,out.width= "700px"}
+knitr::include_graphics(here("img", "firstrow.png"))
+```
+
+
+Using the `last()` and the `nth()` functions of the `dplyr` package we can take a look at the last values of the list.
+```{r}
+#to see the second to last value we can use nth()
+#the -2 specifies that we want the second to last value
+#-3 would be third to last and -1 would be the last value
+dplyr::nth(table, -2)
+
+#to see the very last value we can use last()
+dplyr::last(table)
+
+```
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here::here("img", "end_of_table.png"))
+```
+
+
+Therefore, we dont need this part of the table or the text before the table if we just want the consumption reccomendations. 
+
+So we will select the 2nd through the second to last of the substrings. Since we have 17 substrings, we will select the 2nd through the 16th. However a better way to do this rather than selecting by index, would be to select phrases that are unique to the text within the table that we want. We will use the `str_subset()` function of `stringr` package to select the table rows with consumption guidlines.  Most of the rows have the phrase" Mean daily consumption", however, there are other phrases for some of the rows, including "Mean daily intake" and "24 h sodium"
+
+```{r}
+# one could subset the table like this:
+#table <- table[2:16]
+
+table %<>%
+str_subset(pattern = "Mean daily consumption|Mean daily intake|24 h")
+```
+
+Notice that we speparate the different patterns to look for using vertical bar character "|" and that all of the patterns are within quotation marks together.
+
+#### {.question_block}
+<u>Question opportunity:</u> 
+
+1) What other string patterns could you use to subset the rows of the table that we want?
+
+2) Why might it be better to subset based on the text rather than the index?
+
+####
+
+
+Now the first row is what we want:
+```{r}
+first(table)
+```
+
+And the last row is what we want:
+```{r}
+last(table)
+```
+
+Notice that there the decimal points from the pdf are being recognized as an interpunct instead of a period or decimal. An interpunct is a centered dot, as opposed to a period or decimal that is aligned to the bottom of the line.
+
+The interpunct was previously used to separate words in certain languages, like ancient Latin.
+
+
+
+<p align="center">
+  <img width="400" src="https://www.yourdictionary.com/image/articles/3417.Latin.jpg">
+</p>
+
+###### [[source](https://www.yourdictionary.com/image/articles/3417.Latin.jpg)]
+
+You can produce an interpunct on a mac like this:
+
+
+<p align="center">
+  <img width="400" src="https://www.shorttutorials.com/mac-os-special-characters-shortcuts/images/middle-dot.png">
+</p>
+
+###### [[source](https://www.shorttutorials.com/mac-os-special-characters-shortcuts/middle-dot.html)]
+
+
+It is important to replace these for later when we want these values to be converted from character strings to numeric. We will again use the `stringr` package. This time we will use the `str_replace_all()` function which replaces all instances of a pattern in an individual string. In this case we want to replace all instances of the interpunct with a decimal point.
+
+
+```{r,}
+table %<>%
+  stringr::str_replace_all( pattern = "·", 
+                            replacement = ".")
+```
+
+
+Now we will try to split the strings for each row based on the presence of  2 spaces to create the columns of the table, as there appears to be larger than a space between the columns to create substrings. The substrings will be separated by quotes.
+
+```{r, echo = FALSE,out.width = "700px"}
+knitr::include_graphics(here("img", "strings-2_highlight.png"))
+```
+
+
+The second page of the `stringr` cheetsheet has more information about using "Special Characters" in `stringr`. For example `\\s` is interpreted as a space as the `\\` indicates that the `s` should be interpreted as a special character and not simply the letter s.  The {2,} indicates 2 or more spaces, while {2} would indicate exactly 2 spaces.
+
+
+#### {.scrollable }
+```{r}
+table_split <- str_split(string=table, 
+                         pattern= "\\s{2,}")
+glimpse(table_split) #scroll the output!
+```
+####
+
+If we look closely, we can see that the sugar-sweetened beverage and the seafood category had only one space between the first and second columns - the columns about the dietary category and the one that describes in more detail what the consumption suggestion is about.
+
+The values for these two columns appear to be together still in the same substring for these two categories. There are no quotation marks adjacent to the word `"Mean"`.
+
+Here you can see how the next substring should have started with the word `"Mean"` by the new inclusion of a quotation mark `"`. 
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here("img", "substring_sep.png"))
+```
+
+
+We can add an extra space in front of the word `"Mean"` for these particular categories and then try splitting again.
+
+Since we orginally split based on 2 or more spaces, we can just add a space in front of the word "Mean" for all the table strings and then try subsetting again.
+```{r}
+table%>%
+str_which(pattern = "seafood|sugar")
+```
+
+```{r}
+table[9] <-stringr::str_replace(pattern = "Mean", 
+                                replacement = " Mean", table[9])
+table[12] <-stringr::str_replace(pattern ="Mean", 
+                                 replacement =" Mean", table[12])
+table_split <- str_split(table,pattern= "\\s{2,}")
+```
+
+We could also hust add a space in front of all the values of Mean in the table since the split was peformed based on 2 or more spaces. Thus the other elements in `table` would also be split just as before despite the additional space.
+
+```{r, eval = FALSE}
+table<-table %>%
+  stringr::str_replace(pattern ="Mean", 
+                       replacement = " Mean")
+table_split <- str_split(table,pattern= "\\s{2,}")
+```
+
+#### {.scrollable }
+```{r}
+#scroll the output!
+glimpse(table_split) 
+```
+####
+
+Looks better!
+
+We want just the first (the food **category**) and third column (the optimal consumption **amount** suggested) for each row in the table.
+
+We can use the `map` function of the `purrr` package to accomplish this.
+
+The `map` function allows us to perform the same action multiple times across each element within an object.
+
+This following will allow us to select the 1st or 3rd substring from each element of the `table` object.
+
+```{r}
+category <-map(table_split,1)
+amount <-map(table_split,3)
+head(category)
+head(amount)
+```
+
+Now we will create a `tibble` using this data. However, currently both `category` and `amount` are of class `list`. To create a `tibble` we need to unlist the data to create vectors.
+
+```{r}
+class(category)
+category %<>%unlist()
+amount %<>%unlist()
+class(category)
+```
+
+#### {.scrollable }
+```{r}
+category
+amount
+```
+####
+
+We could have done all of this at once in one command like this:
+
+```{r, eval = FALSE}
+category <-unlist(map(table_split,1))
+amount <-unlist(map(table_split,3))
+```
+
+Now we will create a `tibble`, which is an important data frame structure in the tidyverse which allows us to use other packages in the tidyverse with our data.
+
+We will name our `tibble` columns now as we create our `tibble` using the `tibble()` function of both the `tidyr` and the `tibble` packages, as names are required in tibbles.
+
+```{r}
+guidelines <-tibble::tibble(category = category,
+                              amount = amount)
+guidelines
+```
+
+Looking pretty good!
+
+However, we want to separate the different amounts within the amount column.
+
+Recall what the orginal table looked like:
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here("img", "firstrow.png"))
+```
+
+### Separating values within a variable
+
+We can use the `tidyr::separate()` function to separate the data within the amount column into three new columns based on the optimal level and the optimal range. We can separate the values based on the open parantheses `"("` and the long dash `"–"` characters.
+
+```{r}
+# The first column will be called optimal
+# It will contain the 1st part of the amount column data before the 1st underscore"("
+# The 2nd column will be called lower
+# It will contain the data after the "("
+# The 3rd column will be called upper 
+# It will contain the 2nd part of the data based on the "–"
+
+guidelines%<>% 
+  tidyr::separate(amount, 
+                  c("optimal", "lower", "upper"),
+                  sep ="[[(|–]]") 
+head(guidelines)
+```
+
+
+Let's Also create a new variable/column in our tibble that indicates the direction that can be harmful for each dietary factor.
+
+```{r}
+guidelines%<>%
+  separate(category, c("direction", "food"), sep = " in ")
+guidelines
+```
+
+If we wanted to remove the direction variable we could use the purrr::modify_at() function:
+```{r,eval = FALSE}
+guidelines %>% purrr::modify_at("direction",~NULL)
+```
+
+
+
+
+
+### Data cleaning with regular expressions
+
+Ok, looking better, but we still need a bit of cleaning to remove symbols and extra words from the columns. Some of the extra symbols include: `"%"`, `")"` and the `"*"`.
+
+The `"*"` and the `")"` are what we call metacharacters or [regular expressions](https://www.r-bloggers.com/regular-expressions-every-r-programmer-should-know/){target="_blank"}. These are characters that have special meanings.
+
+```{r, echo = FALSE, out.width = "700px"}
+knitr::include_graphics(here("img", "RegExCheatsheet.png"))
+```
+
+Now we need the `"\\"` to indicate that we want these characters to be matched exactly and not interpreted as the meaning of the symbol.
+
+See [here](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html){target="_blank"} for more info about regular expressions in R. 
+
+Also here we have a bit of an example using the `str_count()` function of `stringr`, which counts the number of instences of a character string. In this case we will look for individual characters but you could also search for words or phrases.
+
+```{r}
+regextest<-readr::read_file(here("regEx.txt"))
+regextest
+str_count(regextest,"t")#notice this doesn't include the t in the tab
+str_count(regextest,"\t") #search for tab
+str_count(regextest,"\\t")#search for tab
+# this will not work because r thinks this is part of the code itself
+#str_count(regextest, ")") 
+# this will not work because r thinks this is part of the code itself
+#str_count(regextest, "\)")
+str_count(regextest, "\\)") #this works!
+# this also does not work
+#str_count(regextest, "*")
+# nor does this
+#str_count(regextest, "\*")
+str_count(regextest, "\\*")#this works!
+```
+
+We also want to make a unit variable so that we can make sure that our units are consistent later. 
+
+```{r}
+guidelines %>%
+pull(optimal) 
+```
+
+Notice that the values that are percentages dont have spaces between the number and the unit.
+We can separate the `optimal` values by a space or a percent symbol `"%"` using `"|"` to indicate that we want to separate by either. In this case we will lose the "%" and will need to add it back to those values.
+
+```{r}
+guidelines%<>%
+  separate(optimal, into =c("optimal", "unit"), sep = " |%", remove = FALSE)
+guidelines
+```
+
+Great, so to now we will add "`%`" to the `unit` variable for  the `low in polyunsaturated` and `high in trans fatty acids` rows.
+
+First we need to replace the empty values with NA using the `na_if()` function of the `dplyr` package.
+
+```{r}
+guidelines %<>%
+na_if("")
+guidelines
+```
+
+
+Then to replace the `NA` values, we can use the `replace_na()` function in the `tidyr` package and the `mutate()` function of `dplyr` to specify which values to replace, in this case the `NA` values within the variable `unit`. Essentially this variable gets reasigned with the new values, as we mostly think of the `mutate()` function as creating new variables.
+
+```{r}
+guidelines %<>% 
+  dplyr::mutate(unit = replace_na(unit, "%"))
+guidelines %>%
+  filter(unit == "%")
+
+```
+
+Let's also move `unit` to be the last column. We can use the `select()` and `everything()` functions of the `dplyr` package to do this.
+
+```{r}
+guidelines %<>%
+  select(-unit,everything())
+```
+
+Here you can see Hadley Wickham's (Chief Scientist at RStudio) explanation for this behavior of `select()`:
+
+```{r, echo= FALSE}
+knitr::include_graphics(here("img", "select.png"))
+```
+https://github.com/tidyverse/dplyr/issues/2838#issuecomment-306062800
+
+To remove all of the remaining extra characters and words we will again use the `stringr` package. This time we will use the `str_remove_all()` function to remove all instances of these characters.
+
+```{r, eval = TRUE}
+guidelines <-as_tibble(
+  map(
+    guidelines, str_remove_all,
+    pattern = "\\) per day|\\) of total daily energy|\\*"))
+```
+
+Nice! that's pretty clean but we can do a bit more.
+
+### Data type conversion
+
+One of the next things to notice about our data is the character classes of our variables.
+
+Notice that the optimal amounts of consumption are currently of  class character as indicated by the `<chr>` just below the column names / variable names of the `guidelines` tibble:
+
+```{r}
+guidelines
+```
+
+
+To convert these values to numeric we can use the `mutate_at()` function of the `dplyr` package.
+
+The `mutate_at()` function allows us to perform a function on specific columns/variables within a tibble. We need to indicate which variables that we would like to convert using `vars()`. In this case if we look at the beginning of the `guidelines` tibble, we can see that `optimal`, `lower` and `upper` should be converted. As these three columns are sequential, we can simply put a `:` between `optimal` and `upper` to indicate that we want all the variables in between these columns to be converted. 
+
+```{r}
+guidelines%<>%
+  mutate_at(vars(lower:upper), as.numeric)
+guidelines
+```
+
+Great! Now these variables are of class `<dbl>` (stands for double) which indicates that they are numeric. Here is a [link](http://uc-r.github.io/integer_double/){target="_blank"} for more info on numeric classes in R.
+
+If we had not replaced the `"·"` interpunct values to a period conversion from character to numeric will be problematic and will result in NA values.
+
+### Data value reassignments
+
+We seem to have lost the word `"beverages"` from the `"sugar-sweetened beverages"` category,  as well as `"fatty acids"` from the `"seafood omega 3 fatty acids"`, and the `"polyunsaturated fatty acids"` categories as the full category name was listed on two lines within the table. We would like to replace these values with the full name. 
+
+To select the `food` column we will show you several options. Only a couple will work well with reassigning the data in that particular variable within `guidelines` without assigning an intermediate data object. We will look using `mutate_at()`, `pull()`, `select()`, and brackets `[,c("variable name")]`.
+
+The bracket option and the select() option will grab a tibble (data frame) version of the food column out of guidelines. However we can't start commands with select for assignments.
+
+```{r}
+guidelines[,c("food")] #same output as select
+select(guidelines, "food") # same output as brackets
+```
+
+
+`pull()` in contrast, will grab the vector version of the food data:
+
+```{r}
+pull(guidelines, "food") # get character vector not a tibble
+```
+
+The pull function can be very useful when combined with other functions (for example you typically want to use a vector with the `str_replace()` function), but just like select, we can't start assignments with `pull()`.
+
+
+This is not possible and will result in an error:
+```{r, eval = FALSE}
+select(guidelines, food) <- 
+   str_replace( 
+   pull(guidelines,"food"), 
+   pattern = "sugar-sweetened", 
+   replacement = "sugar-sweetened beverages")
+```
+
+This will only print the result, but not reassign the food variable values:
+
+```{r}
+guidelines %>%
+   pull(food)%>%
+   str_replace( 
+   pattern = "sugar-sweetened", 
+   replacement = "sugar-sweetened beverages")
+```   
+
+Using `select()` would work as well to print the result (although the result structure is different):
+
+```{r}
+guidelines %>%
+   select(food)%>%
+   str_replace( 
+   pattern = "sugar-sweetened", 
+   replacement = "sugar-sweetened beverages")
+
+```
+
+#### {.question_block}
+
+<u>Question opportunity:</u> 
+
+Why do these commands not reassign the food variable values?
+
+####
+
+The bracket option is great alternative and allows us to reassign the values within guidelines easily
+
+```{r}
+#Replacing "sugar-sweetened" with "sugar-sweetened beverages"
+guidelines[,c("food")] <- 
+  str_replace( 
+  pull(guidelines,"food"), 
+  pattern = "sugar-sweetened", 
+  replacement = "sugar-sweetened beverages")
+
+#Replacing "seafood omega-3" with"seafood omega-3 fatty acids"
+guidelines[,c("food")] <- 
+  str_replace( 
+  pull(guidelines,"food"), 
+  pattern = "seafood omega-3", 
+  replacement = "seafood omega-3 fatty acids")
+
+guidelines
+```
+
+
+Finally, the best option is probably the `mutate_at()` function from `dplyr`. In this case we need to include `~` in front of the function that we would like to use on the values in our `food` variables. We also include `.` as a replacement to reference the data that we want to use within `str_replace()` (which in this case is the `food` variable values of `guidelines`).
+
+Notice we didn't need this when we previously use `mutate_at()` with the `as.numeric()` function. This is becuase the `str_replace()` function requires us to specify what data we are using as one of the arguments, while `as.numeric()` does not.
+
+```{r}
+
+#Replacing "polyunsaturated" with"polyunsaturated fatty acids"
+guidelines%<>%
+  mutate_at(vars(food),
+  ~str_replace( 
+  string = ., 
+  pattern = "polyunsaturated", 
+  replacement = "polyunsaturated fatty acids"))
+
+guidelines
+
+```
+
+This might be considered a better option because it is more readible as to where the `food` data came from that we are replacing values within.
+
+There is one last minor detail... the `direction` variable has leading spaces still. We can use `str_trim()` to fix that!
+
+```{r}
+guidelines%<>%
+  mutate_at(vars(direction), str_trim)
+
+guidelines
+```
+
+OK! Now we know how much of each dietary factor we generally need for optimal health according to the guidelines used in this article.
+
+
+We would like to see how the mean consumption rates for the different groups of people compared to the optimal intake guidelines.
+
+One way we could do this is to calculate a consumption percentage of the optimal value.
+
+To calculate this it would be helpful to put the guideline amounts with the average consumption rates into the same tibble, especially because the observed consumption data (`diet_data` and `sep_age_diet_data`) are very different dimensions from the `guidelines` data. 
+
+In order to create a tibble with our observed consumption rates with the suggested consumption rates, we will join our data using `dplyr`. In order to do so it is important that our different datasets have the same values. So let's first assess if that is the case.
+
+### Comparing data
+
+```{r}
+
+distinct(diet_data, rei_name)
+select(guidelines, food)
+```
+
+We can see that we need to remove the `"Diet low in"` and `"Diet high in"` phrases from the observed consumption data.
+
+```{r}
+diet_data$rei_name<- diet_data$rei_name %>%
+  str_remove( pattern = "Diet low in |Diet high in ")
+
+sep_age_diet_data$rei_name<-sep_age_diet_data$rei_name %>%
+  str_remove( pattern = "Diet low in |Diet high in ")
+```
+
+Also let's double check that the two observed files have the same exact values for dietary factor names. 
+
+We can use the `setequal()` function from `dplyr` to check that the unique values for `rei_name` are the same for both `diet_data` and `sep_age_diet_data`.
+
+
+```{r}
+setequal(distinct(diet_data, rei_name), 
+         distinct(sep_age_diet_data, rei_name))
+```
+Great!
+
+Note that the default of the set_equal function ignores the order of values in rows. So we still dont know if the order is the same.
+
+We can check using the `all_equal` function of `dplyr` which reports back clues about what might be different if anything. Importantly we are including `ignore_row_order = FALSE` as the default is `TRUE`.
+
+```{r}
+all_equal(distinct(diet_data, rei_name), 
+          distinct(sep_age_diet_data, rei_name), 
+          ignore_row_order = FALSE)
+```
+
+Looks like they are also in the same order. 
+
+Note that if any of the values are different `all_equal()` will first report this and will not report that the rows are in a different order.
+
+Here is a toy example about how the three comparison functions(`setequal()`, `all_equal()` (also `all.equal()` for `tbl_df`), and `setdiff()`) work in `dplyr`. 
+
+It's important to realize that row order is ignored by both`setequal()` and `setdiff()`. 
+
+Now let's compare two tibbles that have different row orders and differnt values. 
+
+Here are our tibbles to compare:
+```{r}
+X <-tibble(test =c("A", "B", "AC", "D"))
+Y <-tibble(test =c("A", "D", "AG", "B"))
+X
+Y
+class(Y)
+```
+
+Since we are using tibbles, which are of class `tbl_df` we can use either `all_equal` or `all.equal()`.
+
+```{r}
+all_equal(X, Y, ignore_row_order = TRUE)
+all_equal(X, Y, ignore_row_order = FALSE)
+# doesnt report rows being different order
+all.equal(X, Y, ignore_row_order = TRUE)
+all.equal(X, Y, ignore_row_order = FALSE)
+# doesnt report rows being different order
+
+# Reports false indicating at least one difference
+# Does not provide clues about what is different
+setequal(X, Y)
+#setdiff() tells us what is different
+#setdiff() is dependent on the order of the objects compared
+#This reports what is unique to X
+setdiff(X, Y) 
+#This reports what is unique to Y
+setdiff(Y, X) 
+```
+
+Now let's make it so that only the order is different:
+```{r}
+Y <-tibble(test =c("A", "D", "AC", "B"))
+X
+Y
+all_equal(X, Y, ignore_row_order = TRUE)
+all_equal(X, Y, ignore_row_order = FALSE)# reports diff order
+
+# Remember setequal() ignores order!
+# It reports no difference!
+setequal(X, Y)
+# Set diff also ignores order!
+setdiff(X, Y) 
+```
+
+If we have different column/variable names this makes comparisons more challenging:
+```{r}
+X <-tibble(test =c("A", "B", "AC", "D"))
+Y <-tibble(test2 =c("A", "D", "AG", "B"))
+# just reports that col names are diff
+all_equal(X, Y, ignore_row_order = TRUE)
+# just reports that col names are diff
+all_equal(X, Y, ignore_row_order = FALSE)
+setequal(X, Y)#This works!
+#setdiff(X, Y) # This will not work
+```
+
+Ok, let's keep going with our data.
+
+How similar are the guidelines tibble and the observed consumption tibbles?
+
+```{r}
+
+setequal(distinct(diet_data, rei_name), 
+          select(guidelines, food))
+```
+
+Ok, looks like we have some different values.
+
+Let's use the `setdiff` function to get more information about what is different between the values.
+
+```{r, eval = FALSE}
+setdiff(distinct(diet_data, rei_name), 
+          select(guidelines, food))
+```
+
+:( That wont work. This is because `setdiff()` requires that the colnames are the same in the objects that we are comparing.
+
+
+We can use the `rename()` of `dplyr` function to do this. We list the value that we want to change to first. We find "food" more intuitive so we are going to change "rei_name" to "food" for the `diet_data` and the `sep_age_diet_data`
+
+```{r}
+diet_data %<>%
+  dplyr::rename(food = rei_name)
+sep_age_diet_data %<>%
+  dplyr::rename(food = rei_name)
+```
+
+
+```{r, eval = FALSE}
+setdiff(distinct(diet_data, food), 
+          select(guidelines, food), 
+          ignore_row_order = TRUE)
+```
+
+Great, now we know that the `fiber` value appears to be different between the two.
+
+
+```{r}
+setdiff(select(guidelines, food),
+        distinct(diet_data, food))
+```
+
+Changing the order of the objects, we can see that in the table from the article that we used to create guidelines, "fibre" the British spelling is used in contrast to the dataset which uses the American spelling "fiber".
+
+Let's stick with the American spelling, so we will replace `"fibre"` in the guideline tibble.
+Again, we have two options for doing this:
+
+```{r}
+
+# guidelines[,c("food")] <- 
+#   str_replace( 
+#   pull(guidelines,"food"), 
+#   pattern = "fibre", 
+#   replacement = "fiber")
+
+guidelines%<>%
+  mutate_at(vars(food),
+  ~str_replace( 
+  string = ., 
+  pattern = "fibre", 
+  replacement = "fiber"))
+
+guidelines %>%
+  filter(food == "fiber")
+
+```
+
+Now let's check again to see that our food values match between the guidelines and the observed consumption data tibbles.
+
+```{r}
+setdiff(select(guidelines, food),
+        distinct(diet_data, food))
+
+setdiff(select(guidelines, food),
+        distinct(sep_age_diet_data, food))
+```
+
+Great!  There are no differences :)
+
+### Joining data
+
+Now we can put our guideline data together with the `diet_data` and the `sep_age_diet_data`.
+
+Remeber that the `food` data in our `guidelines` tibble is not necessarily in the same order as that of the consumption data tibbles. Thus this could be a problem if we decided to expand the `guidelines` rows (to repeat for the number of fruit observations etc.) and add them to our observed consumption tibbles. 
+
+```{r, echo = FALSE, out.with = "300 px", fig.align= "center"}
+knitr::include_graphics(here("img","bind.png"))
+```
+
+In that case we could use the `arrange()` function of `dplyr` to sort the data alphabetically.
+
+However, we will instead use a joining function of `dplyr`. These functions combine the data together based on **common values**. There are a variety of options.
+
+```{r, echo = FALSE, out.with = "400 px", fig.align= "center"}
+knitr::include_graphics(here("img","join.png"))
+```
+
+In our case we would like to retain all of the values of `diet_data` and `sep_age_diet_data`. We would like to add new columns of values to these tibbles that correspond to the guideline information about amounts of consumption for each food type in the `guidelines` tibble. We shouldn't have any values of `food` in `guidelines` that dont match, so we will not get any `NA` values. Therefore, in our case any of the mutating join functions should result in the same output.
+
+
+It's important to check if we have any overlapping variable names before we join the data. We can use the base R function `names()`  and the `intersect()` function of the `dplyr` package for this.
+
+```{r}
+dplyr::intersect(names(diet_data), 
+          names(guidelines))
+```
+
+So it looks like the `"upper"` , `"lower"` and `"unit"` variable names are overlapping. Therefore, to distinguish the names later we will rename the guideline `"upper"` , `"lower"` and `"unit"` variables.
+
+We will again use the `rename` function from the `dplyr` package. We can list multiple variables to rename and separate each with a comma.
+
+```{r}
+guidelines %<>%
+  rename(upper_optimal = upper, 
+         lower_optimal = lower,
+          unit_optimal = unit)
+
+guidelines
+```
+
+It's also a good idea to check our units to make sure they are the same for both `guidelines` and the observed consumption tibbles: `diet_and_guidelines` and `all_age_diet_and_guidelines`.
+
+Let's take a look with the `count()` function of `dplyr`.
+
+```{r}
+
+bind_cols(dietdata = count(diet_data, unit, food), 
+       sepagedietdata = count(sep_age_diet_data,unit,food),
+       guideline= count(guidelines, unit_optimal, food))
+```
+
+ We can see that the only potential issue is the `seafood omega-3 fatty acids` data which is in g/day for the observed data(`diet_data` and `all_age_diet_and_guidelines`), but the unit is mg/day in the `guidelines` data.
+
+We can account for this by dividing the guideline seafood omega-3 fatty acids data by 1000 to convert it to grams from milligrams.
+
+To do this we will use the `if_else()` function in the `dplyr` package.
+This allows us to specify a condition (in this case if the unit is `"mg"`), as well as values if this is codition is met (true), or if the condition is not met (false). In the following we mutate the values in each of the guideline numeric columns (`lower`, `optimal` and `upper`) one at a time. When we refer to `lower` for example we refer to the values in the column/varaible. So if the condition is not met, then the original value is retained. We will also replace `"mg"` with `"g"` after everything is converted to grams.
+
+```{r}
+guidelines%<>% mutate(lower_optimal = if_else(
+  condition = unit_optimal=="mg", 
+  true = lower_optimal/1000, 
+  false = lower_optimal))
+
+guidelines%<>% mutate(optimal = if_else(
+  condition = unit_optimal=="mg", 
+  true = optimal/1000, 
+  false = optimal))
+
+guidelines%<>% mutate(upper_optimal = if_else(
+  condition = unit_optimal=="mg", 
+  true = upper_optimal/1000, 
+  false = upper_optimal))
+
+
+guidelines%<>% mutate(unit_optimal = if_else(
+  condition = unit_optimal=="mg", 
+  true = "g", 
+  false = unit_optimal))
+
+
+#or this:
+# guidelines%<>%
+#   mutate_at(vars(unit_optimal),
+#   ~str_replace( 
+#   string = ., 
+#   pattern = "mg", 
+#   replacement = "g"))
+
+
+guidelines
+
+
+```
+
+THIS IS WORK to try to mutate all at once... can delete or keep working on...
+```{r}
+#guidelines %>% mutate_if(str_detect(guidelines$unit, "mg") & is.numeric, ~.+2)
+#https://stackoverflow.com/questions/51877611/can-i-combine-a-dplyr-mutate-at-mutate-if-statement
+#https://github.com/tidyverse/dplyr/issues/631
+#WORK
+#if numeric and unit = mg??
+# guidelines %>% 
+#    mutate_at(filter(guidelines,food == "seafood omega-3 fatty acids"),vars(lower:upper), funs(./1000))
+# 
+# guidelines %>% 
+#    if_else(unit == "mg", mutate_at(list(lower:upper),if_else(unit == "mg", true = funs(./1000), false = .)))
+ # mutate_at(filter(guidelines,food == "seafood omega-3 fatty #acids"),vars(lower:upper), funs(./1000))
+# guidelines %>% 
+#    filter(food == "seafood omega-3 fatty acids")%>%
+#    mutate_at(vars(lower:upper), funs(./1000))
+# 
+# guidelines %>% 
+#    if_else(unit == "mg", mutate_at(list(lower:upper),if_else(unit == "mg", true = funs(./1000), false = .)))
+# guidelines%>%
+#   mutate_at(vars(lower:upper), funs(ifelse(unit=="mg", TRUE/1000, TRUE)))
+# 
+# 
+# mutate(cars, dist = ifelse(speed==4, dist*100, dist))
+# 
+# 
+# guidelines[c("seafood omega-3 fatty acids"),] 
+# guidelines[c("seafood omega-3 fatty acids"),]  <-guidelines %>% 
+#   filter(food == "seafood omega-3 fatty acids")%>%
+#   mutate_at(vars(lower:upper), funs(10*.))
+# 
+# cars<-mutate(cars, dist2 = dist)
+# mutate(cars, dist = ifelse(speed==4, dist*100, dist))
+
+guidelines %>% 
+    filter(food == "seafood omega-3 fatty acids")%>%
+    mutate_at(vars(lower_optimal:upper_optimal), funs(./1000))
+
+
+
+
+# type <- c(1:4)
+# year1 <- c(1:4)
+# year2 <- c(1:4)
+# year3 <- c(1:4)
+# data <- data.frame(type, year1, year2, year3)
+# 
+# 
+# newdata <- data %>%
+#   gather(., year, value, year1:year3) %>%
+#   mutate(newvalue = ifelse(type > 2, value * 2, value)) %>%
+#   select(-value) %>%
+#   spread(., year, newvalue)
+# 
+# Df %>% 
+#   mutate_all(
+#     funs(case_when(
+#     . == "1"  ~ 1*.,
+#     . == "2"  ~ 2*.,
+#     . == "3"  ~ 3*.))) %>%
+# mutate(rowmax = pmax(!!!rlang::syms(names(.))))
+# 
+# df %>% mutate_at(vars(a:c), funs(ifelse(is.na(d) | d == 0, NA, .)))
+# 
+# 
+# 
+# msleep %>%
+#   select(name, sleep_total) %>%
+#   mutate(sleep_total_min = sleep_total * 60)
+
+```
+
+
+Now we are ready to join the data!
+
+Agian, we would like to add new columns of values to `diet_data` and `all_age_diet_and_guidelines` that correspond to the guideline information about amounts of consumption for each food type in the `guidelines` tibble. So we will join the data based on the `food` variable values.
+
+```{r}
+diet_and_guidelines <-diet_data %>%
+  full_join(guidelines, by = "food" )
+
+all_age_diet_and_guidelines <-sep_age_diet_data %>%
+  full_join(guidelines, by = "food" )
+
+glimpse(diet_and_guidelines)
+glimpse(all_age_diet_and_guidelines)
+
+```
+
+It's always a good idea to check that the values are what you expect after merging. 
+
+```{r}
+
+diet_and_guidelines %>%
+  count(food, optimal)
+
+all_age_diet_and_guidelines %>%
+  count(food, optimal)
+
+guidelines
+```
+ Looks good!
+ 
+ 
+### Calculate relative consumption 
+
+Again, we would like to compare the consumption rates of this dietary factors by different groups of people, but ideally we want to know this relative to the optimal guidelines.
+
+Thus lets calcuate values of consuption that are relative to the suggested guidelines.
+
+There are a few ways we could do this. One is to calculate a percentage of consumption based on the mean value for each observed value relative to the optimal value. To do this we will use the `mutate()` function of the `dplyr`package. This will create a new variable called `mean_percent` that will be equal to the division result of the `mean` variable value and the `optimal` variable multiplied by 100 to create a percentage.
+
+```{r}
+diet_and_guidelines %<>%
+  mutate(mean_percent = (mean/optimal)*100)
+
+all_age_diet_and_guidelines %<>%
+ mutate(mean_percent = (mean/optimal)*100)
+```
+
+Another option is to incorperate the range of optimal intakes and the direction that is associated with health risk. If the direction of risk is `high` and the consumption was greater than the `optimal` mean value, than the percentage is calculated based on the `upper_optimal` value, while if the direction of risk is `low` and the consumption is less than the optimal mean value, then the percentage is calculated based on the `lower_optimal` value. We will use the `case_when()` function of the `dplyr` package to do this. This allows us to specify values (indicated on the right side of the `~`symbol) based on specific conditions (indicated on the left side of the `~` symbol). We can specify multiple conditions using the `&` symbol.
+
+```{r}
+
+diet_and_guidelines %<>%
+  mutate(range_percent =case_when(
+  direction == "high" ~  (mean/upper_optimal)*100,
+  direction == "low"  ~  (mean/lower_optimal)*100))
+
+all_age_diet_and_guidelines %<>%
+  mutate(range_percent =case_when(
+  direction == "high" ~  (mean/upper_optimal)*100,
+  direction == "low"  ~  (mean/lower_optimal)*100))
+
+
+diet_and_guidelines %<>%
+  mutate(percent_over_under =case_when(
+  direction == "high" & mean>upper_optimal ~  ((mean-upper_optimal)/upper_optimal)*100,
+  direction == "high" & mean<=upper_optimal ~ 0,
+  direction == "low"  & mean>=lower_optimal ~ 0,
+  direction == "low"  & mean<lower_optimal ~ ((lower_optimal-mean)/lower_optimal)*100))
+
+
+all_age_diet_and_guidelines %<>%
+  mutate(percent_over_under =case_when(
+  direction == "high" & mean>upper_optimal ~  ((mean-upper_optimal)/upper_optimal)*100,
+  direction == "high" & mean<=upper_optimal ~ 0,
+  direction == "low"  & mean>=lower_optimal ~ 0,
+  direction == "low"  & mean<lower_optimal ~ ((lower_optimal-mean)/lower_optimal)*100))
+
+```
+
+Yet another option is to create a binary outcome of if optimal consumption was achieved or not.
+
+```{r}
+
+diet_and_guidelines %<>%
+  mutate(opt_achieved = if_else(
+    condition = direction =="low" & mean > lower_optimal |
+                direction == "high" & mean < upper_optimal, 
+    true = "Yes",
+    false = "No"))
+
+all_age_diet_and_guidelines %<>%
+  mutate(opt_achieved = if_else(
+    condition = direction =="low" & mean > lower_optimal |
+                direction == "high" & mean < upper_optimal, 
+    true = "Yes",
+    false = "No"))
+
+glimpse(diet_and_guidelines)
+glimpse(all_age_diet_and_guidelines)
+```
+
+One last thing that can be useful with data wrangling is to **reshape** the data into what is called the **long** format. This is very useful for creating visualizations with a very useful package called `ggplot2`.
+
+To coerce an object into long format, we create more rows and fewer columns. For a more information about this, please see this [case study](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}.
+
+We would like to put toether the different types of percentages of the optimal intake that we just calculated.
+
+To get our data in long format we can use the `pivot_longer()` function of the `dplyr` package. We will also show how this would be done with the older version of this function, called `gather()`. 
+
+For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, this is the variable names of the columns that we are bringing together. This is equivalent to the `key` aregument in `gather()`. The `values_to` is the name of the column that will contain the values of teh columns we are consolidating. This is equivalent to the `value` aregument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
+
+We would get an identical output from the methods.
+
+```{r}
+diet_and_guidelines_long<-diet_and_guidelines %>%
+pivot_longer(cols = contains("percent"), 
+             names_to = "percent_type", 
+             values_to = "percent")
+
+diet_and_guidelines_long2<-diet_and_guidelines %>%
+gather(contains("percent"),
+       key = percent_type, 
+       value = percent)
+
+setequal(diet_and_guidelines_long, diet_and_guidelines_long2)
+```
+
+Let's do the same for the age separated data.
+
+```{r}
+all_age_diet_and_guidelines_long<-all_age_diet_and_guidelines %>%
+pivot_longer(cols = contains("percent"), 
+             names_to = "percent_type", 
+             values_to = "percent")
+```
+
+## Data Exploration
+ 
+### Exploring age collapsed data
+
+Let's take a look at the  percent of consumption. Again we will use the base R `summary()` function:
+
+```{r}
+diet_and_guidelines %>%
+  select(mean_percent)%>%
+  summary()
+```
+
+Wow! Some of the values are nearly zero, suggesting that some people are consuming basically zero percent of what is suggested for optimal health. On the other hand, for some dietary factors people are consuming over 7,000 percent what is suggested! 
+
+This is why it is important to look at the direction of consumption that could be harmful. For example if there is a population that consumes large amounts of vegatables this could be a good thing, but if there is a population consuming large amounts of sodium this would be a bad thing. 
+
+Let's take a look to see what dietary factors are at the extremes by arranging the data using the `arrange()` function of the `dplyr` package. We can arrange by smallest to largest using the default and we can arrange largest to smallest using the minus sign `-`.
+
+```{r}
+
+diet_and_guidelines %>%
+  arrange(-mean_percent)%>%
+  glimpse()
+
+```
+
+Ok, so it looks like sugar-sweetened beverages are really overconsumed in some parts of the world!
+
+Recall from the supplementary table from the article that overconsumption of sugar-sweetened beverages is associated with both Diabetes mellitus type 2 and Ischemic heart disease. This [article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5133084/){target="_blank"} discusses some of the contrevsy over the potential health risks associated with high consumption of sugar.
+
+It still looks quite bad if we look at the other calculated percentage values. 
+```{r}
+diet_and_guidelines %>%
+   select(contains("percent"))%>%
+   summary()
+```
+So some places are still consuming 4,000 percent more than the upper range of the suggested optimal intake.
+
+Let's take a look at global levels:
+```{r}
+
+diet_and_guidelines %>%
+  filter(food =="sugar-sweetened beverages" & location_name =="Global")
+
+```
+
+For those who are less familiar with the metric system where grams are equivalent to milliliters, it may be useful to realize how many fluid ounces the max amount of consumption per day (~248) grams actaully is. 
+
+There are 0.35247 ounces in one gram.
+
+```{r}
+#top amount in ounces
+0.35247*247.9342 
+```
+
+Ok, so the top consumers are drinking about 87 fluid ounces per day. Since there are 12 ounces in a single can of soda, this is about `r 87/12` sodas per day. Globally on average, males are drinking `r (65.5*0.35247)/12` about sodas worth of sweetened beverages, while females are drinking about `r (47.7*0.35247)/12`.
+
+
+Let's take a look at what is underconsumed:
+
+```{r}
+
+diet_and_guidelines %>%
+  arrange(mean_percent)%>%
+  glimpse()
+
+#glimpse(filter(diet_and_guidelines, location_name == "Laos", mean>200))
+```
+
+On the otherhand, it looks like some places are consuming almost no polyunsaturated fatty acids. These are fats that found in plant-based sources like seeds and nuts. According to an [article](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4859401/){target="_blank"} about polyunsaturated fatty acids and its influence on health:
+
+> Coronary heart disease (CHD) is the leading cause of death worldwide ... The types of dietary fats consumed play an important role in CHD risk, representing key modifiable risk factors...In particular, higher intakes of trans fat (TFA) and of saturated fat (SFA) replacing ω‐6 (n‐6) polyunsaturated fat (PUFA) are associated with increased CHD... whereas higher intake of PUFA replacing either SFA or carbohydrate is associated with lower risk.
+
+
+Let's get an idea about how countries compare in terms of how many of the dietary factors are consumed at the optimal level (the `opt_achieved` variable).
+
+```{r}
+
+diet_and_guidelines %>%
+  count(opt_achieved)
+
+```
+Looks like overal, only `r 1520/4360*100`  of dietary factors for all tested populations were at optimal levels.
+
+Let's get an idea about how countries compare.
+
+#### {.scrollable }
+```{r}
+
+diet_and_guidelines %>%
+  count(opt_achieved, location_name) %>%
+  filter(opt_achieved == "Yes") %>%
+  arrange(-n) %>%
+  print(n = 1e3)
+
+```
+####
+
+Looks as though on average the populations (both male and female separately) in Qatar, Rwanda, and Turkey consumped the optimal level of intake for the largest number of dietary factors (13 out of 30 (for the 15 dietary factors for males and females)).
+
+In contrast, the Czech Republic, Greenland, Hungary, Slovakia, Slovenia, and the United States had the poorest consumption rates (27 out of 30 were not at optimal levels).
+
+#### {.scrollable }
+```{r}
+
+diet_and_guidelines %>%
+  count(opt_achieved, location_name) %>%
+  filter(opt_achieved == "No") %>%
+  arrange(-n) %>%
+  print(n = 1e3)
+
+```
+####
+
+Let's look at the raw US data:
+```{r}
+diet_and_guidelines %>%
+  filter(location_name == "United States") %>%
+  glimpse()
+
+```
+
+Let's see how males and females compare for achieving the optimal intake:
+
+```{r}
+count(diet_and_guidelines, sex, opt_achieved)
+```
+Looks pretty similar, but it may be a bit better for females. We will evaluate this further.
+
+Here is a way we can visualise this with the `ggplot2` package.
+The [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"} package creates plots by using layers.
+Notice in the following code how there is a plus sign between the `ggplot()` function and the `geom_histogram()` function. 
+With `ggplot2` we select what data we would like to plot using the first function (`ggplot()`) and then we add on additional layers of complexity (these layers can even involve different data). The `aes()` argument specifies what aspects of the data will be plotted where. the `geom_*` function specifies what type of plot to create (e.g. `geom_histogram()` create a histogram). 
+
+We will see later how we can add many layers to plots with `ggplot2`. For additional information on using `ggplot2`, see this [case study](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}.
+
+```{r}
+diet_and_guidelines %>%
+  ggplot(aes(opt_achieved , col= sex))+
+  geom_bar()
+```
+Continuing with `ggplot2` we will now create a different plot - this time we will create a series of boxplots. We will use the `facet_wrap()` function of ggplot2 to allow us to create many different plots simultaneously. In this case we can look at boxplots for the different dietary factors colored by sex. The `scales` argument when set to `"free"` means that each of the sequentual plot created by the facet can have a differnt scale for the y axis, otherwise, by default they are constrained to the same scale.
+
+
+```{r}
+
+diet_and_guidelines%<>%
+  mutate(food_to_plot =
+  str_replace( 
+  string =pull(diet_and_guidelines,food), 
+  pattern = " ", 
+  replacement = "\n"))
+
+diet_and_guidelines %>%
+  ggplot(aes(y = mean_percent , x= sex, color = sex))+
+  geom_boxplot()+
+  facet_wrap(~food_to_plot, scales = "free", nrow = 3, strip.position = "right")+
+  theme(strip.text.y  =  element_text(size = 8),
+        axis.text.x = element_text(angle = 70, hjust = 1))
+```
+
+
+If we just look at differences only by sex in the data where all of the age groups are collapsed, there appears to be less differences in general, however males appear to potentially consume more calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit.
+
+###  Exploring the data separated by age
+
+Now we will take a look at the data that is separated by age groups.
+
+First, recall that we have 15 different age groups starting from age 25 to 95 plus.
+```{r}
+all_age_diet_and_guidelines %>%
+ count(age_group_name)
+```
+
+
+
+```{r, fig.height=15}
+
+sep_age_diet_data %>%
+  ggplot(aes(y = mean , x= age_group_name, col = sex))+
+  geom_boxplot()+
+  facet_wrap(~food, scales = "free", nrow = 6)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+# sep_age_diet_data %>%
+#   ggplot(aes(y = mean , x= age_group_name, col = sex))+
+#   geom_boxplot()+
+#   facet_wrap(~food, scales = "free")+
+#   facet_wrap(~food, scales = "free", nrow = 3, strip.position = "right")+
+#   theme(strip.text.y  =  element_text(size = 8),
+#         axis.text.x = element_text(angle = 70, hjust = 1))
+```
+
+We can see from these plots that there appears to be age differences and gender differences for some of the different dietary factors. We will work to create clearer figures later on. However these figures have given us a better sense of the data that we are working with.
+
+
+### Distributions
+
+In order to apply a statistical test to compare the means, one of the first things to do is to explore the frequency of the different observed values. 
+One way to summarize the frequency of different observed values is the <b>frequency distribution</b>, which can be shown in a table or a plot. 
+See [here](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} for more information about distributions. Also see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity){target="_blank"}.
+
+We will use the `geom_histogram()` of the `ggplot2`package to create a histogram to evaluate the frequency distributions of our data. 
+
+```{r}
+diet_and_guidelines %>%
+  ggplot(aes(x=mean_percent)) +
+  geom_histogram() +
+  facet_wrap(~ sex) 
+```
+
+Now we add another dimension to our facet with the plus sign. Now it becomes very useful that we reformmated our data to the long format, as it makes it easy to facet across the different percentages that we calculated.
+
+```{r}
+diet_and_guidelines_long %>%
+  ggplot(aes(x = percent)) +
+  geom_histogram() +
+  facet_wrap(~ percent_type + direction, scales = "free")
+```
+
+Looks like we have a lot of variety in the distributions of these precentages.
+
+Let's take a closer look at one:
+```{r}
+diet_and_guidelines_long %>%
+  filter(percent_type == "percent_over_under", 
+         direction == "low") %>%
+  ggplot(aes(x = percent)) +
+  geom_histogram()
+```
+
+Let's take a look a the log of our percent of optimal consumption values.
+
+```{r}
+diet_and_guidelines_long %>%
+  ggplot(aes(x = log(percent))) +
+  geom_histogram() +
+  facet_wrap(~ percent_type + direction)
+```
+
+We see some trimodal data(three peak)  and some bimodal data (two peaks), as well as unimodal (one peak).
+
+
+## Data Analysis
+
+Recall what our main question were:
+
+#### {.main_question_block}
+<b><u> Our main questions are: </u></b>
+
+1) What are the global trends for potentially harmful diets?
+2) How do males and females compare?
+3) How do different age groups compare for these dietary factors?
+4) How do different countries compare? In particular, how does the US compare to other contries in terms of diet trends?
+
+####
+
+We have some general sense about global trend for the risk-associated dietary factors, however we want to know more.
+
+We are interested in how the 2 genders compare, how the 195 different countries compare and how the 15 differnt age groups compare. We may have learned that we can compare two groups using a $t$-test, but how can we compare more than 2 groups? For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
+
+
+In order to make inference about these comparisons, it is helpful to perform statistical tests.  First we are going to talk about a statistical method called regression.
+
+Perhaps you have heard about the ANOVA test which can be useful for testing more than two groups. ANOVA stands for "ANalysis Of VAriance". It, just like the $t$-test, is a specialized type of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. More on that to come...
+
+### Regression
+
+So what is regression?
+
+The term was coined in 1877 by [Sir Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton){target="_blank"} (Charles Darwin's half-cousin!) in his [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between heriditary traits and population averages. He particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word in general means to go back to a simpler mode. Galton noticed that individuals with parents who had an extreme traight, such as height, tended to have a height more similar to the average of the population rather than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in Galton's words the offspring showed:
+
+> "a regression towards mediocrity"
+
+See [here](https://en.wikipedia.org/wiki/Regression_toward_the_mean){target="_blank"} for more information about this history.
+
+When we think about this from a statistical standpoint, regression allows us to estimate or **regress** relationships between variables to a "simple" model. We do this by estimating the **mean** of an outcome.
+
+Using the least squares method we can identify a line that best fits the data by minimizing the sum of the squared distances between each point and the line. Fitting a line to the data like this allows us to create a formula for the line using an **intercept** and a **slope**, so that we can then estimate **mean** values of **y** (dependent/outcome variable) given known values of **x** (independent/predictor/covariate/explanatory variable(s)). Check out this [interactive explanation](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank"} of how the least squares method works.
+
+Here is an image of what we are saying about the least squares regression to fit a line to data:
+![](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)
+
+###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
+
+
+In some cases we can fit a line perfectly and all points will lie on the line with no distance to the line:
+```{r, echo = FALSE}
+
+library(ggpubr)
+data_x<-sample(1:100, 20, replace=TRUE)
+data_y<-data_x +10
+thedata<-bind_cols(x=data_x,y= data_y)
+
+ggplot(data =thedata, aes(x =x, y = y)) +geom_point() +geom_smooth(method = "lm", se=FALSE, color="black", formula = y ~ x) +stat_regline_equation()
+```
+
+
+In other cases there will be greater distances between the line and the points:
+```{r, echo = FALSE}
+set.seed(13)
+thedata %<>% mutate(y2 = rnorm(20, sd = 40))
+
+ggplot(data = thedata, aes(x = x, y = y2)) +
+            geom_smooth(method = "lm", se=FALSE, color="black", formula = y ~ x) +
+            geom_point() +stat_regline_equation()
+
+```
+
+
+This concept has been extended to allow for comparisons of **different types of outcomes (the ys)**, to involve **various numbers of covariates (indpendent variables - the xs)**, and to allow for **different shapes of lines**. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
+
+So let's get back to our data...What types of outcomes do we have?
+
+<u>Our outcomes (y): </u>
+
+We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** beause our values can take on any numeric value within the range of possible values. Binary outcomes in contrast,  have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
+
+Continuous outcomes can be evaluated with linear regression, while binary outcomes can be evaluated with logistic regression. See [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
+
+We have both continuous outcomes of raw consumption rates or percentages of consumption relatative to the optimal guideline amounts as well as binary outcomes of "yes" or "no" about if a population achieved the optimal amount of consumption.
+
+<u>Our covaraites (x): </u>
+
+We have data about age group, sex, and region informationfor all of our outcomes.
+
+Again we are intereseted in comparing the sexes, the different age groups, and the different countries for their consumption of the different dietary factors. We can apply regression to determine if there is any influence of these group identities on the dietary consumption outcomes. 
+
+### Influence of sex on dietary outcomes
+
+Let's focus on the detary factors that appeared to potentially have a difference bewteen genders based on our figure in our exploratory analysis.
+> " Males appear to potentially consume more calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit."
+
+First let's take a look at red meat.
+
+We can compare the red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R) and we will get the same results. See [here](https://scientificallysound.org/2017/06/08/t-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case.
+
+
+```{r}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lm(mean ~ sex, data= .) %>%
+  summary()
+
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  t.test(mean ~ sex, data= .)
+
+ # t.test(mean ~ sex, data= ., paired = TRUE, var.equal =FALSE)
+```
+
+Notice how the estimate of the coefficient in the linear regression model is the same as the t value in the $t$-test.
+
+### Influence of age on dietary outcomes
+
+### Influence of region on dietary outcomes
+
+ 
+
+
+
+## Data Visualization
+
+## Summary
+
+
+Next, we want to propose our idea for a second case study in the same focus area of: 
+
+- Question: How do diets (consumption of various major foods and nutrients) differ by regions (e.g. low-income countries vs not) and by gender around the world? What is the impact of the different diets on mortality or life expectancy?
+- Description: We would take some of the main results from this paper (https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(19)30041-8/fulltext){target="_blank"} and highlight them in a case study (similar to before not trying to reproduce the analysis). This paper shows the leading dietary risk factors for mortality included high intake of sodium, low intake of whole grains, and low intake of fruits. 
+- Why is this important? This analysis demonstrates the need to improve diet across nations and inform implementation of evidence-based dietary interventions. 
+- Data: This the link Jess Fanzo sent us (https://vizhub.healthdata.org/gbd-compare/){target="_blank"}, but we had to track down a specific set of files that were not included in the link to be able to do this analysis. These files were sent to us in a CSV format and we have been given permission to host them as part of our case study and just cite the original study. 
+- Major Data Science Objectives: 
+1) scraping data (gapminder) # probably not anymore
+2) loading data from data package 
+3) wrangling - joining dplyr 
+4) visualization - ggplot 
+- Statistics objectives: We are currently torn between demonstrating linear regression or factor analysis. Once we start the case study, it will be easier for us to understand. We’ll keep you posted on that. 
+# to get a ratio of veggie consumption: Veggies$mean/250 *100
+#https://www.guru99.com/r-anova-tutorial.html
+
+To do this we need to check if our data violates the assumptions that these statistical test rely on in order to choose the appropriate test to compare groups.
