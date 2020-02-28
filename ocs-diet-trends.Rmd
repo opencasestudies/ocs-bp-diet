@@ -186,8 +186,8 @@ The authors of this article obtained the data from a variety of sources includin
 Let's import our data into R now so that we can explore the data further.
 
 ```{r}
-diet_data <-readr::read_csv(here("dietary_risk_exposure_all_ages_2017.csv"))
-sep_age_diet_data <-read_csv(here("dietary_risk_exposure_sep_ages_2017.csv"))
+diet_data <-readr::read_csv(here("docs", "dietary_risk_exposure_all_ages_2017.csv"))
+sep_age_diet_data <-read_csv(here("docs", "dietary_risk_exposure_sep_ages_2017.csv"))
 ```
 
 
@@ -322,7 +322,7 @@ knitr::include_graphics(here::here("img", "Table.png"))
 
 First let's import the PDF using the `pdftools` package.
 ```{r}
-paper<-pdftools::pdf_text(here("Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"))
+paper<-pdftools::pdf_text(here("docs", "Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"))
 ```
 
 We can use the `base` `summary()` function to get a sense of what the data looks like. By `base` we mean that these functions are part of the `base` package and are loaded automatically.Thus `library(base)` is not required.
@@ -684,7 +684,7 @@ See [here](https://cran.r-project.org/web/packages/stringr/vignettes/regular-exp
 Also here we have a bit of an example using the `str_count()` function of `stringr`, which counts the number of instences of a character string. In this case we will look for individual characters but you could also search for words or phrases.
 
 ```{r}
-regextest<-readr::read_file(here("regEx.txt"))
+regextest<-readr::read_file(here("docs", "regEx.txt"))
 regextest
 str_count(regextest,"t")#notice this doesn't include the t in the tab
 str_count(regextest,"\t") #search for tab
