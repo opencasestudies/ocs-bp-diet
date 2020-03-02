@@ -1570,7 +1570,7 @@ diet_and_guidelines %>%
 ```
 
 
-If we just look at differences only by sex in the data where all of the age groups are collapsed, there appears to be less differences in general, however males appear to potentially consume more sodium, fiber, calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit.
+If we just look at differences by sex for the specific dietary factors,  males appear to potentially consume more of many of the factors, including possibly more sodium, fiber, calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit.
 
 ###  Exploring the data separated by age
 
@@ -1722,8 +1722,9 @@ diet_and_guidelines %<>% filter(location_name != "Global")
 
 ### Influence of sex on dietary outcomes
 
-Let's focus on the detary factors that appeared to potentially have a difference between genders based on our figure in our exploratory analysis.
-> " Males appear to potentially consume more calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit."
+Let's focus on the dietary factors that appeared to potentially have a difference between genders based on our figure in our exploratory analysis.
+
+> "If we just look at differences by sex for the specific dietary factors,  males appear to potentially consume more of many of the factors, including possibly more sodium, fiber, calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit."
 
 First let's take a look at red meat.
 
@@ -1898,6 +1899,8 @@ $1.983259 - 1.798872 =0.184387$
 
 Cool!
 
+For more information about the output of `lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank"}.
+
 
 Let's plot the data to see what is happening:
 
@@ -1916,24 +1919,33 @@ diet_and_guidelines%>%
 
 We can see that the slope of the linear model is equivalent to the difference bewteen the mean of the two groups, as the linear model line is parallel to the line that could be drawn between the two means.
 
-Also, since we have female and male values each from the same countries, our data is what we called paired. It would be better if we modeled our data that way. First we will use the `pivot_wider()` function of  the `dplyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
+Also, since we have female and male values each from the same countries, our data is what we called paired. It would be better if we modeled our data that way. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
 ```{r}
 
-wide_diet <-pivot_wider(diet_and_guidelines, 
-                        values_from= c(contains("percent"),
+wide_diet <-diet_and_guidelines %>%
+  pivot_wider(values_from= c(contains("percent"),
                                        mean, 
                                        upper, 
                                        lower, 
                                        opt_achieved), 
-                        names_from= sex)
+              names_from= sex)
 
 glimpse(wide_diet)
 
-wide_diet %>%
-  filter(food == "red meat") %>%  
-  lm(log10(mean_percent_Female) - log10(mean_percent_Male) ~1, data= .) %>%
-  summary()
+#The older function spread() would not allow for multiple columns/variables 
+
+# wide_diet %>%
+#   filter(food == "red meat") %>%  
+#   lm(log10(mean_percent_Female) - log10(mean_percent_Male) ~1, data= .) %>%
+#   summary()
+
+library(lmerTest)
+
+summary(lmer(log10(pull(filter(diet_and_guidelines, food == "red meat"),
+                  mean_percent)) ~ 
+             pull(filter(diet_and_guidelines, food == "red meat"),
+                  sex)+ (1 | pull(filter(diet_and_guidelines, food == "red meat"), location_name))))
 
 t.test(log10(pull(filter(wide_diet, food == "red meat"),
                   mean_percent_Female)), 
@@ -1948,10 +1960,16 @@ Again we get the same $t$-value and p-value with both tests.
 
 We can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the means or that sex has no association or influence on red meat consumption. Therefore, it appears that men consume significantly more red meat than females globally. 
 
-Choose another dietary factor to compare between males and females.
-### maybe we should have focused on these? sodium, low intake of whole grains, and low intake of fruits. 
+Let's choose another dietary factor to compare between males and females. 
 
 ```{r}
+
+diet_and_guidelines_long %>%
+  filter(food =="fruits") %>%
+  ggplot(aes(x=log10(percent))) +
+  geom_histogram() +
+  facet_wrap(~ percent_type)
+
 
 diet_and_guidelines_long %>%
     filter(food =="fruits") %>%
@@ -1969,19 +1987,30 @@ var.test(log10(pull(filter(diet_and_guidelines,
                      food == "fruits"), mean_percent))~
          pull(filter(diet_and_guidelines,
                      food == "fruits"), sex))
-wide_diet %>%
-  filter(food == "fruits") %>%  
-  lm(log10(mean_percent_Female) - log10(mean_percent_Male) ~1, data= .) %>%
-  summary()
+# wide_diet %>%
+#   filter(food == "fruits") %>%  
+#   lm(log10(mean_percent_Female) - log10(mean_percent_Male) ~1, data= .) %>%
+#   summary()
+
+summary(lmer(log10(pull(filter(diet_and_guidelines, food == "fruits"),
+                  mean_percent)) ~ 
+             pull(filter(diet_and_guidelines, food == "fruits"),
+                  sex)+ (1 | pull(filter(diet_and_guidelines, food == "fruits"), location_name))))
 
 t.test(log10(pull(filter(wide_diet, food == "fruits"),
                   mean_percent_Female)), 
        log10(pull(filter(wide_diet, food == "fruits"),
                   mean_percent_Male)),
        var.equal = TRUE, paired = TRUE)
+
+means<-wide_diet %>% 
+   filter(food== "fruits") %>% 
+   summarise(female =mean(log10(mean_percent_Female)), male = mean(log10(mean_percent_Male)))
+
+means
 ```
 
-
+Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-value and the $p$-value match. The $\beta_{1}$ coefficient value (slope) matches the difference between the means value calcuated in $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. 
 
 ### Influence of age on dietary outcomes
 
@@ -2010,7 +2039,22 @@ sep_age_diet_data%>%
 
 ### Influence of region on dietary outcomes
 
- 
+
+```{r}
+
+summary(aov(log10(pull(filter(diet_and_guidelines, food == "sodium"), 
+               mean_percent)) ~ 
+    pull(filter(diet_and_guidelines, food == "sodium"),
+         location_name)))
+
+test<-diet_and_guidelines%>%
+  filter(food == "sodium") %>%  
+  lm(log10(mean_percent) ~location_name, data= .) %>%
+  summary()
+
+```
+
+
 
 
 
