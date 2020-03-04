@@ -1620,20 +1620,24 @@ Recall what our main question were:
 
 We have some general sense about global trends for the risk-associated dietary factors, however we want to know more.
 
-We are interested in how the 2 genders compare, how the 195 different countries compare and how the 15 differnt age groups compare. We may have learned that we can compare two groups using a $t$-test, but how can we compare more than 2 groups? For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
+We are interested in how much the 2 genders differ, how much the 15 different age groups differ, and how the 195 countries compare. 
+
+In order to make [inference](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between sex, age group and country identiy with relative consumption of the dietary factors of interest. One way to look at the strength of assocation is to use a statistical method called regression.
 
 
-In order to make [inference](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. First we are going to talk about a statistical method called regression.
+We may have learned that we can compare two groups using a $t$-test. For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
 
-Perhaps you have heard about the ANOVA test which can be useful for testing more than two groups. ANOVA stands for "ANalysis Of VAriance". It, just like the $t$-test, is a specialized type of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. More on that to come...
+Perhaps you have heard about the ANOVA test which can be useful for comparing more than two groups. ANOVA stands for "ANalysis Of VAriance". 
+
+It turns out that both the $t$-test and the ANOVA, are equivalent to specialized types of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}.
 
 ### Regression
 
-So what is regression?
+So what is regression? How can we use regression to compare our groups of interest and look at the relationship between group identiy and consumption of dietary factors associated with health risk?
 
-The term was coined in 1877 by [Sir Francis Galton](https://en.wikipedia.org/wiki/Francis_Galton){target="_blank"} (Charles Darwin's half-cousin!) in his [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between heriditary traits and population averages. He particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word in general means to go back to a simpler mode. Galton noticed that individuals with parents who had an extreme trait, such as height, tended to have a height more similar to the average of the population rather than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in Galton's words the offspring showed:
+The statistical version of the term was coined in 1877 in this [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between heriditary traits and population averages. the author particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word in general means to go back to a simpler mode. It was noticed that individuals with parents who had an extreme trait, such as height, tended to have a height more similar to the average of the population rather than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in the author's words the offspring showed:
 
-> "a regression towards mediocrity"
+> "a *regression* towards mediocrity"
 
 See [here](https://en.wikipedia.org/wiki/Regression_toward_the_mean){target="_blank"} for more information about this history.
 
@@ -1669,7 +1673,6 @@ Here is an image of what we are saying about the ordinary least squares regressi
 ###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
 
 
-
 In some cases we can fit a line perfectly and all points will lie on the line with no distance to the line:
 
 ```{r, echo = FALSE, out.width="300ptx"}
@@ -1696,28 +1699,35 @@ ggplot(data = thedata, aes(x = x, y = y2)) +
 
 This concept has been extended to allow for comparisons of **different types of outcomes (the ys)**, to involve **various numbers of covariates (indpendent variables - the xs)**, and to allow for **different shapes of lines**. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
 
+In R we indicate a linear model like this:
+```{r, eval = FALSE}
+y ~ x
+```
+Here our response/otcome variable is on the left of the `~` while our covariates or explanatory variables are on the right of the `~`.
+
 So let's get back to our data...What types of outcomes do we have?
 
 <b><u>Our outcomes ($Y$): </u></b>
 
 We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** beause our values can take on any numeric value within the range of possible values. Binary outcomes in contrast,  have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
 
-Continuous outcomes can be evaluated with linear regression, while binary outcomes can be evaluated with logistic regression. See [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
+Continuous outcomes can be evaluated with various types of linear regressions, while binary outcomes can be evaluated with what is called **logistic** regression. See [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
 
 We have both continuous outcomes of raw consumption rates or percentages of consumption relatative to the optimal guideline amounts as well as binary outcomes of "yes" or "no" about if a population achieved the optimal amount of consumption.
 
 <b><u>Our covariates ($X_{i}$): </u></b>
 
-We have data about age group, sex, and region informationfor all of our outcomes.
+We have data about age group, sex, and region information for all of our outcomes.
 
 Again we are intereseted in comparing the sexes, the different age groups, and the different countries for their consumption of the different dietary factors. We can apply regression to determine if there is any influence of these group identities on the dietary consumption outcomes. 
 
 
-Before we get started, let's remove the global values from our data and set them aside, as this is really a mean of all the country values.
+Before we get started, let's remove the global values from our data and set them aside, as this is really a composite of all the country values.
 
 ```{r}
 global <- diet_and_guidelines %>% filter(location_name == "Global")
 diet_and_guidelines %<>% filter(location_name != "Global")
+all_age_diet_and_guidelines %<>% filter(location_name != "Global")
 ```
 
 ### Influence of sex on dietary outcomes
@@ -1811,24 +1821,6 @@ diet_and_guidelines_long %>%
   geom_qq_line()
 ```
 
-
-How about the raw consumption data:
-```{r}
-diet_and_guidelines_long %>%
-  filter(food == "red meat") %>%
-  ggplot(aes(x = (mean))) +
-  geom_histogram()
-```
-Also right skewed... so let's try taking the log of the mean value:
-
-```{r}
-diet_and_guidelines_long %>%
-  filter(food == "red meat") %>%
-  ggplot(aes(x = (log10(mean)))) +
-  geom_histogram()
-```
-This is better too.
-
 Ok, so we can get our data to look fairly normal, which is good for our $t$-test assumptions.  The other thing we need to check is if the variance in red meat consumption is similar between the two genders. We can use the `var.test()`  of the `stats` package using the log normalized data, as this data is fairly normally distributed. We can use the mood.test on the raw data which is skewed.
 
 ```{r}
@@ -1912,12 +1904,15 @@ diet_and_guidelines%>%
   geom_jitter(width = .2)+
   stat_summary(fun.y=mean, colour="blue", geom="point", 
               shape=18, size=3)+
-  geom_abline(intercept =1.79887 , slope = 0.18439, color = "red") 
-# using the slope and intercept from the lm output
+  # using the slope and intercept from the lm output
+  geom_abline(intercept =1.79887  , slope = 0.18439, color = "red") +
+  # to draw a line between the boxplots
+  stat_summary(fun.y = mean, geom="line", group= 1, color= "blue", size = 1.5)
+
 
 ```
 
-We can see that the slope of the linear model is equivalent to the difference bewteen the mean of the two groups, as the linear model line is parallel to the line that could be drawn between the two means.
+We can see that the slope of the linear model is equivalent to the difference bewteen the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
 
 Also, since we have female and male values each from the same countries, our data is what we called paired. It would be better if we modeled our data that way. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
@@ -1934,29 +1929,74 @@ wide_diet <-diet_and_guidelines %>%
 glimpse(wide_diet)
 
 #The older function spread() would not allow for multiple columns/variables 
+```
 
-# wide_diet %>%
-#   filter(food == "red meat") %>%  
-#   lm(log10(mean_percent_Female) - log10(mean_percent_Male) ~1, data= .) %>%
-#   summary()
+### Paired t-test and linear mixed effects regression
+Now will perform the paired versions of our tests. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
 
+The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `mean_percent` consumption while keeping the country identity fixed or constant, or in other words controlling / adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate / explanotory variable terms, we would call this a **multiple linear regression**.
+
+So now our model in words will be: 
+
+Mean relative consumption of red meat is dependent on sex and country.
+
+
+Then the coefficient for `sex` will be different from what we had in our previous `lm()` model, as it will be calculated while keeping `location_name` or the country where the consumption value was obtained fixed, or in other words "controlling for `location_name`." This will also result in output for each of the countries. The [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} here represent the average consumption value for each country while accounting for sex.
+
+This will result in coefficients for each of the levels of the `location_name` variable.
+
+#### {.scrollable }
+```{r}
+diet_and_guidelines %<>%
+  mutate_at(vars(location_name), factor)
+
+summary(lm(
+  log10(pull(filter(diet_and_guidelines, food == "red meat"),
+                  mean_percent)) ~
+  pull(filter(diet_and_guidelines, food == "red meat"),
+                  sex)+
+  pull(filter(diet_and_guidelines, food == "red meat"),
+            location_name)))
+
+```
+####
+
+Alternatively, we can perform a slightly different regression.
+
+In this case we will use the `lmer()` function of the `lmerTest` package. This function allows us to perform what is called a [linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank"}. This type of regression is called **mixed** because it contains both **fixed** and **random** effects.
+
+There are many different definitions for **fixed** and **random** effects and the difference is conceptually complex and context specific. 
+However in simplistic terms, **fixed effects** are generally speaking the variables of interest that we have reason to believe explain or predict the outcome or response variable, while random effects are those that may introduce additional variance in the influence of those predictor variables on the outcome variable. For example, they may provide information about **group or batch structures** within the data.  
+
+In our case, we are interested in the influence of sex on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in otherwords we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (mean_percent consumption when sex is assigned to the zero value - not male) may be different for each country.
+
+
+
+```{r}
 library(lmerTest)
 
-summary(lmer(log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  mean_percent)) ~ 
-             pull(filter(diet_and_guidelines, food == "red meat"),
-                  sex)+ (1 | pull(filter(diet_and_guidelines, food == "red meat"), location_name))))
+
+summary(lmer(
+  log10(pull(filter(diet_and_guidelines, food == "red meat"),
+                  mean_percent)) ~
+  pull(filter(diet_and_guidelines, food == "red meat"),
+                  sex)+
+  (1| pull(filter(diet_and_guidelines, food == "red meat"),
+            location_name))))
 
 t.test(log10(pull(filter(wide_diet, food == "red meat"),
-                  mean_percent_Female)), 
+                  mean_percent_Male)), 
        log10(pull(filter(wide_diet, food == "red meat"),
-                  mean_percent_Male)),
+                  mean_percent_Female)),
        var.equal = TRUE, paired = TRUE)
 ```
 
-You can see that now our degrees of freedom are 194, which makes sense becuase now we have matched or paired values for the 195 different regions and so $df = n-1 = 195 -1 = 194$.
+You can see that now our degrees of freedom are 194, which makes sense becuase now we have matched or paired values for the 195 different regions and so $df = n-1 parameter = 195 -1 = 194$. In this case we aren't calculating two different means in our t-test, but instead this is a one sample t-test of the differences between males and females across all the country pairs, so thus only one parameter. It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/) and results in the same degrees of freedom.
 
-Again we get the same $t$-value and p-value with both tests.
+Most importantly, again we get the same $t$-value and p-value with the two tests.
+
+
+You can see that yet again our degrees of freedom are 194, and again we get the same $t$-value and p-value with all tests. In this case we also have information about how each of the countries might influence mean consumption. So the decision of which test to perform depends on your question of interest. In this case we were particularlly interested in the influence of sex, so setting `location_name` to a random effect provides the same level of detail about sex without as much information about `location_name`, so that might be ideal. The results as we can see are the same.
 
 We can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the means or that sex has no association or influence on red meat consumption. Therefore, it appears that men consume significantly more red meat than females globally. 
 
@@ -2018,7 +2058,10 @@ Now we are interested in the influence of age group on dietary consumption.
 
 If we wanted to test the hypothesis that there are anygroup differences, that at least one of the groups is different from the others; we could use an ANOVA test.
 
-It turns out that ANOVAs are also a specialized form of regression.
+It turns out that ANOVAs are also equivalent to a specialized form of regression.
+
+
+
 
 Let's take a look at how the consumption of fruits varies by age group.
 
@@ -2035,7 +2078,31 @@ sep_age_diet_data%>%
   summary()
 
 ```
+We can see that the F-statistic (at the bottom of the lm output) is the same in both outputs and the p-value for the F -statistic is the same. We also see that the degrees of freedom for the F-statistic is 14. This makes sense because we have 15 different age groups. 
 
+df = n - # parameters
+df = 15 -1
+
+
+Now we can account for `location_name` as well:
+```{r, eval = FALSE}
+
+summary(aov(log10(pull(filter(sep_age_diet_data, food == "fruits"), 
+               mean)) ~ 
+    pull(filter(sep_age_diet_data, food == "fruits"),
+         age_group_name))+
+      pull(filter(sep_age_diet_data, food == "fruits"),
+         location_name))
+
+summary(lmer(
+  log10(pull(filter(sep_age_diet_data, food == "fruits"),
+                  mean)) ~
+  pull(filter(sep_age_diet_data, food == "fruits"),
+                  age_group_name)+
+  (1| pull(filter(sep_age_diet_data, food == "fruits"),
+            location_name))))
+
+```
 
 ### Influence of region on dietary outcomes
 
