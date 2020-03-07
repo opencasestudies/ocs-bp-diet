@@ -74,7 +74,7 @@ This case study will evaluate the data reported in this article to explore regio
 
 ### Learning Objectives 
 
-In this case study, we’ll walk you through importing data from a pdf, cleaning data, wrangling data, visualizing the data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The Tidyverse is a library of packages created by the chief scientist at RStudio, Hadley Wickham. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+In this case study, we’ll walk you through importing data from a pdf, cleaning data, wrangling data, joining data, visualizing the data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The Tidyverse is a library of packages created by the chief scientist at RStudio, Hadley Wickham. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
 
 
 
@@ -1629,7 +1629,7 @@ We may have learned that we can compare two groups using a $t$-test. For more in
 
 Perhaps you have heard about the ANOVA test which can be useful for comparing more than two groups. ANOVA stands for "ANalysis Of VAriance". 
 
-It turns out that both the $t$-test and the ANOVA, are equivalent to specialized types of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}.
+It turns out that both the $t$-test and the ANOVA, are equivalent to specialized types of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. We will use each of these tests to investigate patterns of consumption for dietary factors that contribute to health risk and we will look at how we can obtain equivalent results with different tests.
 
 ### Regression
 
@@ -1696,6 +1696,9 @@ ggplot(data = thedata, aes(x = x, y = y2)) +
 
 ```
 
+In this case, beacuse there is some verticle distance between the line and the data points, there is a bit of what is called error in the model. The formula for the relationship between $X$ and $Y$ does not perfectly describe the data. The distance between the line and each data point is what we call a [residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}. Our least squares method finds the line with the minimized value of the sum of the residual values.
+
+
 
 This concept has been extended to allow for comparisons of **different types of outcomes (the ys)**, to involve **various numbers of covariates (indpendent variables - the xs)**, and to allow for **different shapes of lines**. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
 
@@ -1730,7 +1733,7 @@ diet_and_guidelines %<>% filter(location_name != "Global")
 all_age_diet_and_guidelines %<>% filter(location_name != "Global")
 ```
 
-### Influence of sex on dietary outcomes
+### $t$-test and linear regression
 
 Let's focus on the dietary factors that appeared to potentially have a difference between genders based on our figure in our exploratory analysis.
 
@@ -1914,7 +1917,7 @@ diet_and_guidelines%>%
 
 We can see that the slope of the linear model is equivalent to the difference bewteen the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
 
-Also, since we have female and male values each from the same countries, our data is what we called paired. It would be better if we modeled our data that way. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
+Also, since we have female and male values each from the same countries, our data is what we called paired. Thus the values from the same country could be related to one another becuase of cultural difference in diet, thus the assumption of the unpaired $t$-test that the samples are independent is violated.  Therefore, we need to model our data in a way that accounts for this. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
 ```{r}
 
@@ -1931,7 +1934,7 @@ glimpse(wide_diet)
 #The older function spread() would not allow for multiple columns/variables 
 ```
 
-### Paired t-test and linear mixed effects regression
+### Paired $t$-test and linear model with two fixed effects
 Now will perform the paired versions of our tests. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
 
 The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `mean_percent` consumption while keeping the country identity fixed or constant, or in other words controlling / adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate / explanotory variable terms, we would call this a **multiple linear regression**.
@@ -1943,7 +1946,6 @@ Mean relative consumption of red meat is dependent on sex and country.
 
 Then the coefficient for `sex` will be different from what we had in our previous `lm()` model, as it will be calculated while keeping `location_name` or the country where the consumption value was obtained fixed, or in other words "controlling for `location_name`." This will also result in output for each of the countries. The [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} here represent the average consumption value for each country while accounting for sex.
 
-This will result in coefficients for each of the levels of the `location_name` variable.
 
 #### {.scrollable }
 ```{r}
@@ -1960,6 +1962,9 @@ summary(lm(
 
 ```
 ####
+
+
+### Paired $t$-test and linear model with mixed effects 
 
 Alternatively, we can perform a slightly different regression.
 
@@ -2027,10 +2032,6 @@ var.test(log10(pull(filter(diet_and_guidelines,
                      food == "fruits"), mean_percent))~
          pull(filter(diet_and_guidelines,
                      food == "fruits"), sex))
-# wide_diet %>%
-#   filter(food == "fruits") %>%  
-#   lm(log10(mean_percent_Female) - log10(mean_percent_Male) ~1, data= .) %>%
-#   summary()
 
 summary(lmer(log10(pull(filter(diet_and_guidelines, food == "fruits"),
                   mean_percent)) ~ 
@@ -2052,80 +2053,285 @@ means
 
 Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-value and the $p$-value match. The $\beta_{1}$ coefficient value (slope) matches the difference between the means value calcuated in $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. 
 
-### Influence of age on dietary outcomes
+### ANalysis Of VAriance (ANOVA) test
 
-Now we are interested in the influence of age group on dietary consumption. 
+Now we are interested in the influence of age group on dietary consumption, becuase there are 15 age groups we can't assess the influence of age group on consumption using the $t$-test, as this test can only compare 2 groups. 
 
-If we wanted to test the hypothesis that there are anygroup differences, that at least one of the groups is different from the others; we could use an ANOVA test.
-
-It turns out that ANOVAs are also equivalent to a specialized form of regression.
+If we wanted to test the hypothesis that there are any age group differences, that at least one of the groups is different from the others; we could use an [ANOVA test](http://onlinestatbook.com/2/analysis_of_variance/intro.html){target="_blank"}. This test allows us to compare means of 3 or more groups by evaluating the variance of the data within the groups and among the groups. 
 
 
 
+Our null hypothesis is that all age groups have equal means:
+$$ H_0: \mu_{1} = \mu_{2} =\mu_{3}=\mu_{4} = ... \mu_{15} $$
 
-Let's take a look at how the consumption of fruits varies by age group.
+The alternative hypothesis is that at least one age group mean is not equal to the others.
+
+*Importantly*, if we reject the null, we do not know which group means are different from one another. Subsequent testing is required if we want to know this information. In this case we call this type of non-specific hypothesis an "omnibus" hypothesis.
+
+You could actually perform an ANOVA to compare two means, but in this case you would get an $F$-statistic instead of a $t$-statistic which would be quivalent to $t^2$. However it is not conventional to use ANOVA for only 2 means. The $F$-statistic is derived form the $F$-test is used for a few different type of tests. In the anova the F-test is calculated as:
+
+$$F = \frac{ 
+variability\ between\  the \ groups}{ 
+variablity\ within\ the \ groups}$$
+
+The larger the ratio, the larger the variability between the groups, thus the more likely that the data for each group comes from a different distribution with different means, suggesting that the groups are different.
+
+
+It turns out that the ANOVA test is also equivalent to a specialized form of regression. 
+
+We will demonstrate this by evaluating how the consumption of red meat varies by age group using an anova and a linear regression.
+
+Thinking about our interest in wanting to know how consumtion differs between age groups from the linear regression perspective, we could also describe our null hypothesis as:
+
+There is no influence of age group idenity on consumption or there is no relationship between age group identity and consumption.
+
+And we could describe our alternative hypothesis as:
+
+Age group identity does influence consumption or explain some of the variation in consumption.
+
+
+Ok, so let's take a look at our data.
+
+
+First let's make `age_group_name` a factor:
+
+```{r, eval = FALSE}
+all_age_diet_and_guidelines %<>%
+  mutate_at(vars(age_group_name), factor)
+
+```
+
+#### ANOVA assumptions
+
+The ANOVA assumptions are quite similar to the $t$-test assumptions:
+
+1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n>30)
+2) Equal variance between the groups - aka Homogeneity of variance (make sure you do the correct test if the data is not normal)
+3) Balanced sample sizes of the groups
+4) Independent observations (or independent paired observations)
+
+
+So let's evaluate our assumptions for the groups we are comparing, starting with normality using QQ plots. We will assess fruit consumption again.
 
 ```{r}
+all_age_diet_and_guidelines %>%
+  filter(food =="red meat") %>%
+  ggplot(aes(sample = log10(mean_percent))) +
+  facet_wrap(~ age_group_name  )+
+  geom_qq() +
+  geom_qq_line()
+```
+Ok, these look pretty good.
 
-summary(aov(log10(pull(filter(sep_age_diet_data, food == "fruits"), 
-               mean)) ~ 
-    pull(filter(sep_age_diet_data, food == "fruits"),
+Now let's look at variance.
+
+The [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} works well if the data appears to be quite normally distributed, while the [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality of the data.
+Another popular test is the [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner- Killeen test.
+
+All three tests test the null hypothesis that the variances are equal among all of the groups.
+
+Note: Remember that $\sigma$ is the [standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"}  and that variance = $\sigma^2$
+
+recall that $\sigma^2 = \frac{\sum(x_i - \mu)^2}{N}$ when we are thinking of the true populations of the groups
+
+Where $N$ is the population size
+      $x_i$ are each value from the population
+      $\mu$ is the mean of the population
+
+Thus the variance is the average difference of the values in the distribution from the mean of the distribution. 
+
+
+$$ H_0: \sigma_1^2 = \sigma_2^2 = \sigma_3^2 ... = \sigma_n^2 $$
+
+The alternative hypothesis is that at least one of the group $\sigma_i^2$ is not equal to the other group $\sigma^2$ values.
+
+$$H_a:\sigma_i^2 \neq \sigma_j^2   $$
+for at least  one  pair ($i$,$j$)
+
+
+In our case, the data appears to be quite normally distributed, however we will demonstrate how to perform each of these tests.
+
+The `bartlett.test()` function of the `stats` package can be used to perform the Bartlett's test, the `fligner.test()` function of the `stats` package can be used to perform the Fligner-Killeen test and the `leveneTest()` function of the `car` package can be used for the Levene's test.
+
+```{r}
+# Bartlett's Test of Homogeneity of Variances
+              
+bartlett.test(
+  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         age_group_name))  
+
+# Levene's Test of Homogeneity of Variances
+library(car)
+leveneTest(
+  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         age_group_name)) 
+
+# Fligner-Killeen Test of Homogeneity of Variances
+fligner.test(
+  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         age_group_name)) 
+```
+
+In all cases our data does not appear to violate the Homogeneity of Variances assumption as our p value was < 0.05 for all three tests, thus there is not enough evidence to reject the null.
+
+We will also confirm again that our data is balanced for all groups, meaning we have the same or similiar number of samples for each group.
+
+```{r}
+all_age_diet_and_guidelines %>% 
+  filter(food =="fruits") %>%
+  count(age_group_name)
+#195 countries and 2 sex groups = 390
+```
+
+Now we will use the `aov()` function of the `stats` package. We will be performing what is called a [one-way ANOVA](http://onlinestatbook.com/2/analysis_of_variance/one-way.html){target="_blank"} becuase we only have one dependent/response/outcome variable.
+
+#### {.scrollable }
+```{r}
+
+summary(aov(log10(pull(filter(all_age_diet_and_guidelines, food == "fruits"), 
+               mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, food == "fruits"),
          age_group_name)))
 
-sep_age_diet_data%>%
+all_age_diet_and_guidelines%>%
   filter(food == "fruits") %>%  
-  lm(log10(mean) ~age_group_name, data= .) %>%
+  lm(log10(mean_percent) ~age_group_name, data= .) %>%
   summary()
 
 ```
-We can see that the F-statistic (at the bottom of the lm output) is the same in both outputs and the p-value for the F -statistic is the same. We also see that the degrees of freedom for the F-statistic is 14. This makes sense because we have 15 different age groups. 
-
-df = n - # parameters
-df = 15 -1
+####
 
 
-Now we can account for `location_name` as well:
-```{r, eval = FALSE}
+We can see that the $F$-statistic (at the bottom of the lm output) is the same in both outputs and the p-value for the $F$-statistic is the same!
 
-summary(aov(log10(pull(filter(sep_age_diet_data, food == "fruits"), 
-               mean)) ~ 
-    pull(filter(sep_age_diet_data, food == "fruits"),
-         age_group_name))+
-      pull(filter(sep_age_diet_data, food == "fruits"),
-         location_name))
+We also see that the degrees of freedom for the $F$-statistic is 14. This makes sense because we have 15 different age groups and degrees of freedom for the $F$-statistic are calculated as $$df = n - 1$$. 
 
-summary(lmer(
-  log10(pull(filter(sep_age_diet_data, food == "fruits"),
+
+So in our case: 
+$$df = 15 -1$$
+The difference here is that with the `lm()` test we also get information about how the individual age groups influence `mean_percent` consumption of `fruits`. Notice that if we look at all the age groups:
+```{r}
+all_age_diet_and_guidelines %>% distinct(age_group_name)
+
+```
+We can see that our `lm()` results are missing one of the age groups, the `25 to 29` age group. That is because this is the reference group and the coefficients indicate the slope or difference in `mean_percent` consupmtion rates for each listed age group compared to the reference group. 
+
+Now let's account for the paired `location_name`  structure within our data as well. To do this we add this as another term in the `aov()` and the `lm()` formula with a `+`. Note that now that we have two categorical independent variables / covariates/ predictors.  In this case we are comparing both the age groups and the location groups. The `anova()` function of the `stats` package will be used with the `lm()` function print the resulting $F$-statistic, but not the statistics for each of the levels of the age groups and location groups. This function does not actually directly perform ANOVA like the `aov()` function, but instead prints a variance table using a `lm()` or `glm()` object.
+
+#### {.scrollable }
+
+```{r}
+
+summary(aov(
+  log10(pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"), 
+                mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                age_group_name)+ 
+      pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                location_name)))
+
+anova(lm(
+  log10(pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                mean)) ~
+  pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                age_group_name)+
+  pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                location_name)))
+
+```
+#### 
+
+We can see that indeed the $F$-values and p-values match. In this case, this analysis suggests that there is a significant infleunce of age group identity on consumption, even when controlling for location identity and vice versa. The ANOVA results indicate that the means are different across these groups, but it does not inform us about which groups are different. If we instead perform the `lm()` analysis and use `summary()` to print the results instead of `anova()`, we can get more information about possible specific group differences. Recall however, that these are relative to the refernce level for the age group and location and that these values are calculated for the effect on consumption while controlling for the other model term.
+
+#### {.scrollable }
+```{r}
+summary(lm(
+  log10(pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                mean)) ~
+  pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                age_group_name)+
+  pull(filter(all_age_diet_and_guidelines, 
+                food == "red meat"),
+                location_name)))
+
+```
+####
+
+
+We could instead perform a similar analysis as we did for the two group analysis where we controlled for the paired data structure using a random effect based on location. This is how we would could account for this data structure within the `aov()` function using `Error()` and again using the `lmer()` function with `1|variable_name`.
+
+#### {.scrollable }
+```{r}
+
+summary(aov(log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"), 
+               mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         age_group_name)+ 
+      Error(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+         location_name))))
+
+anova(lmer(
+  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
                   mean)) ~
-  pull(filter(sep_age_diet_data, food == "fruits"),
+  pull(filter(all_age_diet_and_guidelines, food == "red meat"),
                   age_group_name)+
-  (1| pull(filter(sep_age_diet_data, food == "fruits"),
+  (1| pull(filter(all_age_diet_and_guidelines, food == "red meat"),
             location_name))))
 
 ```
 
-### Influence of region on dietary outcomes
+Notice now the results only show for the `age_group_name`, but they are the same as in the analysis with the fixed effect for `location_name`.
 
+
+### Modeling all of our groups of interest
+
+Now that we know that linear regressions allow us to perform group comparisons like $t$-tests and anovas, but can also provide is with additional information, we can extend our analysis a bit further. We could  include `sex`, `location_name`, and `age_group_name` in the same linear model and get information about how each of these factors influences dietary consumption, while accounting for the other factors. 
 
 ```{r}
 
-summary(aov(log10(pull(filter(diet_and_guidelines, food == "sodium"), 
-               mean_percent)) ~ 
-    pull(filter(diet_and_guidelines, food == "sodium"),
-         location_name)))
-
-test<-diet_and_guidelines%>%
-  filter(food == "sodium") %>%  
-  lm(log10(mean_percent) ~location_name, data= .) %>%
-  summary()
+anova(lm(
+  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+                  mean)) ~
+  pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+                  age_group_name)+
+  pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+            location_name) + 
+    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+            sex)))
 
 ```
 
-
-
-
+We can see that sex, location, and age group all influence consumption of red meat. 
 
 ## Data Visualization
+
+Now that we have statisitcally analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
+
+```{r}
+
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  ggplot(aes(y = mean_percent , x= age_group_name, col = sex))+
+  geom_boxplot()+
+  geom_jitter( width = .02) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+
 
 ## Summary
 
