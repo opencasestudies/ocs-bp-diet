@@ -1873,7 +1873,8 @@ diet_and_guidelines %>%
 diet_and_guidelines %>%
   mutate_at(vars(sex), forcats::fct_inorder)%>%
   filter(food == "red meat") %>%
-  t.test(log10(mean_percent) ~ sex, data= ., var.equal = TRUE)
+  t.test(log10(mean_percent) ~ sex, data= ., 
+         var.equal = TRUE)
 
 ```
 
@@ -2017,36 +2018,50 @@ diet_and_guidelines_long %>%
 
 
 diet_and_guidelines_long %>%
-    filter(food =="fruits") %>%
+  filter(food =="fruits") %>%
   ggplot(aes(sample = log10(percent))) +
   facet_wrap(~ percent_type)+
   geom_qq() +
   geom_qq_line()
 
 mood.test(pull(filter(diet_and_guidelines,
-                     food == "fruits"), mean_percent),
-         pull(filter(diet_and_guidelines,
-                     food == "fruits"), sex))
+              food == "fruits"), 
+              mean_percent),
+          pull(filter(diet_and_guidelines,
+              food == "fruits"), 
+              sex))
 
 var.test(log10(pull(filter(diet_and_guidelines,
-                     food == "fruits"), mean_percent))~
+               food == "fruits"), 
+               mean_percent))~
          pull(filter(diet_and_guidelines,
-                     food == "fruits"), sex))
+               food == "fruits"), 
+               sex))
 
-summary(lmer(log10(pull(filter(diet_and_guidelines, food == "fruits"),
+summary(lmer(
+  log10(pull(filter(diet_and_guidelines, 
+                  food == "fruits"),
                   mean_percent)) ~ 
-             pull(filter(diet_and_guidelines, food == "fruits"),
-                  sex)+ (1 | pull(filter(diet_and_guidelines, food == "fruits"), location_name))))
+        pull(filter(diet_and_guidelines, 
+                  food == "fruits"),
+                  sex)+ 
+    (1 | pull(filter(diet_and_guidelines, 
+                  food == "fruits"), 
+                  location_name))))
 
-t.test(log10(pull(filter(wide_diet, food == "fruits"),
+t.test(log10(pull(filter(wide_diet, 
+                  food == "fruits"),
                   mean_percent_Female)), 
-       log10(pull(filter(wide_diet, food == "fruits"),
+       log10(pull(filter(wide_diet, 
+                  food == "fruits"),
                   mean_percent_Male)),
        var.equal = TRUE, paired = TRUE)
 
+
 means<-wide_diet %>% 
    filter(food== "fruits") %>% 
-   summarise(female =mean(log10(mean_percent_Female)), male = mean(log10(mean_percent_Male)))
+   summarise(female =mean(log10(mean_percent_Female)),
+             male = mean(log10(mean_percent_Male)))
 
 means
 ```
@@ -2117,7 +2132,7 @@ So let's evaluate our assumptions for the groups we are comparing, starting with
 all_age_diet_and_guidelines %>%
   filter(food =="red meat") %>%
   ggplot(aes(sample = log10(mean_percent))) +
-  facet_wrap(~ age_group_name  )+
+  facet_wrap(~ age_group_name) +
   geom_qq() +
   geom_qq_line()
 ```
@@ -2157,25 +2172,31 @@ The `bartlett.test()` function of the `stats` package can be used to perform the
 # Bartlett's Test of Homogeneity of Variances
               
 bartlett.test(
-  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         mean_percent)) ~ 
-    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         age_group_name))  
+  log10(pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            age_group_name))  
 
 # Levene's Test of Homogeneity of Variances
 library(car)
 leveneTest(
-  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         mean_percent)) ~ 
-    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         age_group_name)) 
+  log10(pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            age_group_name)) 
 
 # Fligner-Killeen Test of Homogeneity of Variances
 fligner.test(
-  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         mean_percent)) ~ 
-    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         age_group_name)) 
+  log10(pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            age_group_name)) 
 ```
 
 In all cases our data does not appear to violate the Homogeneity of Variances assumption as our p value was < 0.05 for all three tests, thus there is not enough evidence to reject the null.
@@ -2184,7 +2205,7 @@ We will also confirm again that our data is balanced for all groups, meaning we 
 
 ```{r}
 all_age_diet_and_guidelines %>% 
-  filter(food =="fruits") %>%
+  filter(food =="red meat") %>%
   count(age_group_name)
 #195 countries and 2 sex groups = 390
 ```
@@ -2194,13 +2215,16 @@ Now we will use the `aov()` function of the `stats` package. We will be performi
 #### {.scrollable }
 ```{r}
 
-summary(aov(log10(pull(filter(all_age_diet_and_guidelines, food == "fruits"), 
-               mean_percent)) ~ 
-    pull(filter(all_age_diet_and_guidelines, food == "fruits"),
-         age_group_name)))
+summary(aov(
+  log10(pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"), 
+              mean_percent)) ~ 
+    pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"),
+              age_group_name)))
 
 all_age_diet_and_guidelines%>%
-  filter(food == "fruits") %>%  
+  filter(food == "red meat") %>%  
   lm(log10(mean_percent) ~age_group_name, data= .) %>%
   summary()
 
@@ -2217,7 +2241,8 @@ So in our case:
 $$df = 15 -1$$
 The difference here is that with the `lm()` test we also get information about how the individual age groups influence `mean_percent` consumption of `fruits`. Notice that if we look at all the age groups:
 ```{r}
-all_age_diet_and_guidelines %>% distinct(age_group_name)
+all_age_diet_and_guidelines %>% 
+  distinct(age_group_name)
 
 ```
 We can see that our `lm()` results are missing one of the age groups, the `25 to 29` age group. That is because this is the reference group and the coefficients indicate the slope or difference in `mean_percent` consupmtion rates for each listed age group compared to the reference group. 
@@ -2232,10 +2257,10 @@ summary(aov(
   log10(pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"), 
                 mean_percent)) ~ 
-    pull(filter(all_age_diet_and_guidelines, 
+        pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"),
                 age_group_name)+ 
-      pull(filter(all_age_diet_and_guidelines, 
+        pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"),
                 location_name)))
 
@@ -2243,10 +2268,10 @@ anova(lm(
   log10(pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"),
                 mean)) ~
-  pull(filter(all_age_diet_and_guidelines, 
+        pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"),
                 age_group_name)+
-  pull(filter(all_age_diet_and_guidelines, 
+        pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"),
                 location_name)))
 
@@ -2277,20 +2302,27 @@ We could instead perform a similar analysis as we did for the two group analysis
 #### {.scrollable }
 ```{r}
 
-summary(aov(log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"), 
-               mean_percent)) ~ 
-    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         age_group_name)+ 
-      Error(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-         location_name))))
+summary(aov(
+log10(pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"), 
+              mean_percent)) ~ 
+      pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"),
+              age_group_name)+ 
+      Error(pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"),
+              location_name))))
 
 anova(lmer(
-  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-                  mean)) ~
-  pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-                  age_group_name)+
-  (1| pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-            location_name))))
+log10(pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"),
+              mean_percent)) ~
+      pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"),
+              age_group_name)+
+  (1|pull(filter(all_age_diet_and_guidelines, 
+              food == "red meat"),
+              location_name))))
 
 ```
 
@@ -2304,13 +2336,17 @@ Now that we know that linear regressions allow us to perform group comparisons l
 ```{r}
 
 anova(lm(
-  log10(pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-                  mean)) ~
-  pull(filter(all_age_diet_and_guidelines, food == "red meat"),
-                  age_group_name)+
-  pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+  log10(pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            mean)) ~
+        pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
+            age_group_name)+
+        pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
             location_name) + 
-    pull(filter(all_age_diet_and_guidelines, food == "red meat"),
+        pull(filter(all_age_diet_and_guidelines, 
+            food == "red meat"),
             sex)))
 
 ```
@@ -2321,17 +2357,314 @@ We can see that sex, location, and age group all influence consumption of red me
 
 Now that we have statisitcally analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
 
+
+Let's try to make a plot that shows the relationship of age group, sex, and location on consumption of red meat.
+
+First we will filter our data for only the data associated with red meat, and then we will create a boxplot graph with age group as the x axis, but include box plots for each sex for each age group. We can include an additional subplot to just look at the relationship of sex and consumption.
+
 ```{r}
 
 all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
   ggplot(aes(y = mean_percent , x= age_group_name, col = sex))+
   geom_boxplot()+
-  geom_jitter( width = .02) +
+  geom_jitter(aes(x =sex, y =mean_percent), 
+                width = .2, size =2, shape =21)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+```
+Ok, this is pretty good, but we can do better.
+
+Let's try specifically looking at the countries that overconsumed red meat. We can look at these countries by filtering our data where `mean_percent` was greater than 100%. Now we will overlap the jitter points and the boxplot using the `position_jitterdoge()` as the position in `geom_pont()`. In order to not obscure our boxplots, we can use the argument `alpha` to make our jitter points more transparent.
+
+```{r}
+
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(mean_percent >100) %>%
+  ggplot(aes(y = mean_percent,
+             x= age_group_name, fill = sex))+
+  geom_point(position=position_jitterdodge(), 
+             aes(col = sex),
+             alpha = 3/10)+
+  geom_boxplot(outlier.shape=NA)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+```
+
+What are the countries that have such high consumption rates?
+
+```{r}
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(mean_percent >1000)
+```
+ 
+ Looks like the males in Laos and Timor_Leste have the highest consumption.
+ 
+ 
+Now let's plot just the populations that eat less than the optimal amount by filtering for `mean_percent` < 100%.
+ 
+```{r}
+
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(mean_percent <100) %>%
+  ggplot(aes(y = mean_percent , x= age_group_name, fill = sex))+
+  geom_point(position=position_jitterdodge(), 
+             aes(col = sex), 
+             alpha = 3/10)+
+  geom_boxplot(outlier.shape=NA)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+Nice! It would be nice to be able to know what countries the datapoints correspond to. One way to do this is using a package called `ggiraph`. This package is really helpful for creating interactive graphs. We will use the `geom_point_interactive()` function to allow us to hover over points to display the country name. We indicate what label we want with the `tooltip` argument.
+This function is similar to the normal `geom_point()` function. Thus, we will include the same arguments as before. However, we will also split the male and female data using `facet_wrap()` to make things a bit less overwhelming.
+
+Notice that we are creating a plot object before we use the `geom_point_interactive()`.
+
+We are also rendering the plot with the `girafe()` function of the `ggiraph` package.
+
+
+```{r}
+library(ggiraph)
+g<-all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(mean_percent <100) %>%
+  ggplot(aes(y = mean_percent , 
+             x= age_group_name, 
+             fill = sex))+
+  geom_boxplot(outlier.shape=NA)+
+  facet_wrap(~sex)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  
+ g <- g + geom_point_interactive(aes(
+                color = sex, 
+                tooltip = location_name), 
+                size = 2,
+                position=position_jitterdodge(), 
+                alpha = 3/10) 
+ 
+girafe(code = print(g))
+
+```
+
+
+Cool! 
+
+From this plot we can see the countries with populations that do well by not overconsuming red meat, (as overconsumtion is associated with health risk). We see that different countries greatly vary, we can see that overall younger populations appear to consume more red meat, and men appear to consume red meat.
+
+Let's do the same thing for the overconsuming countries. We can also take this one step further to show all the points for the same country when we hover over one data point by using the `data_id` argument of the `geom_point_interactive()` function. We can also add links to wikipedia pages for these countries using the `onclick` argument.
+
+```{r}
+
+all_age_diet_and_guidelines %<>% 
+  mutate(link = sprintf("window.open(\"%s%s\")",
+  "http://en.wikipedia.org/wiki/",  as.character(pull(all_age_diet_and_guidelines,location_name))))
+
+g<-all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(mean_percent >100) %>%
+  ggplot(aes(y = mean_percent , 
+             x= age_group_name, 
+             fill = sex))+
+  geom_boxplot(outlier.shape=NA)+
+  facet_wrap(~sex)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  
+ g <- g + geom_point_interactive(aes(
+                color = sex, 
+                tooltip = location_name,
+                data_id = location_name,
+                onclick = link), 
+                size = 2,
+                position=position_jitterdodge(), 
+                alpha = 3/10) 
+ 
+girafe(code = print(g))
+
+```
+
+
+
+```{r}
+
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(mean_percent>100) %>%
+  ggplot(aes(y = mean_percent , x= age_group_name))+
+  geom_boxplot()+
+  geom_jitter(aes(x =sex, y =mean_percent), 
+                width = .2, size =2, shape =21)+
   theme(axis.text.x = element_text(angle = 70, hjust = 1))
 
 ```
 
+
+```{r}
+
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  ggplot(aes(y = mean_percent , x= sex, fill = age_group_name))+
+  geom_point(pch = 21, position = position_jitterdodge()) +
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+
+
+```{r}
+
+ g<-all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  ggplot(aes(y = mean_percent , x= sex, fill = age_group_name))+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+ my_gg <-g +geom_point_interactive(aes(tooltip = location_name), size = 2) 
+girafe(code = print(my_gg) )
+
+```
+
+```{r}
+
+
+all_age_diet_and_guidelines %>%
+filter(location_name == "United States") %>%
+ggplot(aes(y = percent_over_under , x= food, fill = sex))+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  facet_wrap(~direction, scales = "free") +
+  geom_boxplot()+
+ geom_point(position=position_jitterdodge(), 
+             alpha = 3/10)
+
+```
+
+
+```{r}
+
+all_age_diet_and_guidelines %>%
+filter(location_name == "United States") %>%
+ggplot(aes(y = percent_over_under , x= food, fill = age_group_name))+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  facet_wrap(~direction, scales = "free") +
+  geom_boxplot()+
+ geom_point(position=position_jitterdodge(), 
+             alpha = 3/10)
+
+```
+
+```{r, eval=FALSE}
+
+# simplified national means plot
+Means_plot<-BMI_long %>% 
+  filter(Sex %in% c("Men", "Women"), 
+         Year %in% c("1985", "2017"), 
+         Region == "National") %>%
+ggplot(aes(x = Sex, y = BMI)) + 
+  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
+ scale_fill_manual(values=c("dodgerblue", "orchid2")) +
+  facet_grid(~ Year) + 
+  geom_hline(yintercept=30, linetype="dashed", color = "red", size =1) + 
+  geom_jitter(data=BMI_long %>%
+                filter(Sex %in% c("Men", "Women"), 
+                       Year %in% c("1985", "2017"), 
+                       Region == "National"),
+                aes(x =Sex, y =BMI), 
+                width = .2, size =2, shape =21, 
+                color = "black", fill = "gray") +
+  geom_jitter(data=subset(BMI_long %>%
+                            filter(Sex %in% c("Men", "Women"), 
+                                   Year %in% c("1985", "2017"), 
+                                   Region == "National", 
+                                   Country == "USA")), 
+                             aes(x =Sex, y =BMI), 
+                             width = .02, size =12, shape =21, 
+                             color = "black", fill = "gray") + 
+  # This will add points that are larger for the USA data
+  geom_text(data=subset(BMI_long%>%
+                          filter(Sex %in% c("Men", "Women"), 
+                                 Year %in% c("1985", "2017"), 
+                                 Region == "National", Country == "USA")),
+                          aes(x =Sex, y =BMI,label=Country), 
+                          color = "black") + 
+  # This will add USA labels to the USA points
+  theme_linedraw() +
+  # This will make thebackground of the plot white and the facet labels black
+  theme(legend.position = "none", 
+  # This is useful for removing the legend
+        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
+        # this changes the size and angle of the x axis point labels 
+        axis.text.y = element_text(size = 20), 
+        axis.title.y = element_text(size =15), 
+        axis.title.x = element_text(size =15), 
+        strip.text.x = element_text(size = 15))
+   
+#Simplified difference plot 
+BMI_diff_long$Type <-BMI_diff_long$Type %>%
+  str_replace( pattern = "_difference", replacement = "")
+
+Diff_plot<-BMI_diff_long %>% 
+  filter(Sex %in% c("Men", "Women"), 
+         Type != "National") %>%
+ggplot( aes(x = Type, y = Difference, col = Type)) + 
+  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
+  scale_fill_manual(values=c("dodgerblue", "orchid2")) +
+  facet_grid(~ Sex) +
+  geom_jitter(data=BMI_diff_long %>% 
+    filter(Sex %in% c("Men", "Women"), 
+           Type != "National"), 
+    aes(x =Type, y =Difference), 
+    width = .2, size =2, shape =21, 
+    color = "black", fill = "gray") + 
+  geom_jitter(data=subset(BMI_diff_long %>% 
+    filter(Sex %in% c("Men", "Women"), 
+           Type != "National", 
+           Country == "USA")), 
+    aes(x =Type, y =Difference), 
+    width = .02, size =12, shape =21, 
+    color = "black", fill = "gray") + 
+  # This will add points that are larger for the USA data
+  geom_text(data=subset(BMI_diff_long %>% 
+    filter(Sex %in% c("Men", "Women"),
+           Type != "National"), 
+           Country == "USA"),
+    aes(x =Type, y =Difference,label=Country), 
+    color = "black") + 
+  # This will add USA labels to the USA points
+  theme_linedraw() +
+    # This will make the background of the plot white and the facet labels black
+  theme(legend.position = "none", 
+  # This is useful for removing the legend
+        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
+        # this changes the size and angle of the x axis point labels 
+        axis.text.y = element_text(size = 20), 
+        axis.title.y = element_text(size =15), 
+        axis.title.x = element_text(size =15), 
+        strip.text.x = element_text(size = 15))
+  # this changes the size of x axis labels for the facet
+
+#add labels
+Diff_plot<-Diff_plot + 
+        labs(title = "Change in BMI by region", 
+             x = "", 
+             y = "Change in BMI \n (1985 to 2017)") +
+        theme(title = element_text (size = 12, face = "bold"))
+
+Means_plot <-Means_plot + 
+        labs(title = "Mean BMI over time", 
+             x = "", 
+             y = "Mean BMI") +
+        theme(title = element_text (size = 12, face = "bold"))
+
+
+
+obesity_text<-tibble(Year=c(1985),BMI=c(31),Sex=c("Men"),label=c("Obesity"))
+
+Means_plot <-Means_plot + 
+             geom_text(data = obesity_text,
+                       label=pull(obesity_text,label), 
+                       color = "red", 
+                       aes( fontface ="bold.italic", size = 13))
+
+cowplot::plot_grid(Means_plot, Diff_plot, labels = c("A", "B"))
+```
 
 ## Summary
 
