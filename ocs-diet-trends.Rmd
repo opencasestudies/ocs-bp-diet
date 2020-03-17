@@ -52,7 +52,7 @@ This article evaluated food consumption patterns in 195 countries for 15 differe
 
 > "High intake of sodium ..., low intake of whole grains ..., and low intake of fruits ... were the leading dietary risk factors for deaths and DALYs globally and in many countries." 
 
-This figure from the supplement shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths and illustartes how the top 3 risk factors are often issues for many different countries.
+This figure from the supplement shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths and illustartes how the top 3 risk factors are often issues for many different regions of the world.
 
 ```{r, echo = FALSE, out.width= "700 px"}
 knitr::include_graphics(here("img", "deaths.png"))
@@ -74,7 +74,7 @@ This case study will evaluate the data reported in this article to explore regio
 
 ### Learning Objectives 
 
-In this case study, we’ll walk you through importing data from a pdf, cleaning data, wrangling data, joining data, visualizing the data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The Tidyverse is a library of packages created by the chief scientist at RStudio, Hadley Wickham. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+In this case study, we’ll walk you through importing data from a pdf, cleaning data, wrangling data, joining data, visualizing the data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
 
 
 
@@ -100,8 +100,15 @@ library(tidyr)
 library(ggplot2)
 library(ggpubr)
 library(forcats)
+library(lmerTest)
+library(car)
+library(ggiraph)
+library(ggforce)
+library(viridis)
+
 library(ggrepel)
 library(cowplot)
+
 ```
 
 
@@ -120,6 +127,11 @@ library(cowplot)
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers
 [ggpubr](https://cran.r-project.org/web/packages/ggpubr/index.html){target="_blank"}    | to easily add regression line equations to plots
 [forcats](https://forcats.tidyverse.org/){target="_blank"}    | to change details about factors (categorical variables)
+[lmerTest](https://cran.r-project.org/web/packages/lmerTest/lmerTest.pdf)| to perform linear mixed model testing
+[car](https://cran.r-project.org/web/packages/car/car.pdf)| to perform Levene's Test of Homogeneity of Variances
+[ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
+[ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
+[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color pallette that is easily interpreted by colorblind individuals
 [ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined
 ___
@@ -275,7 +287,7 @@ sep_age_diet_data %>%
 ####
 
 
-OK, so there are global values, as well as values for 185 countries.
+OK, so there are global values, as well as values for 195 countries.
 
 
 Let's take a look at the data when we order it by the mean consumption rate column:
@@ -367,7 +379,7 @@ One way to approach this is to split the string by some pattern that we notice i
 knitr::include_graphics(here::here("img", "Table.png"))
 ```
 
-Only the capitalized form of the word "Diet" apears to be within the table, and is not present in the preceding text (altough "diet" is). All the rows of interest of the table appear to start with the word "Diet".
+Only the capitalized form of the word "Diet" appears to be within the table, and is not present in the preceding text (altough "diet" is). All the rows of interest of the table appear to start with the word "Diet".
 
 ```{r, echo = FALSE, out.width = "700px"}
 knitr::include_graphics(here::here("img", "Diet_on_page3.png"))
@@ -394,7 +406,7 @@ table %>%
 table %>%
   glimpse()
 ```
-RStudio creates really cheatsheets like this one which shows you all the major functions in `stringr`. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
+RStudio creates really helpful cheatsheets like this one which shows you all the major functions in `stringr`. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
 
 ```{r, echo = FALSE, out.width = "700px"}
 knitr::include_graphics(here::here("img", "strings-1_str_split.png"))
@@ -412,7 +424,7 @@ table %<>%
   unlist()
 ```
 
-It's important to realize that the first split will split the text before the first occurance of `Data` as the first value in the output. We could use the `first()` function of the `dplyr` package to look at this value. However, we will suppress the output as this is quite large.
+It's important to realize that the first split will split the text before the first occurance of `Diet` as the first value in the output. We could use the `first()` function of the `dplyr` package to look at this value. However, we will suppress the output as this is quite large.
 
 ```{r, eval = FALSE}
 dplyr::first(table)
@@ -450,7 +462,7 @@ knitr::include_graphics(here::here("img", "end_of_table.png"))
 
 Therefore, we dont need this part of the table or the text before the table if we just want the consumption reccomendations. 
 
-So we will select the 2nd through the second to last of the substrings. Since we have 17 substrings, we will select the 2nd through the 16th. However a better way to do this rather than selecting by index, would be to select phrases that are unique to the text within the table that we want. We will use the `str_subset()` function of `stringr` package to select the table rows with consumption guidlines.  Most of the rows have the phrase" Mean daily consumption", however, there are other phrases for some of the rows, including "Mean daily intake" and "24 h sodium"
+So we will select the 2nd through the second to last of the substrings. Since we have 17 substrings, we will select the 2nd through the 16th. However a better way to do this rather than selecting by index, would be to select phrases that are unique to the text within the table that we want. We will use the `str_subset()` function of `stringr` package to select the table rows with consumption guidlines.  Most of the rows have the phrase "Mean daily consumption", however, there are other phrases for some of the rows, including "Mean daily intake" and "24 h sodium". So we will subset for each of these phrases.
 
 ```{r}
 # one could subset the table like this:
@@ -545,21 +557,36 @@ knitr::include_graphics(here("img", "substring_sep.png"))
 
 We can add an extra space in front of the word `"Mean"` for these particular categories and then try splitting again.
 
-Since we orginally split based on 2 or more spaces, we can just add a space in front of the word "Mean" for all the table strings and then try subsetting again.
+Since we orginally split based on 2 or more spaces, we can just add a space in front of the word "Mean" for all the table strings and then try subsetting again. We can use the `str_which()` function of the `stringr` package to find the index of these particular cases.
+
 ```{r}
 table%>%
 str_which(pattern = "seafood|sugar")
 ```
 
+Here we can see just those strings that match the pattern:
 ```{r}
-table[9] <-stringr::str_replace(pattern = "Mean", 
-                                replacement = " Mean", table[9])
-table[12] <-stringr::str_replace(pattern ="Mean", 
-                                 replacement =" Mean", table[12])
+table[str_which(table, pattern = "seafood|sugar")]
+```
+
+Now we can replace these values within the table object after adding a space in front of "Mean":
+```{r}
+table[str_which(table, 
+      pattern = 
+      "seafood|sugar")]<-str_replace(
+                            string = table[str_which(table, 
+                              pattern = 
+                              "seafood|sugar")], 
+                            pattern = "Mean", 
+                            replacement = " Mean")
+```
+
+And now we can try splitting again by 2 or more spaces:
+```{r}
 table_split <- str_split(table,pattern= "\\s{2,}")
 ```
 
-We could also hust add a space in front of all the values of Mean in the table since the split was peformed based on 2 or more spaces. Thus the other elements in `table` would also be split just as before despite the additional space.
+We could also just add a space in front of all the values of "Mean" in the table since the split was peformed based on 2 or more spaces. Thus the other elements in `table` would also be split just as before despite the additional space.
 
 ```{r, eval = FALSE}
 table<-table %>%
@@ -690,14 +717,29 @@ Also here we have a bit of an example using the `str_count()` function of `strin
 ```{r}
 regextest<-readr::read_file(here("docs", "regEx.txt"))
 regextest
+```
+
+Count the letter t:
+```{r}
 str_count(regextest,"t")#notice this doesn't include the t in the tab
-str_count(regextest,"\t") #search for tab
+```
+
+Count tabs:
+```{r}
 str_count(regextest,"\\t")#search for tab
-# this will not work because r thinks this is part of the code itself
+```
+
+Count parentheses:
+```{r}
+# this would not work because r thinks this is part of the code itself
 #str_count(regextest, ")") 
-# this will not work because r thinks this is part of the code itself
+# this would not work because r thinks this is part of the code itself
 #str_count(regextest, "\)")
 str_count(regextest, "\\)") #this works!
+```
+
+Count the occurance of the astrix:
+```{r}
 # this also does not work
 #str_count(regextest, "*")
 # nor does this
@@ -737,6 +779,8 @@ Then to replace the `NA` values, we can use the `replace_na()` function in the `
 ```{r}
 guidelines %<>% 
   dplyr::mutate(unit = replace_na(unit, "%"))
+
+#now just to show these rows
 guidelines %>%
   filter(unit == "%")
 
@@ -796,9 +840,9 @@ If we had not replaced the `"·"` interpunct values to a period conversion from 
 
 We seem to have lost the word `"beverages"` from the `"sugar-sweetened beverages"` category,  as well as `"fatty acids"` from the `"seafood omega 3 fatty acids"`, and the `"polyunsaturated fatty acids"` categories as the full category name was listed on two lines within the table. We would like to replace these values with the full name. 
 
-To select the `food` column we will show you several options. Only a couple will work well with reassigning the data in that particular variable within `guidelines` without assigning an intermediate data object. We will look using `mutate_at()`, `pull()`, `select()`, and brackets `[,c("variable name")]`.
+To select the `food` column we will show you several options. Only a couple will work well with reassigning the data in that particular variable within `guidelines` without assigning an intermediate data object. We will look using `mutate_at()`, `pull()`, `select()`, and two styles of brackets `[,c("variable name")]` and `[["variablename"]]`.
 
-The bracket option and the select() option will grab a tibble (data frame) version of the food column out of guidelines. However we can't start commands with select for assignments.
+The bracket `[,c("variable name")]` option and the select() option will grab a tibble (data frame) version of the food column out of guidelines. However we can't start commands with select for assignments.
 
 ```{r}
 guidelines[,c("food")] #same output as select
@@ -806,13 +850,15 @@ select(guidelines, "food") # same output as brackets
 ```
 
 
-`pull()` in contrast, will grab the vector version of the food data:
+`pull()` and the bracket `[["variable name"]]` option in contrast, will grab the vector version of the food data:
 
 ```{r}
 pull(guidelines, "food") # get character vector not a tibble
+#bracket option:
+guidelines[["food"]]# get character vector not a tibble
 ```
 
-The pull function can be very useful when combined with other functions (for example you typically want to use a vector with the `str_replace()` function), but just like select, we can't start assignments with `pull()`.
+The `pull()` function can be very useful when combined with other functions (for example you typically want to use a vector with the `str_replace()` function), but just like select, we can't start assignments with `pull()`.
 
 
 This is not possible and will result in an error:
@@ -853,9 +899,10 @@ Why do these commands not reassign the food variable values?
 
 ####
 
-The bracket option is great alternative and allows us to reassign the values within guidelines easily
+The bracket option is great alternative and allows us to reassign the values within guidelines easily. Either of the two styles of brackets: `[,c("variable name")]` and `[["variablename"]]` will work.
 
 ```{r}
+#1st method: `[,c("variable name")]`
 #Replacing "sugar-sweetened" with "sugar-sweetened beverages"
 guidelines[,c("food")] <- 
   str_replace( 
@@ -863,8 +910,9 @@ guidelines[,c("food")] <-
   pattern = "sugar-sweetened", 
   replacement = "sugar-sweetened beverages")
 
+#2nd method: `[["variablename"]]`
 #Replacing "seafood omega-3" with"seafood omega-3 fatty acids"
-guidelines[,c("food")] <- 
+guidelines[["food"]] <- 
   str_replace( 
   pull(guidelines,"food"), 
   pattern = "seafood omega-3", 
@@ -1160,7 +1208,7 @@ bind_cols(dietdata = count(diet_data, unit, food),
 We can account for this by dividing the guideline seafood omega-3 fatty acids data by 1000 to convert it to grams from milligrams.
 
 To do this we will use the `if_else()` function in the `dplyr` package.
-This allows us to specify a condition (in this case if the unit is `"mg"`), as well as values if this is codition is met (true), or if the condition is not met (false). In the following we mutate the values in each of the guideline numeric columns (`lower`, `optimal` and `upper`) one at a time. When we refer to `lower` for example we refer to the values in the column/varaible. So if the condition is not met, then the original value is retained. We will also replace `"mg"` with `"g"` after everything is converted to grams.
+This allows us to specify a condition (in this case if the unit is `"mg"`), as well as values if this is codition is met (true), or if the condition is not met (false). In the following we mutate the values in each of the guideline numeric columns (`lower`, `optimal` and `upper`) one at a time. When we refer to `lower` for example we refer to the values in the column/variable. So if the condition is not met, then the original value is retained. We will also replace `"mg"` with `"g"` after everything is converted to grams.
 
 ```{r}
 guidelines%<>% mutate(lower_optimal = if_else(
@@ -1309,14 +1357,14 @@ Again, we would like to compare the consumption rates of this dietary factors by
 
 Thus lets calcuate values of consuption that are relative to the suggested guidelines.
 
-There are a few ways we could do this. One is to calculate a percentage of consumption based on the mean value for each observed value relative to the optimal value. To do this we will use the `mutate()` function of the `dplyr`package. This will create a new variable called `mean_percent` that will be equal to the division result of the `mean` variable value and the `optimal` variable multiplied by 100 to create a percentage.
+There are a few ways we could do this. One is to calculate a percentage of consumption based on the mean value for each observed value relative to the optimal value. To do this we will use the `mutate()` function of the `dplyr`package. This will create a new variable called `Relative_Percent` that will be equal to the division result of the `mean` variable value and the `optimal` variable multiplied by 100 to create a percentage relative to the optimal amount suggested.
 
 ```{r}
 diet_and_guidelines %<>%
-  mutate(mean_percent = (mean/optimal)*100)
+  mutate(Relative_Percent = (mean/optimal)*100)
 
 all_age_diet_and_guidelines %<>%
- mutate(mean_percent = (mean/optimal)*100)
+ mutate(Relative_Percent = (mean/optimal)*100)
 ```
 
 Another option is to incorperate the range of optimal intakes and the direction that is associated with health risk. If the direction of risk is `high` and the consumption was greater than the `optimal` mean value, than the percentage is calculated based on the `upper_optimal` value, while if the direction of risk is `low` and the consumption is less than the optimal mean value, then the percentage is calculated based on the `lower_optimal` value. We will use the `case_when()` function of the `dplyr` package to do this. This allows us to specify values (indicated on the right side of the `~`symbol) based on specific conditions (indicated on the left side of the `~` symbol). We can specify multiple conditions using the `&` symbol.
@@ -1339,7 +1387,7 @@ diet_and_guidelines %<>%
   direction == "high" & mean>upper_optimal ~  ((mean-upper_optimal)/upper_optimal)*100,
   direction == "high" & mean<=upper_optimal ~ 0,
   direction == "low"  & mean>=lower_optimal ~ 0,
-  direction == "low"  & mean<lower_optimal ~ ((lower_optimal-mean)/lower_optimal)*100))
+  direction == "low"  & mean<lower_optimal ~ ((lower_optimal-mean)/lower_optimal)*-100))
 
 
 all_age_diet_and_guidelines %<>%
@@ -1347,7 +1395,7 @@ all_age_diet_and_guidelines %<>%
   direction == "high" & mean>upper_optimal ~  ((mean-upper_optimal)/upper_optimal)*100,
   direction == "high" & mean<=upper_optimal ~ 0,
   direction == "low"  & mean>=lower_optimal ~ 0,
-  direction == "low"  & mean<lower_optimal ~ ((lower_optimal-mean)/lower_optimal)*100))
+  direction == "low"  & mean<lower_optimal ~ ((lower_optimal-mean)/lower_optimal)*-100))
 
 ```
 
@@ -1381,7 +1429,7 @@ We would like to put toether the different types of percentages of the optimal i
 
 To get our data in long format we can use the `pivot_longer()` function of the `dplyr` package. We will also show how this would be done with the older version of this function, called `gather()`. 
 
-For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, this is the variable names of the columns that we are bringing together. This is equivalent to the `key` aregument in `gather()`. The `values_to` is the name of the column that will contain the values of teh columns we are consolidating. This is equivalent to the `value` aregument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
+For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, this is the variable names of the columns that we are bringing together. This is equivalent to the `key` aregument in `gather()`. The `values_to` is the name of the column that will contain the values of the columns we are consolidating. This is equivalent to the `value` argument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
 
 We would get an identical output from the methods.
 
@@ -1416,7 +1464,7 @@ Let's take a look at the  percent of consumption. Again we will use the base R `
 
 ```{r}
 diet_and_guidelines %>%
-  select(mean_percent)%>%
+  select(Relative_Percent)%>%
   summary()
 ```
 
@@ -1429,7 +1477,7 @@ Let's take a look to see what dietary factors are at the extremes by arranging t
 ```{r}
 
 diet_and_guidelines %>%
-  arrange(-mean_percent)%>%
+  arrange(-Relative_Percent)%>%
   glimpse()
 
 ```
@@ -1471,7 +1519,7 @@ Let's take a look at what is underconsumed:
 ```{r}
 
 diet_and_guidelines %>%
-  arrange(mean_percent)%>%
+  arrange(Relative_Percent)%>%
   glimpse()
 
 #glimpse(filter(diet_and_guidelines, location_name == "Laos", mean>200))
@@ -1562,7 +1610,7 @@ diet_and_guidelines%<>%
   replacement = "\n"))
 
 diet_and_guidelines %>%
-  ggplot(aes(y = mean_percent , x= sex, color = sex))+
+  ggplot(aes(y = Relative_Percent , x= sex, color = sex))+
   geom_boxplot()+
   facet_wrap(~food_to_plot, scales = "free", nrow = 3, strip.position = "right")+
   theme(strip.text.y  =  element_text(size = 8),
@@ -1781,7 +1829,7 @@ We will use the `geom_histogram()` of the `ggplot2`package to create a histogram
 ```{r}
 diet_and_guidelines %>%
   filter(food =="red meat") %>%
-  ggplot(aes(x=mean_percent)) +
+  ggplot(aes(x=Relative_Percent)) +
   geom_histogram() +
   facet_wrap(~ sex) 
 ```
@@ -1828,12 +1876,12 @@ Ok, so we can get our data to look fairly normal, which is good for our $t$-test
 
 ```{r}
 mood.test(pull(filter(diet_and_guidelines,
-                     food == "red meat"), mean_percent),
+                     food == "red meat"), Relative_Percent),
          pull(filter(diet_and_guidelines,
                      food == "red meat"), sex))
 
 var.test(log10(pull(filter(diet_and_guidelines,
-                     food == "red meat"), mean_percent))~
+                     food == "red meat"), Relative_Percent))~
          pull(filter(diet_and_guidelines,
                      food == "red meat"), sex))
 ```
@@ -1845,17 +1893,17 @@ So now we can comparing the consumption of red meat by both genders using both a
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  lm(log10(mean_percent) ~ sex, data=.) %>%
+  lm(log10(Relative_Percent) ~ sex, data=.) %>%
   plot()
 
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  lm(log10(mean_percent) ~ sex, data=.) %>%
+  lm(log10(Relative_Percent) ~ sex, data=.) %>%
   summary()
 
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  t.test(log10(mean_percent) ~ sex, data= ., var.equal = TRUE)
+  t.test(log10(Relative_Percent) ~ sex, data= ., var.equal = TRUE)
 ```
 
 Notice how the $t$ value and the p-value are the same! (Well alomost, the $t$ value is negative in the `t.test()` output because the female group is being used as reference group, while the male group is being used as the reference group in `lm()`). We can fix this using the `fct_inorder()` function of the `forcats` package which is all about factors. This function allows us to order the factor by what appears first. In this case "male" appears first, so now our output will match that of the `lm()` function.
@@ -1867,13 +1915,13 @@ diet_and_guidelines %<>%
 
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  lm(log10(mean_percent) ~ sex, data=.) %>%
+  lm(log10(Relative_Percent) ~ sex, data=.) %>%
   summary()
 
 diet_and_guidelines %>%
   mutate_at(vars(sex), forcats::fct_inorder)%>%
   filter(food == "red meat") %>%
-  t.test(log10(mean_percent) ~ sex, data= ., 
+  t.test(log10(Relative_Percent) ~ sex, data= ., 
          var.equal = TRUE)
 
 ```
@@ -1903,7 +1951,7 @@ Let's plot the data to see what is happening:
 ```{r}
 diet_and_guidelines%>%
   filter(food == "red meat") %>%
-  ggplot(aes(x = sex, y = log10(mean_percent))) + 
+  ggplot(aes(x = sex, y = log10(Relative_Percent))) + 
   geom_boxplot(outlier.shape = NA)+
   geom_jitter(width = .2)+
   stat_summary(fun.y=mean, colour="blue", geom="point", 
@@ -1938,7 +1986,7 @@ glimpse(wide_diet)
 ### Paired $t$-test and linear model with two fixed effects
 Now will perform the paired versions of our tests. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
 
-The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `mean_percent` consumption while keeping the country identity fixed or constant, or in other words controlling / adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate / explanotory variable terms, we would call this a **multiple linear regression**.
+The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `Relative_Percent` consumption while keeping the country identity fixed or constant, or in other words controlling / adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate / explanotory variable terms, we would call this a **multiple linear regression**.
 
 So now our model in words will be: 
 
@@ -1955,7 +2003,7 @@ diet_and_guidelines %<>%
 
 summary(lm(
   log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  mean_percent)) ~
+                  Relative_Percent)) ~
   pull(filter(diet_and_guidelines, food == "red meat"),
                   sex)+
   pull(filter(diet_and_guidelines, food == "red meat"),
@@ -1974,26 +2022,24 @@ In this case we will use the `lmer()` function of the `lmerTest` package. This f
 There are many different definitions for **fixed** and **random** effects and the difference is conceptually complex and context specific. 
 However in simplistic terms, **fixed effects** are generally speaking the variables of interest that we have reason to believe explain or predict the outcome or response variable, while random effects are those that may introduce additional variance in the influence of those predictor variables on the outcome variable. For example, they may provide information about **group or batch structures** within the data.  
 
-In our case, we are interested in the influence of sex on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in otherwords we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (mean_percent consumption when sex is assigned to the zero value - not male) may be different for each country.
+In our case, we are interested in the influence of sex on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in otherwords we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (Relative_Percent consumption when sex is assigned to the zero value - not male) may be different for each country.
 
 
 
 ```{r}
-library(lmerTest)
 
-
-summary(lmer(
+summary(lmerTest::lmer(
   log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  mean_percent)) ~
+                  Relative_Percent)) ~
   pull(filter(diet_and_guidelines, food == "red meat"),
                   sex)+
   (1| pull(filter(diet_and_guidelines, food == "red meat"),
             location_name))))
 
 t.test(log10(pull(filter(wide_diet, food == "red meat"),
-                  mean_percent_Male)), 
+                  Relative_Percent_Male)), 
        log10(pull(filter(wide_diet, food == "red meat"),
-                  mean_percent_Female)),
+                  Relative_Percent_Female)),
        var.equal = TRUE, paired = TRUE)
 ```
 
@@ -2026,14 +2072,14 @@ diet_and_guidelines_long %>%
 
 mood.test(pull(filter(diet_and_guidelines,
               food == "fruits"), 
-              mean_percent),
+              Relative_Percent),
           pull(filter(diet_and_guidelines,
               food == "fruits"), 
               sex))
 
 var.test(log10(pull(filter(diet_and_guidelines,
                food == "fruits"), 
-               mean_percent))~
+               Relative_Percent))~
          pull(filter(diet_and_guidelines,
                food == "fruits"), 
                sex))
@@ -2041,7 +2087,7 @@ var.test(log10(pull(filter(diet_and_guidelines,
 summary(lmer(
   log10(pull(filter(diet_and_guidelines, 
                   food == "fruits"),
-                  mean_percent)) ~ 
+                  Relative_Percent)) ~ 
         pull(filter(diet_and_guidelines, 
                   food == "fruits"),
                   sex)+ 
@@ -2051,17 +2097,17 @@ summary(lmer(
 
 t.test(log10(pull(filter(wide_diet, 
                   food == "fruits"),
-                  mean_percent_Female)), 
+                  Relative_Percent_Female)), 
        log10(pull(filter(wide_diet, 
                   food == "fruits"),
-                  mean_percent_Male)),
+                  Relative_Percent_Male)),
        var.equal = TRUE, paired = TRUE)
 
 
 means<-wide_diet %>% 
    filter(food== "fruits") %>% 
-   summarise(female =mean(log10(mean_percent_Female)),
-             male = mean(log10(mean_percent_Male)))
+   summarise(female =mean(log10(Relative_Percent_Female)),
+             male = mean(log10(Relative_Percent_Male)))
 
 means
 ```
@@ -2131,7 +2177,7 @@ So let's evaluate our assumptions for the groups we are comparing, starting with
 ```{r}
 all_age_diet_and_guidelines %>%
   filter(food =="red meat") %>%
-  ggplot(aes(sample = log10(mean_percent))) +
+  ggplot(aes(sample = log10(Relative_Percent))) +
   facet_wrap(~ age_group_name) +
   geom_qq() +
   geom_qq_line()
@@ -2174,17 +2220,16 @@ The `bartlett.test()` function of the `stats` package can be used to perform the
 bartlett.test(
   log10(pull(filter(all_age_diet_and_guidelines, 
             food == "red meat"),
-            mean_percent)) ~ 
+            Relative_Percent)) ~ 
     pull(filter(all_age_diet_and_guidelines, 
             food == "red meat"),
             age_group_name))  
 
 # Levene's Test of Homogeneity of Variances
-library(car)
-leveneTest(
+car::leveneTest(
   log10(pull(filter(all_age_diet_and_guidelines, 
             food == "red meat"),
-            mean_percent)) ~ 
+            Relative_Percent)) ~ 
     pull(filter(all_age_diet_and_guidelines, 
             food == "red meat"),
             age_group_name)) 
@@ -2193,7 +2238,7 @@ leveneTest(
 fligner.test(
   log10(pull(filter(all_age_diet_and_guidelines, 
             food == "red meat"),
-            mean_percent)) ~ 
+            Relative_Percent)) ~ 
     pull(filter(all_age_diet_and_guidelines, 
             food == "red meat"),
             age_group_name)) 
@@ -2218,14 +2263,14 @@ Now we will use the `aov()` function of the `stats` package. We will be performi
 summary(aov(
   log10(pull(filter(all_age_diet_and_guidelines, 
               food == "red meat"), 
-              mean_percent)) ~ 
+              Relative_Percent)) ~ 
     pull(filter(all_age_diet_and_guidelines, 
               food == "red meat"),
               age_group_name)))
 
 all_age_diet_and_guidelines%>%
   filter(food == "red meat") %>%  
-  lm(log10(mean_percent) ~age_group_name, data= .) %>%
+  lm(log10(Relative_Percent) ~age_group_name, data= .) %>%
   summary()
 
 ```
@@ -2239,13 +2284,13 @@ We also see that the degrees of freedom for the $F$-statistic is 14. This makes 
 
 So in our case: 
 $$df = 15 -1$$
-The difference here is that with the `lm()` test we also get information about how the individual age groups influence `mean_percent` consumption of `fruits`. Notice that if we look at all the age groups:
+The difference here is that with the `lm()` test we also get information about how the individual age groups influence `Relative_Percent` consumption of `fruits`. Notice that if we look at all the age groups:
 ```{r}
 all_age_diet_and_guidelines %>% 
   distinct(age_group_name)
 
 ```
-We can see that our `lm()` results are missing one of the age groups, the `25 to 29` age group. That is because this is the reference group and the coefficients indicate the slope or difference in `mean_percent` consupmtion rates for each listed age group compared to the reference group. 
+We can see that our `lm()` results are missing one of the age groups, the `25 to 29` age group. That is because this is the reference group and the coefficients indicate the slope or difference in `Relative_Percent` consupmtion rates for each listed age group compared to the reference group. 
 
 Now let's account for the paired `location_name`  structure within our data as well. To do this we add this as another term in the `aov()` and the `lm()` formula with a `+`. Note that now that we have two categorical independent variables / covariates/ predictors.  In this case we are comparing both the age groups and the location groups. The `anova()` function of the `stats` package will be used with the `lm()` function print the resulting $F$-statistic, but not the statistics for each of the levels of the age groups and location groups. This function does not actually directly perform ANOVA like the `aov()` function, but instead prints a variance table using a `lm()` or `glm()` object.
 
@@ -2256,7 +2301,7 @@ Now let's account for the paired `location_name`  structure within our data as w
 summary(aov(
   log10(pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"), 
-                mean_percent)) ~ 
+                Relative_Percent)) ~ 
         pull(filter(all_age_diet_and_guidelines, 
                 food == "red meat"),
                 age_group_name)+ 
@@ -2305,7 +2350,7 @@ We could instead perform a similar analysis as we did for the two group analysis
 summary(aov(
 log10(pull(filter(all_age_diet_and_guidelines, 
               food == "red meat"), 
-              mean_percent)) ~ 
+              Relative_Percent)) ~ 
       pull(filter(all_age_diet_and_guidelines, 
               food == "red meat"),
               age_group_name)+ 
@@ -2316,7 +2361,7 @@ log10(pull(filter(all_age_diet_and_guidelines,
 anova(lmer(
 log10(pull(filter(all_age_diet_and_guidelines, 
               food == "red meat"),
-              mean_percent)) ~
+              Relative_Percent)) ~
       pull(filter(all_age_diet_and_guidelines, 
               food == "red meat"),
               age_group_name)+
@@ -2366,22 +2411,23 @@ First we will filter our data for only the data associated with red meat, and th
 
 all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  ggplot(aes(y = mean_percent , x= age_group_name, col = sex))+
+  ggplot(aes(y = Relative_Percent , x= age_group_name, col = sex))+
   geom_boxplot()+
-  geom_jitter(aes(x =sex, y =mean_percent), 
+  geom_jitter(aes(x =sex, y =Relative_Percent), 
                 width = .2, size =2, shape =21)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  theme(axis.text.x = element_text(angle = 70, hjust = 1),
+        legend.position = "none")
 ```
 Ok, this is pretty good, but we can do better.
 
-Let's try specifically looking at the countries that overconsumed red meat. We can look at these countries by filtering our data where `mean_percent` was greater than 100%. Now we will overlap the jitter points and the boxplot using the `position_jitterdoge()` as the position in `geom_pont()`. In order to not obscure our boxplots, we can use the argument `alpha` to make our jitter points more transparent.
+Let's try specifically looking at the countries that overconsumed red meat. We can look at these countries by filtering our data where `Relative_Percent` was greater than 100%. Now we will overlap the jitter points and the boxplot using the `position_jitterdoge()` as the position in `geom_pont()`. In order to not obscure our boxplots, we can use the argument `alpha` to make our jitter points more transparent.
 
 ```{r}
 
 all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  filter(mean_percent >100) %>%
-  ggplot(aes(y = mean_percent,
+  filter(Relative_Percent >100) %>%
+  ggplot(aes(y = Relative_Percent,
              x= age_group_name, fill = sex))+
   geom_point(position=position_jitterdodge(), 
              aes(col = sex),
@@ -2395,20 +2441,25 @@ What are the countries that have such high consumption rates?
 ```{r}
 all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  filter(mean_percent >1000)
+  filter(Relative_Percent >1000)
 ```
  
  Looks like the males in Laos and Timor_Leste have the highest consumption.
  
  
-Now let's plot just the populations that eat less than the optimal amount by filtering for `mean_percent` < 100%.
+ 
+ 
+ 
+ 
+ 
+Now let's plot just the populations that eat less than the optimal amount by filtering for `Relative_Percent` < 100%.
  
 ```{r}
 
 all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  filter(mean_percent <100) %>%
-  ggplot(aes(y = mean_percent , x= age_group_name, fill = sex))+
+  filter(Relative_Percent <100) %>%
+  ggplot(aes(y = Relative_Percent , x= age_group_name, fill = sex))+
   geom_point(position=position_jitterdodge(), 
              aes(col = sex), 
              alpha = 3/10)+
@@ -2424,12 +2475,12 @@ Notice that we are creating a plot object before we use the `geom_point_interact
 We are also rendering the plot with the `girafe()` function of the `ggiraph` package.
 
 
-```{r}
-library(ggiraph)
+```{r, eval = FALSE}
+
 g<-all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  filter(mean_percent <100) %>%
-  ggplot(aes(y = mean_percent , 
+  filter(Relative_Percent <100) %>%
+  ggplot(aes(y = Relative_Percent , 
              x= age_group_name, 
              fill = sex))+
   geom_boxplot(outlier.shape=NA)+
@@ -2452,9 +2503,12 @@ Cool!
 
 From this plot we can see the countries with populations that do well by not overconsuming red meat, (as overconsumtion is associated with health risk). We see that different countries greatly vary, we can see that overall younger populations appear to consume more red meat, and men appear to consume red meat.
 
-Let's do the same thing for the overconsuming countries. We can also take this one step further to show all the points for the same country when we hover over one data point by using the `data_id` argument of the `geom_point_interactive()` function. We can also add links to wikipedia pages for these countries using the `onclick` argument.
+Let's do the same thing for the overconsuming countries. We can also take this one step further to show all the points for the same country when we hover over one data point by using the `data_id` argument of the `geom_point_interactive()` function. 
 
-```{r}
+
+We can also add links to wikipedia pages for these countries using the `onclick` argument. See this [link](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html){target="_blank"} for more information on unsing the `ggirpah` package.
+
+```{r, eval = TRUE}
 
 all_age_diet_and_guidelines %<>% 
   mutate(link = sprintf("window.open(\"%s%s\")",
@@ -2462,13 +2516,14 @@ all_age_diet_and_guidelines %<>%
 
 g<-all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  filter(mean_percent >100) %>%
-  ggplot(aes(y = mean_percent , 
+  filter(Relative_Percent >100) %>%
+  ggplot(aes(y = Relative_Percent , 
              x= age_group_name, 
              fill = sex))+
   geom_boxplot(outlier.shape=NA)+
   facet_wrap(~sex)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  expand_limits(y = 99) + theme(legend.position = "none")
   
  g <- g + geom_point_interactive(aes(
                 color = sex, 
@@ -2478,56 +2533,90 @@ g<-all_age_diet_and_guidelines %>%
                 size = 2,
                 position=position_jitterdodge(), 
                 alpha = 3/10) 
+g<-g + geom_point_interactive(data =
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat")%>%
+  filter(Relative_Percent >100) %>%
+  filter(location_name == "United States"),
+   aes(fill = location_name, 
+       tooltip = location_name,
+       data_id = location_name,
+       onclick = link),
+       size = 4,
+       position=position_jitterdodge(),
+       alpha = 5/10, color = "black")
  
 girafe(code = print(g))
 
 ```
 
 
-
 ```{r}
 
 all_age_diet_and_guidelines %>%
   filter(food == "red meat")%>%
-  filter(mean_percent>100) %>%
-  ggplot(aes(y = mean_percent , x= age_group_name))+
+  ggplot(aes(y = Relative_Percent , x= sex, fill = age_group_name))+
   geom_boxplot()+
-  geom_jitter(aes(x =sex, y =mean_percent), 
-                width = .2, size =2, shape =21)+
+  #geom_point(pch = 21, position = position_jitterdodge()) +
   theme(axis.text.x = element_text(angle = 70, hjust = 1))
 
 ```
 
+### United Sates Data
+
+Let's take a look at the US data:
 
 ```{r}
 
-all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  ggplot(aes(y = mean_percent , x= sex, fill = age_group_name))+
-  geom_point(pch = 21, position = position_jitterdodge()) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+diet_and_guidelines %>%
+ filter(location_name == "United States") %>%
+  count(opt_achieved)
+```
+
+Ok, it looks like optimal consumption levels were achieved for only 10% of the dietary factors.
+
+Let's visualize this with a plot:
+```{r}
+diet_and_guidelines %>%
+  filter(location_name == "United States") %>%
+  ggplot(aes(opt_achieved ))+
+  geom_bar(position = "dodge")
+```
+
+Let's look at Females and Males separately:
+```{r}
+diet_and_guidelines%>%
+  filter(sex == "Female", 
+         location_name == "United States") %>%
+count(opt_achieved, food)
+
+diet_and_guidelines%>%
+  filter(sex == "Male", 
+         location_name == "United States") %>%
+count(opt_achieved, food)
 
 ```
 
+Ok, so females are a bit better about not overconsuming sodium in the United States relative to males.
+
+Both groups are doing well with avoiding transfatty acids.
+
+Let's visualize this:
 
 ```{r}
-
- g<-all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  ggplot(aes(y = mean_percent , x= sex, fill = age_group_name))+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-
- my_gg <-g +geom_point_interactive(aes(tooltip = location_name), size = 2) 
-girafe(code = print(my_gg) )
-
+diet_and_guidelines %>%
+  filter(location_name == "United States") %>%
+  ggplot(aes(opt_achieved , fill= sex))+
+  geom_bar(position = "dodge")
 ```
+  
 
 ```{r}
 
 
 all_age_diet_and_guidelines %>%
 filter(location_name == "United States") %>%
-ggplot(aes(y = percent_over_under , x= food, fill = sex))+
+ggplot(aes(y = Relative_Percent , x= food, fill = sex))+
   theme(axis.text.x = element_text(angle = 70, hjust = 1))+
   facet_wrap(~direction, scales = "free") +
   geom_boxplot()+
@@ -2535,20 +2624,422 @@ ggplot(aes(y = percent_over_under , x= food, fill = sex))+
              alpha = 3/10)
 
 ```
+Ok, so we can  indeed see that overall consumption of sodium and trans fatty acids is pretty close to optimal. So thats great. However, Both males and females are overconsuming processed meat, red meat, and sugar-sweetened beverages. On the otherhand both genders are not getting adequate intake of all the other dietary factors for optimal health. The population in the United states has especially poor intake of polyunsaturated fats. it also looks like in most cases females are getting less of the dietary factors that pose health risks when underconsumed, with the exception of fruits.
 
+
+How about if we look at age groups. First let's see how often the optimal amount was achieved:
+
+```{r}
+all_age_diet_and_guidelines %>%
+ filter(location_name == "United States", 
+        direction == "high") %>%
+  count(opt_achieved)
+
+all_age_diet_and_guidelines%>%
+  filter(sex == "Male", 
+         location_name == "United States") %>%
+count(opt_achieved, food)
+
+all_age_diet_and_guidelines%>%
+  filter(sex == "Female", 
+         location_name == "United States") %>%
+count( opt_achieved, food)
+```
 
 ```{r}
 
 all_age_diet_and_guidelines %>%
-filter(location_name == "United States") %>%
-ggplot(aes(y = percent_over_under , x= food, fill = age_group_name))+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
-  facet_wrap(~direction, scales = "free") +
+  filter(location_name == "United States") %>%
+  ggplot()+
+  geom_bar( postion = "dodge", aes(x =food, fill = opt_achieved))+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))#facet_wrap_paginate(~food,strip.position = "right")+theme(legend.position = "none")
+
+
+count(all_age_diet_and_guidelines %>%
+  filter(location_name == "United States"), 
+      food, 
+      opt_achieved) %>% 
+  ggplot(aes(x = food, 
+             fill = opt_achieved, 
+             y = n )) + 
+  geom_bar(position="dodge", 
+           stat="identity")+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+
+```{r}
+
+all_age_diet_and_guidelines %>%
+filter(location_name == "United States", direction == "high") %>%
+ggplot(aes(y = Relative_Percent , x= food, fill = age_group_name))+
+  facet_wrap(~food, scales = "free") +
   geom_boxplot()+
  geom_point(position=position_jitterdodge(), 
              alpha = 3/10)
 
+#  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+
 ```
+Let's add gender to this :
+
+```{r}
+
+pd <- position_dodge(0.5)
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+             direction == "high") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = sex)) +
+  facet_wrap_paginate(facets = .~food, nrow = 3, scales = "free", strip.position = "right")+
+  geom_point(position = pd,  
+             aes(fill = age_group_name), 
+                alpha = 6/10,
+                  col = "black", 
+#only shape 21-24 allow for fill and outline colors
+                shape = 23,
+                 size = 3)+
+#change the colors from rainbow to purple/green/yellow
+  scale_fill_viridis(discrete = TRUE)+
+  expand_limits(y=100)+
+  theme_linedraw()
+```
+
+Now let's select only the foods that the optimum intake was not achieved:
+
+```{r, eval = FALSE}
+
+pd <- position_dodge(0.5)
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+             direction == "high",
+            food %in% c(pull(filter(
+              all_age_diet_and_guidelines, 
+              opt_achieved == "No"),food)))%>%
+  ggplot(aes(y = Relative_Percent, 
+             x = sex)) +
+  facet_wrap_paginate(facets = .~food, ncol = 2, scales = "free", strip.position = "right")+
+  geom_point(position = pd,  
+             aes(fill = age_group_name), 
+                alpha = 6/10,
+                  col = "black", 
+#only shape 21-24 allow for fill and outline colors
+                shape = 23,
+                 size = 3)+
+#change the colors from rainbow to purple/green/yellow
+  scale_fill_viridis(discrete = TRUE)+
+  expand_limits(y=100)+
+  theme_linedraw()
+```
+
+
+
+
+Now let's take a look at the foods that were underconsumed:
+
+
+```{r, fig.height=9}
+pd <- position_dodge(0.4)
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+             direction == "low", 
+          opt_achieved == "No") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = sex)) +
+    facet_wrap_paginate(facets = .~food, ncol = 3, strip.position = "right")+
+
+  geom_point(position = pd,  
+             aes(fill = age_group_name), 
+                alpha = 6/10,
+                  col = "black", 
+#only shape 21-24 allow for fill and outline colors
+                shape = 23, size = 3)+
+#this changes the colors from rainbow to pupule/yellow/green
+  scale_fill_viridis(discrete = TRUE)+
+  ylim(c(0,100))+
+  theme_linedraw()
+```
+
+```{r}
+
+pd <- position_dodge(0.5)
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+             direction == "low", 
+          opt_achieved == "No") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = food)) +
+  geom_point(position = pd,  
+             aes(fill = age_group_name), 
+                alpha = 6/10,
+                  col = "black", 
+#only shape 21-24 allow for fill and outline colors
+                shape = 23, size = 3)+
+#this changes the colors from rainbow to pupule/yellow/green
+  scale_fill_viridis(discrete = TRUE)+
+  ylim(c(0,100))+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+
+
+```{r, fig.height=6}
+
+pd <- position_dodge(0.5)
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+             direction == "low", 
+          opt_achieved == "No") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = food)) +
+facet_wrap(~ sex, nrow = 2)+
+  geom_point(position = pd,  
+             aes(fill = age_group_name), 
+                alpha = 6/10,
+                  col = "black", 
+#only shape 21-24 allow for fill and outline colors
+                shape = 23, size = 3)+
+#this changes the colors from rainbow to pupule/yellow/green
+  scale_fill_viridis(discrete = TRUE)+
+  ylim(c(0,100))+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+
+
+
+Interesting, it looks like like both the younger adults and the elderly are genearlly doing worse than middle aged individuals in getting adequate intakes of these dietary factors.
+
+
+We could also display the data differently with the x axis as `age_group_name` and the color as `sex`:
+
+```{r,fig.height=8}
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States", 
+           direction == "low",
+        opt_achieved == "No") %>%
+  ggplot(aes(y = Relative_Percent , 
+             x = age_group_name,
+           fill = sex)) +
+
+  geom_point( data =all_age_diet_and_guidelines %>%
+  filter(location_name == "United States", 
+           direction == "low",
+        opt_achieved == "No"),
+             alpha = 3/10, size = 3,
+aes(y = Relative_Percent , 
+             x = age_group_name,
+           fill = sex),
+col = "black", shape = 23)+
+  ylim(c(0,100))+
+  
+  facet_wrap_paginate(facets = .~food, ncol = 2, scales = "free")+
+  theme_linedraw()+
+  scale_fill_viridis(discrete = TRUE)+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+```
+
+
+
+
+Now let's focus on the really problematic foods:
+
+```{r, fig.height=9}
+
+#get list of foods with issues
+trouble_foods <-all_age_diet_and_guidelines %>%
+  filter(location_name == "United States", 
+          opt_achieved == "No",
+           Relative_Percent >100 | Relative_Percent <=25) %>%
+  select(food)%>%
+ distinct()
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+         food  %in% pull(trouble_foods, food)) %>%
+  ggplot(aes(y = Relative_Percent , 
+             x = age_group_name,
+           fill = sex)) +
+  geom_point(
+             alpha = 3/10, size = 3,
+aes(y = Relative_Percent , 
+             x = age_group_name,
+           fill = sex),
+col = "black", shape = 23)+
+  expand_limits(y=0)+
+  
+  
+  facet_wrap_paginate(facets = .~food, nrow = 3, scales = "free")+
+  scale_fill_viridis(discrete = TRUE)+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+```
+
+
+It would be nice to scale the underconsumed foods with a max of 100%
+
+```{r}
+
+#get list of foods with issues
+trouble_foods <-all_age_diet_and_guidelines %>%
+  filter(location_name == "United States", 
+          opt_achieved == "No",
+           Relative_Percent >100 | Relative_Percent <=25) %>%
+  select(food)%>%
+ distinct()
+
+all_age_diet_and_guidelines %>%
+  filter(location_name == "United States",
+         food  %in% pull(trouble_foods, food)) %>%
+  ggplot(aes(y = Relative_Percent , 
+             x = age_group_name,
+           fill = sex)) +
+  geom_point(
+             alpha = 3/10, size = 3,
+aes(y = Relative_Percent , 
+             x = age_group_name,
+           fill = sex),
+col = "black", shape = 23)+
+  expand_limits(y=0)+
+  
+  
+  facet_wrap_paginate(facets = .~food, nrow = 3, scales = "free")+
+  scale_fill_viridis(discrete = TRUE)+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+
+
+
+
+```
+
+
+
+```{r, eval=FALSE}
+
+# simplified national means plot
+Means_plot<-all_age_diet_and_guidelines %>% 
+  filter(Sex %in% c("Men", "Women"), 
+         Year %in% c("1985", "2017"), 
+         Region == "National") %>%
+ggplot(aes(x = Sex, y = BMI)) + 
+  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
+ scale_fill_manual(values=c("dodgerblue", "orchid2")) +
+  facet_grid(~ Year) + 
+  geom_hline(yintercept=30, linetype="dashed", color = "red", size =1) + 
+  geom_jitter(data=BMI_long %>%
+                filter(Sex %in% c("Men", "Women"), 
+                       Year %in% c("1985", "2017"), 
+                       Region == "National"),
+                aes(x =Sex, y =BMI), 
+                width = .2, size =2, shape =21, 
+                color = "black", fill = "gray") +
+  geom_jitter(data=subset(BMI_long %>%
+                            filter(Sex %in% c("Men", "Women"), 
+                                   Year %in% c("1985", "2017"), 
+                                   Region == "National", 
+                                   Country == "USA")), 
+                             aes(x =Sex, y =BMI), 
+                             width = .02, size =12, shape =21, 
+                             color = "black", fill = "gray") + 
+  # This will add points that are larger for the USA data
+  geom_text(data=subset(BMI_long%>%
+                          filter(Sex %in% c("Men", "Women"), 
+                                 Year %in% c("1985", "2017"), 
+                                 Region == "National", Country == "USA")),
+                          aes(x =Sex, y =BMI,label=Country), 
+                          color = "black") + 
+  # This will add USA labels to the USA points
+  theme_linedraw() +
+  # This will make thebackground of the plot white and the facet labels black
+  theme(legend.position = "none", 
+  # This is useful for removing the legend
+        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
+        # this changes the size and angle of the x axis point labels 
+        axis.text.y = element_text(size = 20), 
+        axis.title.y = element_text(size =15), 
+        axis.title.x = element_text(size =15), 
+        strip.text.x = element_text(size = 15))
+   
+#Simplified difference plot 
+BMI_diff_long$Type <-BMI_diff_long$Type %>%
+  str_replace( pattern = "_difference", replacement = "")
+
+Diff_plot<-BMI_diff_long %>% 
+  filter(Sex %in% c("Men", "Women"), 
+         Type != "National") %>%
+ggplot( aes(x = Type, y = Difference, col = Type)) + 
+  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
+  scale_fill_manual(values=c("dodgerblue", "orchid2")) +
+  facet_grid(~ Sex) +
+  geom_jitter(data=BMI_diff_long %>% 
+    filter(Sex %in% c("Men", "Women"), 
+           Type != "National"), 
+    aes(x =Type, y =Difference), 
+    width = .2, size =2, shape =21, 
+    color = "black", fill = "gray") + 
+  geom_jitter(data=subset(BMI_diff_long %>% 
+    filter(Sex %in% c("Men", "Women"), 
+           Type != "National", 
+           Country == "USA")), 
+    aes(x =Type, y =Difference), 
+    width = .02, size =12, shape =21, 
+    color = "black", fill = "gray") + 
+  # This will add points that are larger for the USA data
+  geom_text(data=subset(BMI_diff_long %>% 
+    filter(Sex %in% c("Men", "Women"),
+           Type != "National"), 
+           Country == "USA"),
+    aes(x =Type, y =Difference,label=Country), 
+    color = "black") + 
+  # This will add USA labels to the USA points
+  theme_linedraw() +
+    # This will make the background of the plot white and the facet labels black
+  theme(legend.position = "none", 
+  # This is useful for removing the legend
+        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
+        # this changes the size and angle of the x axis point labels 
+        axis.text.y = element_text(size = 20), 
+        axis.title.y = element_text(size =15), 
+        axis.title.x = element_text(size =15), 
+        strip.text.x = element_text(size = 15))
+  # this changes the size of x axis labels for the facet
+
+#add labels
+Diff_plot<-Diff_plot + 
+        labs(title = "Change in BMI by region", 
+             x = "", 
+             y = "Change in BMI \n (1985 to 2017)") +
+        theme(title = element_text (size = 12, face = "bold"))
+
+Means_plot <-Means_plot + 
+        labs(title = "Mean BMI over time", 
+             x = "", 
+             y = "Mean BMI") +
+        theme(title = element_text (size = 12, face = "bold"))
+
+
+
+obesity_text<-tibble(Year=c(1985),BMI=c(31),Sex=c("Men"),label=c("Obesity"))
+
+Means_plot <-Means_plot + 
+             geom_text(data = obesity_text,
+                       label=pull(obesity_text,label), 
+                       color = "red", 
+                       aes( fontface ="bold.italic", size = 13))
+
+cowplot::plot_grid(Means_plot, Diff_plot, labels = c("A", "B"))
+```
+
 
 ```{r, eval=FALSE}
 
