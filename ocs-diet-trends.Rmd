@@ -14,7 +14,17 @@ output:
     toc: yes
   word_document:
     toc: yes
+
 ---
+<style>
+#TOC {
+  background: url("https://opencasestudies.github.io/img/logo.jpg");
+  background-size: contain;
+  padding-top: 240px !important;
+  background-repeat: no-repeat;
+}
+</style>
+
 
 
 
@@ -1399,7 +1409,7 @@ all_age_diet_and_guidelines %<>%
 
 ```
 
-Yet another option is to create a binary outcome of if optimal consumption was achieved or not.
+Another option is to create a binary outcome of if optimal consumption was achieved or not.
 
 ```{r}
 
@@ -1597,6 +1607,7 @@ diet_and_guidelines %>%
   ggplot(aes(opt_achieved , col= sex))+
   geom_bar()
 ```
+
 Continuing with `ggplot2` we will now create a different plot - this time we will create a series of boxplots. We will use the `facet_wrap()` function of ggplot2 to allow us to create many different plots simultaneously. In this case we can look at boxplots for the different dietary factors colored by sex. The `scales` argument when set to `"free"` means that each of the sequentual plot created by the facet can have a differnt scale for the y axis, otherwise, by default they are constrained to the same scale.
 
 
@@ -2400,6 +2411,8 @@ We can see that sex, location, and age group all influence consumption of red me
 
 ## Data Visualization
 
+
+### Red Meat
 Now that we have statisitcally analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
 
 
@@ -2445,11 +2458,7 @@ all_age_diet_and_guidelines %>%
 ```
  
  Looks like the males in Laos and Timor_Leste have the highest consumption.
- 
- 
- 
- 
- 
+
  
  
 Now let's plot just the populations that eat less than the optimal amount by filtering for `Relative_Percent` < 100%.
@@ -2508,7 +2517,7 @@ Let's do the same thing for the overconsuming countries. We can also take this o
 
 We can also add links to wikipedia pages for these countries using the `onclick` argument. See this [link](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html){target="_blank"} for more information on unsing the `ggirpah` package.
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 
 all_age_diet_and_guidelines %<>% 
   mutate(link = sprintf("window.open(\"%s%s\")",
@@ -2550,6 +2559,7 @@ girafe(code = print(g))
 
 ```
 
+How do different age groups look:
 
 ```{r}
 
@@ -2561,6 +2571,380 @@ all_age_diet_and_guidelines %>%
   theme(axis.text.x = element_text(angle = 70, hjust = 1))
 
 ```
+
+
+### Overall trends
+
+We would like to get a genearl sense of how consumption of these dietary factors differs around the world and we would like to know how the US compares to other countries. 
+
+Before we do this let's change the labels of the foods so that they will fit more easily
+
+```{r}
+diet_and_guidelines[["food"]] <- str_replace_all(
+  diet_and_guidelines[["food"]], 
+  "sugar-sweetened beverages", 
+  "sugar-sweetened\nbeverages")
+diet_and_guidelines[["food"]] <- str_replace_all(
+  diet_and_guidelines[["food"]],
+  "seafood omega-3 fatty acids", 
+  "seafood omega-3\nfatty acids")
+diet_and_guidelines[["food"]] <- str_replace_all(
+  diet_and_guidelines[["food"]], 
+  "polyunsaturated fatty acids", 
+  "polyunsaturated\nfatty acids")
+
+diet_and_guidelines %>%
+  select(food) %>% 
+  distinct()
+
+all_age_diet_and_guidelines[["food"]] <- str_replace_all(
+all_age_diet_and_guidelines[["food"]], 
+"sugar-sweetened beverages", 
+"sugar-sweetened\nbeverages")
+
+all_age_diet_and_guidelines[["food"]] <- str_replace_all(
+  all_age_diet_and_guidelines[["food"]], 
+  "seafood omega-3 fatty acids", 
+  "seafood omega-3\nfatty acids")
+
+all_age_diet_and_guidelines[["food"]] <- str_replace_all(
+  all_age_diet_and_guidelines[["food"]], 
+  "polyunsaturated fatty acids", 
+  "polyunsaturated\nfatty acids")
+
+all_age_diet_and_guidelines %>%
+  select(food) %>% 
+  distinct()
+```
+
+#### Underconsumed foods
+To choose the colors for our plot we can use show_col to preview color options from the viridis palette
+```{r}
+scales:: show_col(viridis_pal()(3))
+```
+
+```{r}
+Under<-diet_and_guidelines %>%
+  filter(direction == "low") %>%
+  filter(Relative_Percent <110) %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = food, 
+             color = sex)) +
+  geom_point(position=position_jitterdodge(), 
+             color = "dark grey",
+             alpha = 3/10,
+    # this specifies how to separate the points:
+             aes(fill = sex))+ 
+  geom_boxplot(outlier.shape = NA, 
+               color = "black" ,
+               aes(fill = sex))+
+
+    scale_fill_manual(values = 
+                        c("#481567FF", 
+                          "#1F968BFF"))+
+      geom_hline(yintercept=100, 
+               linetype="dashed",
+               color = "red", 
+               size =1) +
+   scale_y_continuous(breaks=c(0,25,50, 75, 100), labels =c(0,25, 50, 75, "100% \n optimal amount") )
+
+Under
+
+#create a larger black point for the US data
+Under<-Under + geom_point(data = diet_and_guidelines %>%
+                    filter(direction == "low",
+         location_name == "United States"),
+             position=position_jitterdodge(
+               jitter.width=0.01,
+               dodge.width=0.7), 
+               color = "black",
+               size = 3,
+             aes(fill = sex, shape = location_name))
+
+#create a smaller yellow point on top for the US data
+ 
+Under<-Under + geom_point(data = diet_and_guidelines %>%
+                    filter(direction == "low",
+                       location_name == "United States"),
+             position=position_jitterdodge(
+               jitter.width=0.01,
+               dodge.width=0.7), 
+               color = "#FFDF00",
+               size = 2,
+             aes(fill = sex, 
+                shape = location_name))+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "none")+
+labs(title=" Global consumption of foods associated\n with health risk when underconsumed",
+        x ="", y = "Percent consumption relative \n to guidelines")
+
+Under
+```
+
+#### Overconsumed foods
+
+```{r}
+
+obesity_text<-tibble(Relative_Percent=c(350),food=c("sugar-sweetened beverages"),label=c("Optimal"))
+Over<-diet_and_guidelines %>%
+  #filter(food != "sugar-sweetened beverages") %>%
+  filter(direction == "high") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = food, 
+             color = sex)) +
+  geom_point(position=position_jitterdodge(), 
+             color = "dark grey",
+             alpha = 5/10,
+             aes(fill = sex))+ # this specifies how to separate the points
+  geom_boxplot(outlier.shape = NA, 
+               color = "black" , 
+               aes(fill = sex))+
+    scale_fill_manual(values = 
+                        c("#481567FF", 
+                          "#1F968BFF"))+
+    geom_hline(yintercept=100, 
+               linetype="dashed",
+               color = "red", 
+               size =1) +
+
+
+  # geom_text(data = obesity_text,
+  #                      label=pull(obesity_text,label), 
+  #                      color = "red", 
+  #                      aes(fontface ="bold.italic", 
+  #                          size = 4))+ 
+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "bottom")+
+ scale_y_continuous(breaks=c(0,100,500, 1000, 2000), labels =c(0,"100% \n optimal amount",500, 1000, 2000) )+
+    ggforce::facet_zoom(ylim = c(0, 1300))
+
+Over
+
+
+
+
+
+
+```
+
+```{r}
+
+Over<-Over + geom_point(data = diet_and_guidelines %>%
+              filter(direction == "high",
+               location_name == "United States"),
+             position=position_jitterdodge(
+               jitter.width=0.01,
+               dodge.width=0.7), 
+               color = "black",
+               size = 3,
+              aes(fill = sex, 
+                 shape = location_name))
+
+Over <-Over + geom_point(data = diet_and_guidelines %>%
+              filter(direction == "high",
+                 location_name == "United States"),
+              position=position_jitterdodge(
+                  jitter.width=0.01,
+                  dodge.width=0.7),
+                  color = "#FFDF00",
+                  size = 2,
+              aes(fill = sex, 
+                 shape = location_name))+
+
+labs(title=" Global consumption of associated with\n health risk when overconsumed",
+        x ="", y = "Percent consumption relative \n to guidelines")
+
+Over
+```
+
+Let's put the plots together:
+
+```{r, fig.height=12}
+cowplot::plot_grid(Over, Under, labels = c("A", "B"), ncol = 1)
+
+```
+#### Overconsumed by Age
+```{r,fig.height=6}
+ 
+Over_age<-all_age_diet_and_guidelines %>%
+  filter(food != "trans fatty acids") %>%
+  filter(direction == "high") %>%
+  filter(Relative_Percent<4000)%>%
+  ggplot(aes(y = Relative_Percent, 
+             x = food, 
+             fill = age_group_name)) +
+  geom_boxplot(outlier.shape = NA, 
+               color = "black" , 
+            aes(fill = age_group_name))+
+    geom_hline(yintercept=100, 
+               linetype="dashed", 
+               color = "red", 
+               size =1) +
+   theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "bottom")+
+  facet_wrap_paginate(~food, scales = "free")+
+ # ggforce::facet_zoom(ylim = c(0, 500))+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "none")+
+labs(title=" Global consumption of foods associated\n with health risk when overconsumed",
+        x ="", y = "Percent consumption relative \n to guidelines")
+  
+Over_age
+```
+
+
+hmmm these look a bit funny becuase the outliers in the boxplots for the foods besides sugar-sweetened beverages are making the range much larger than the boxplot themselves. We can calculate the values for the boxplots our selves to deal with this:
+
+```{r}
+calc_stat <- function(x) {
+  coef <- 1.5
+  n <- sum(!is.na(x))
+  # calculate quantiles
+  stats <- quantile(x, probs = c(0.1, 0.25, 0.5, 0.75, 0.9))
+  names(stats) <- c("ymin", "lower", "middle", "upper", "ymax")
+  return(stats)
+}
+```
+
+Then we can use it in our plot code:
+
+This is thanks to this:
+https://stackoverflow.com/questions/25124895/no-outliers-in-ggplot-boxplot-with-facet-wrap
+
+```{r}
+
+map_df(all_age_diet_and_guidelines %>% select(Relative_Percent), calc_stat)
+
+Over_age<-all_age_diet_and_guidelines %>%
+  filter(food != "trans fatty acids") %>%
+  filter(direction == "high") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = age_group_name, 
+             fill = age_group_name)) +
+  # here we will replace geom_boxplot()
+  stat_summary(fun.data = calc_stat, 
+                geom="boxplot",
+                outlier.shape = NA, 
+               color = "black" , 
+            aes(fill = age_group_name))+
+    geom_hline(yintercept=100, 
+               linetype="dashed", 
+               color = "red", 
+               size =1) +
+   theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "bottom")+
+  facet_wrap_paginate(~food, scales = "free")+
+ # ggforce::facet_zoom(ylim = c(0, 500))+
+  theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "bottom")+
+labs(title=" Global consumption of foods associated\n with health risk when overconsumed",
+        x ="", y = "Percent consumption relative \n to guidelines")+
+  guides(colour = guide_legend(nrow = 4, byrow = T))
+  
+Over_age
+```
+`
+
+
+```{r}
+collapsed <-diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+notcollapsed <-all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+range(collapsed$mean)
+range(notcollapsed$mean)
+notcollapsed %>% arrange(desc(mean))
+collapsed %>% arrange(desc(mean))
+#hmmm the lowest value for malaysia is 106...
+notcollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
+# but the collapsed value is much much lower...
+collapsed%>% filter(location_name == "Malaysia")
+
+#this is also fishy:
+sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
+diet_and_guidelines%>%filter(food == "sodium", location_name== "Malaysia") %>% glimpse()
+sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%glimpse()
+```
+
+
+
+#### Underconsumed by Age
+```{r}
+Under_age<-all_age_diet_and_guidelines %>%
+  filter(direction == "low") %>%
+  filter(Relative_Percent <150)%>%
+  ggplot(aes(y = Relative_Percent, 
+             x = age_group_name, 
+             fill = age_group_name)) +
+  geom_boxplot(outlier.shape = NA, 
+               color = "black" , 
+            aes(fill = age_group_name))+
+    geom_hline(yintercept=100, 
+               linetype="dashed", 
+               color = "red", 
+               size =1) +
+theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1), 
+        legend.title = element_blank(),
+        legend.position = "none")+
+labs(title=" Global consumption of foods associated\n with health risk when underconsumed",
+        x ="", y = "Percent consumption relative \n to guidelines")+
+  facet_wrap_paginate(~food, nrow = 4, scales = "fixed")
+#facet_wrap_paginate(.~ food, ncol = 2, scales = "free")
+
+Under_age
+
+# library(grid)
+# gt = ggplot_gtable(ggplot_build(Under_age))
+# gt$widths[4] = 4*gt$widths[4]
+# grid.draw(gt)
+```
+
+
+Now let's put all the plots together:
+
+```{r, fig.height=16, fig.width = 12}
+#cowplot::plot_grid(Over, Under, Over_age, Under_age, labels = c("A", "B","C", "D"), ncol = 2)
+
+cowplot::plot_grid(Over, Over_age, Under, Under_age, labels = c("A", "B","C", "D"), ncol = 2,rel_widths = c(2, 1))
+# library(patchwork)
+# Over+ Over_age + Under + Under_age + 
+#   plot_layout(widths = c(4, 2))
+
+```
+
+
+```{r}
+collapsed <-diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+notcollapsed <-all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+range(collapsed$mean)
+range(notcollapsed$mean)
+notcollapsed %>% arrange(desc(mean))
+collapsed %>% arrange(desc(mean))
+#hmmm the lowest value for malaysia is 106...
+notcollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
+# but the collapsed value is much much lower...
+collapsed%>% filter(location_name == "Malaysia")
+```
+
+
+
+
 
 ### United Sates Data
 
@@ -2924,238 +3308,6 @@ col = "black", shape = 23)+
 
 
 
-```{r, eval=FALSE}
-
-# simplified national means plot
-Means_plot<-all_age_diet_and_guidelines %>% 
-  filter(Sex %in% c("Men", "Women"), 
-         Year %in% c("1985", "2017"), 
-         Region == "National") %>%
-ggplot(aes(x = Sex, y = BMI)) + 
-  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
- scale_fill_manual(values=c("dodgerblue", "orchid2")) +
-  facet_grid(~ Year) + 
-  geom_hline(yintercept=30, linetype="dashed", color = "red", size =1) + 
-  geom_jitter(data=BMI_long %>%
-                filter(Sex %in% c("Men", "Women"), 
-                       Year %in% c("1985", "2017"), 
-                       Region == "National"),
-                aes(x =Sex, y =BMI), 
-                width = .2, size =2, shape =21, 
-                color = "black", fill = "gray") +
-  geom_jitter(data=subset(BMI_long %>%
-                            filter(Sex %in% c("Men", "Women"), 
-                                   Year %in% c("1985", "2017"), 
-                                   Region == "National", 
-                                   Country == "USA")), 
-                             aes(x =Sex, y =BMI), 
-                             width = .02, size =12, shape =21, 
-                             color = "black", fill = "gray") + 
-  # This will add points that are larger for the USA data
-  geom_text(data=subset(BMI_long%>%
-                          filter(Sex %in% c("Men", "Women"), 
-                                 Year %in% c("1985", "2017"), 
-                                 Region == "National", Country == "USA")),
-                          aes(x =Sex, y =BMI,label=Country), 
-                          color = "black") + 
-  # This will add USA labels to the USA points
-  theme_linedraw() +
-  # This will make thebackground of the plot white and the facet labels black
-  theme(legend.position = "none", 
-  # This is useful for removing the legend
-        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
-        # this changes the size and angle of the x axis point labels 
-        axis.text.y = element_text(size = 20), 
-        axis.title.y = element_text(size =15), 
-        axis.title.x = element_text(size =15), 
-        strip.text.x = element_text(size = 15))
-   
-#Simplified difference plot 
-BMI_diff_long$Type <-BMI_diff_long$Type %>%
-  str_replace( pattern = "_difference", replacement = "")
-
-Diff_plot<-BMI_diff_long %>% 
-  filter(Sex %in% c("Men", "Women"), 
-         Type != "National") %>%
-ggplot( aes(x = Type, y = Difference, col = Type)) + 
-  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
-  scale_fill_manual(values=c("dodgerblue", "orchid2")) +
-  facet_grid(~ Sex) +
-  geom_jitter(data=BMI_diff_long %>% 
-    filter(Sex %in% c("Men", "Women"), 
-           Type != "National"), 
-    aes(x =Type, y =Difference), 
-    width = .2, size =2, shape =21, 
-    color = "black", fill = "gray") + 
-  geom_jitter(data=subset(BMI_diff_long %>% 
-    filter(Sex %in% c("Men", "Women"), 
-           Type != "National", 
-           Country == "USA")), 
-    aes(x =Type, y =Difference), 
-    width = .02, size =12, shape =21, 
-    color = "black", fill = "gray") + 
-  # This will add points that are larger for the USA data
-  geom_text(data=subset(BMI_diff_long %>% 
-    filter(Sex %in% c("Men", "Women"),
-           Type != "National"), 
-           Country == "USA"),
-    aes(x =Type, y =Difference,label=Country), 
-    color = "black") + 
-  # This will add USA labels to the USA points
-  theme_linedraw() +
-    # This will make the background of the plot white and the facet labels black
-  theme(legend.position = "none", 
-  # This is useful for removing the legend
-        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
-        # this changes the size and angle of the x axis point labels 
-        axis.text.y = element_text(size = 20), 
-        axis.title.y = element_text(size =15), 
-        axis.title.x = element_text(size =15), 
-        strip.text.x = element_text(size = 15))
-  # this changes the size of x axis labels for the facet
-
-#add labels
-Diff_plot<-Diff_plot + 
-        labs(title = "Change in BMI by region", 
-             x = "", 
-             y = "Change in BMI \n (1985 to 2017)") +
-        theme(title = element_text (size = 12, face = "bold"))
-
-Means_plot <-Means_plot + 
-        labs(title = "Mean BMI over time", 
-             x = "", 
-             y = "Mean BMI") +
-        theme(title = element_text (size = 12, face = "bold"))
-
-
-
-obesity_text<-tibble(Year=c(1985),BMI=c(31),Sex=c("Men"),label=c("Obesity"))
-
-Means_plot <-Means_plot + 
-             geom_text(data = obesity_text,
-                       label=pull(obesity_text,label), 
-                       color = "red", 
-                       aes( fontface ="bold.italic", size = 13))
-
-cowplot::plot_grid(Means_plot, Diff_plot, labels = c("A", "B"))
-```
-
-
-```{r, eval=FALSE}
-
-# simplified national means plot
-Means_plot<-BMI_long %>% 
-  filter(Sex %in% c("Men", "Women"), 
-         Year %in% c("1985", "2017"), 
-         Region == "National") %>%
-ggplot(aes(x = Sex, y = BMI)) + 
-  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
- scale_fill_manual(values=c("dodgerblue", "orchid2")) +
-  facet_grid(~ Year) + 
-  geom_hline(yintercept=30, linetype="dashed", color = "red", size =1) + 
-  geom_jitter(data=BMI_long %>%
-                filter(Sex %in% c("Men", "Women"), 
-                       Year %in% c("1985", "2017"), 
-                       Region == "National"),
-                aes(x =Sex, y =BMI), 
-                width = .2, size =2, shape =21, 
-                color = "black", fill = "gray") +
-  geom_jitter(data=subset(BMI_long %>%
-                            filter(Sex %in% c("Men", "Women"), 
-                                   Year %in% c("1985", "2017"), 
-                                   Region == "National", 
-                                   Country == "USA")), 
-                             aes(x =Sex, y =BMI), 
-                             width = .02, size =12, shape =21, 
-                             color = "black", fill = "gray") + 
-  # This will add points that are larger for the USA data
-  geom_text(data=subset(BMI_long%>%
-                          filter(Sex %in% c("Men", "Women"), 
-                                 Year %in% c("1985", "2017"), 
-                                 Region == "National", Country == "USA")),
-                          aes(x =Sex, y =BMI,label=Country), 
-                          color = "black") + 
-  # This will add USA labels to the USA points
-  theme_linedraw() +
-  # This will make thebackground of the plot white and the facet labels black
-  theme(legend.position = "none", 
-  # This is useful for removing the legend
-        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
-        # this changes the size and angle of the x axis point labels 
-        axis.text.y = element_text(size = 20), 
-        axis.title.y = element_text(size =15), 
-        axis.title.x = element_text(size =15), 
-        strip.text.x = element_text(size = 15))
-   
-#Simplified difference plot 
-BMI_diff_long$Type <-BMI_diff_long$Type %>%
-  str_replace( pattern = "_difference", replacement = "")
-
-Diff_plot<-BMI_diff_long %>% 
-  filter(Sex %in% c("Men", "Women"), 
-         Type != "National") %>%
-ggplot( aes(x = Type, y = Difference, col = Type)) + 
-  geom_boxplot(outlier.shape = NA, color = "black" , aes(fill = Sex)) + 
-  scale_fill_manual(values=c("dodgerblue", "orchid2")) +
-  facet_grid(~ Sex) +
-  geom_jitter(data=BMI_diff_long %>% 
-    filter(Sex %in% c("Men", "Women"), 
-           Type != "National"), 
-    aes(x =Type, y =Difference), 
-    width = .2, size =2, shape =21, 
-    color = "black", fill = "gray") + 
-  geom_jitter(data=subset(BMI_diff_long %>% 
-    filter(Sex %in% c("Men", "Women"), 
-           Type != "National", 
-           Country == "USA")), 
-    aes(x =Type, y =Difference), 
-    width = .02, size =12, shape =21, 
-    color = "black", fill = "gray") + 
-  # This will add points that are larger for the USA data
-  geom_text(data=subset(BMI_diff_long %>% 
-    filter(Sex %in% c("Men", "Women"),
-           Type != "National"), 
-           Country == "USA"),
-    aes(x =Type, y =Difference,label=Country), 
-    color = "black") + 
-  # This will add USA labels to the USA points
-  theme_linedraw() +
-    # This will make the background of the plot white and the facet labels black
-  theme(legend.position = "none", 
-  # This is useful for removing the legend
-        axis.text.x = element_text(size = 15,angle = 30, vjust = 0.5), 
-        # this changes the size and angle of the x axis point labels 
-        axis.text.y = element_text(size = 20), 
-        axis.title.y = element_text(size =15), 
-        axis.title.x = element_text(size =15), 
-        strip.text.x = element_text(size = 15))
-  # this changes the size of x axis labels for the facet
-
-#add labels
-Diff_plot<-Diff_plot + 
-        labs(title = "Change in BMI by region", 
-             x = "", 
-             y = "Change in BMI \n (1985 to 2017)") +
-        theme(title = element_text (size = 12, face = "bold"))
-
-Means_plot <-Means_plot + 
-        labs(title = "Mean BMI over time", 
-             x = "", 
-             y = "Mean BMI") +
-        theme(title = element_text (size = 12, face = "bold"))
-
-
-
-obesity_text<-tibble(Year=c(1985),BMI=c(31),Sex=c("Men"),label=c("Obesity"))
-
-Means_plot <-Means_plot + 
-             geom_text(data = obesity_text,
-                       label=pull(obesity_text,label), 
-                       color = "red", 
-                       aes( fontface ="bold.italic", size = 13))
-
-cowplot::plot_grid(Means_plot, Diff_plot, labels = c("A", "B"))
-```
 
 ## Summary
 
