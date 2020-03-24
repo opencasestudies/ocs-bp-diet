@@ -38,7 +38,7 @@ library(knitr)
 
 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
@@ -2623,7 +2623,7 @@ To choose the colors for our plot we can use show_col to preview color options f
 scales:: show_col(viridis_pal()(3))
 ```
 
-```{r}
+```{r, fig.width = 16, fig.height=10}
 Under<-diet_and_guidelines %>%
   filter(direction == "low") %>%
   filter(Relative_Percent <110) %>%
@@ -2632,11 +2632,13 @@ Under<-diet_and_guidelines %>%
              color = sex)) +
   geom_point(position=position_jitterdodge(), 
              color = "dark grey",
-             alpha = 3/10,
+             alpha = 7/10,
+             size = 7,
     # this specifies how to separate the points:
              aes(fill = sex))+ 
   geom_boxplot(outlier.shape = NA, 
                color = "black" ,
+               lwd=2.5,
                aes(fill = sex))+
 
     scale_fill_manual(values = 
@@ -2645,7 +2647,7 @@ Under<-diet_and_guidelines %>%
       geom_hline(yintercept=100, 
                linetype="dashed",
                color = "red", 
-               size =1) +
+               size =3) +
    scale_y_continuous(breaks=c(0,25,50, 75, 100), labels =c(0,25, 50, 75, "100% \n optimal amount") )
 
 Under
@@ -2658,7 +2660,7 @@ Under<-Under + geom_point(data = diet_and_guidelines %>%
                jitter.width=0.01,
                dodge.width=0.7), 
                color = "black",
-               size = 3,
+               size = 11,
              aes(fill = sex, shape = location_name))
 
 #create a smaller yellow point on top for the US data
@@ -2670,15 +2672,21 @@ Under<-Under + geom_point(data = diet_and_guidelines %>%
                jitter.width=0.01,
                dodge.width=0.7), 
                color = "#FFDF00",
-               size = 2,
+               size = 7,
              aes(fill = sex, 
                 shape = location_name))+
   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1), 
+      theme(plot.title = element_text(size = 40, hjust = 0.5),
+        axis.text.x = element_text(angle = 70, 
+                                   hjust = 1,
+                                   size = 32), 
         legend.title = element_blank(),
-        legend.position = "none")+
-labs(title=" Global consumption of foods associated\n with health risk when underconsumed",
+        # this is useful for removing the legend
+        legend.position = "none",
+       axis.text.y = element_text(size = 35), 
+        axis.title.y = element_text(size = 35), 
+        axis.title.x = element_text(size =25))+
+labs(title="\n Global consumption of foods associated with\nhealth risk when underconsumed",
         x ="", y = "Percent consumption relative \n to guidelines")
 
 Under
@@ -2686,9 +2694,9 @@ Under
 
 #### Overconsumed foods
 
-```{r}
+```{r, fig.height=8, fig.width=7}
 
-obesity_text<-tibble(Relative_Percent=c(350),food=c("sugar-sweetened beverages"),label=c("Optimal"))
+#obesity_text<-tibble(Relative_Percent=c(350),food=c("sugar-sweetened beverages"),label=c("Optimal"))
 Over<-diet_and_guidelines %>%
   #filter(food != "sugar-sweetened beverages") %>%
   filter(direction == "high") %>%
@@ -2697,10 +2705,12 @@ Over<-diet_and_guidelines %>%
              color = sex)) +
   geom_point(position=position_jitterdodge(), 
              color = "dark grey",
-             alpha = 5/10,
-             aes(fill = sex))+ # this specifies how to separate the points
+             alpha = 7/10,
+             aes(fill = sex),
+             size = 7)+ # this specifies how to separate the points
   geom_boxplot(outlier.shape = NA, 
                color = "black" , 
+               lwd=2.5,
                aes(fill = sex))+
     scale_fill_manual(values = 
                         c("#481567FF", 
@@ -2708,21 +2718,18 @@ Over<-diet_and_guidelines %>%
     geom_hline(yintercept=100, 
                linetype="dashed",
                color = "red", 
-               size =1) +
-
-
-  # geom_text(data = obesity_text,
-  #                      label=pull(obesity_text,label), 
-  #                      color = "red", 
-  #                      aes(fontface ="bold.italic", 
-  #                          size = 4))+ 
-
+               size =3) +
   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1), 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1), 
         legend.title = element_blank(),
         legend.position = "bottom")+
- scale_y_continuous(breaks=c(0,100,500, 1000, 2000), labels =c(0,"100% \n optimal amount",500, 1000, 2000) )+
-    ggforce::facet_zoom(ylim = c(0, 1300))
+ scale_y_continuous(breaks=c(0,100,500, 1000, 2000), labels =c(0,"100% thresh.",500, 1000, 2000) )+
+    ggforce::facet_zoom(ylim = c(0, 1300))+
+  guides(guide_legend(
+    direction = "horizontal",
+  #  label.hjust = 0.5,
+    label.vjust = .5))
+#, override.aes = list(size=15))
 
 Over
 
@@ -2733,7 +2740,7 @@ Over
 
 ```
 
-```{r}
+```{r, fig.width=17, fig.height=14}
 
 Over<-Over + geom_point(data = diet_and_guidelines %>%
               filter(direction == "high",
@@ -2742,7 +2749,7 @@ Over<-Over + geom_point(data = diet_and_guidelines %>%
                jitter.width=0.01,
                dodge.width=0.7), 
                color = "black",
-               size = 3,
+               size = 11,
               aes(fill = sex, 
                  shape = location_name))
 
@@ -2753,11 +2760,27 @@ Over <-Over + geom_point(data = diet_and_guidelines %>%
                   jitter.width=0.01,
                   dodge.width=0.7),
                   color = "#FFDF00",
-                  size = 2,
+                  size = 7,
               aes(fill = sex, 
                  shape = location_name))+
+    theme(plot.title = element_text(size = 40, hjust = 0.5),
+        axis.text.x = element_text(angle = 60, 
+                                   hjust = 1,
+                                   size = 32), 
+        legend.title = element_blank(),
+        # this is useful for removing the legend
+        legend.position = "bottom",
+       axis.text.y = element_text(size = 35), 
+        axis.title.y = element_text(size = 35), 
+        axis.title.x = element_text(size =25),
+       legend.text = element_text(size = 30, vjust = .01),
+         legend.key.height = unit(2, "cm"),
+       legend.key.width  = unit(2, "cm"))+
+  expand_limits(y=-10)+
 
-labs(title=" Global consumption of associated with\n health risk when overconsumed",
+ # guides(fill = guide_legend(override.aes = list(size=20)))+
+
+labs(title=" Global consumption of foods associated with\n health risk when overconsumed",
         x ="", y = "Percent consumption relative \n to guidelines")
 
 Over
@@ -2765,19 +2788,19 @@ Over
 
 Let's put the plots together:
 
-```{r, fig.height=12}
+```{r, fig.height=22, fig.width=16}
 cowplot::plot_grid(Over, Under, labels = c("A", "B"), ncol = 1)
 
 ```
 #### Overconsumed by Age
-```{r,fig.height=6}
+```{r,fig.height=9}
  
 Over_age<-all_age_diet_and_guidelines %>%
-  filter(food != "trans fatty acids") %>%
+  #filter(food != "trans fatty acids") %>%
   filter(direction == "high") %>%
   filter(Relative_Percent<4000)%>%
   ggplot(aes(y = Relative_Percent, 
-             x = food, 
+             x = age_group_name, 
              fill = age_group_name)) +
   geom_boxplot(outlier.shape = NA, 
                color = "black" , 
@@ -2785,20 +2808,18 @@ Over_age<-all_age_diet_and_guidelines %>%
     geom_hline(yintercept=100, 
                linetype="dashed", 
                color = "red", 
-               size =1) +
-   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1), 
-        legend.title = element_blank(),
-        legend.position = "bottom")+
+               size =2) +
   facet_wrap_paginate(~food, scales = "free")+
  # ggforce::facet_zoom(ylim = c(0, 500))+
   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, 
+  theme(axis.text.x = element_text(angle = 60, 
                                    hjust = 1), 
         legend.title = element_blank(),
         legend.position = "none")+
-labs(title=" Global consumption of foods associated\n with health risk when overconsumed",
-        x ="", y = "Percent consumption relative \n to guidelines")
+labs(title=" Global consumption of foods\n associated with\n health risk when overconsumed",
+        x ="", y = "Percent consumption relative \n to guidelines")+
+    facet_wrap_paginate(~food, ncol = 2, scales = "free")+
+  scale_fill_viridis(discrete = TRUE)
   
 Over_age
 ```
@@ -2822,13 +2843,64 @@ Then we can use it in our plot code:
 This is thanks to this:
 https://stackoverflow.com/questions/25124895/no-outliers-in-ggplot-boxplot-with-facet-wrap
 
-```{r}
-
+```{r, fig.width = 6, fig.height=15}
 map_df(all_age_diet_and_guidelines %>% select(Relative_Percent), calc_stat)
 
 Over_age<-all_age_diet_and_guidelines %>%
-  filter(food != "trans fatty acids") %>%
+  #filter(food != "trans fatty acids") %>%
   filter(direction == "high") %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = age_group_name, 
+             fill = age_group_name)) +
+  # here we will replace geom_boxplot()
+  stat_summary(fun.data = calc_stat, 
+                geom="boxplot",
+                outlier.shape = NA, 
+               color = "black" ,
+               lwd=1.1,
+            aes(fill = age_group_name))+
+    geom_hline(yintercept=100, 
+               linetype="dashed", 
+               color = "red", 
+               size =2) +
+   theme_linedraw()+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1), 
+        legend.title = element_blank())+
+  facet_wrap_paginate(~food, scales = "free")+
+ # ggforce::facet_zoom(ylim = c(0, 500))+
+  theme_linedraw()+
+    theme(plot.title =  element_text(size = 30, hjust = 0.5),
+          axis.text.x = element_blank(),
+      #axis.text.x = element_text(angle = 70, 
+       #                            hjust = 1,
+        #                           size = 18), 
+        legend.title = element_blank(),
+        # this is useful for removing the legend
+        legend.position = "bottom",
+        axis.text.y = element_text(size = 28), 
+        axis.title.y = element_text(size = 30), 
+        axis.title.x = element_text(size =30), 
+        strip.text.x = element_text(size = 25, face = "bold"),
+       legend.text = element_text(size = 25),
+               legend.key.height = unit(1.2, "cm"),
+       legend.key.width  = unit(1.2, "cm"))+
+labs(title=" Global consumption across age\n  of foods associated\n with health risk when overconsumed",
+        x ="Age", y = "\nPercent consumption relative \n to guidelines")+
+  #guides(fill = guide_legend(nrow = 4, byrow = TRUE))+
+    guides(fill = guide_legend(nrow= 5, byrow = TRUE))+
+
+      facet_wrap_paginate(~food, ncol = 2, scales = "free")+
+  scale_fill_viridis(discrete = TRUE)
+
+#guide_legend(nrow = 4)
+  
+Over_age
+```
+
+
+```{r, fig.width=6, fig.height=15}
+Under_age<-all_age_diet_and_guidelines %>%
+  filter(direction == "low") %>%
   ggplot(aes(y = Relative_Percent, 
              x = age_group_name, 
              fill = age_group_name)) +
@@ -2841,25 +2913,34 @@ Over_age<-all_age_diet_and_guidelines %>%
     geom_hline(yintercept=100, 
                linetype="dashed", 
                color = "red", 
-               size =1) +
+               size =2) +
    theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1), 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1), 
         legend.title = element_blank(),
         legend.position = "bottom")+
-  facet_wrap_paginate(~food, scales = "free")+
+  facet_wrap_paginate(~food, nrow = 5, scales = "free")+
  # ggforce::facet_zoom(ylim = c(0, 500))+
   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1), 
-        legend.title = element_blank(),
-        legend.position = "bottom")+
-labs(title=" Global consumption of foods associated\n with health risk when overconsumed",
-        x ="", y = "Percent consumption relative \n to guidelines")+
-  guides(colour = guide_legend(nrow = 4, byrow = T))
+    theme(plot.title =  element_text(size = 30, hjust = 0.5),
+            axis.text.x = element_blank(),
+      # axis.text.x = element_text(angle = 70, 
+      #                              hjust = 1,
+      #                              size = 18), 
+         legend.title = element_blank(),
+        # this is useful for removing the legend
+        legend.position = "none",
+        axis.text.y = element_text(size = 28), 
+        axis.title.y = element_text(size = 30), 
+        axis.title.x = element_text(size =25), 
+        strip.text.x = element_text(size = 25, face = "bold")) +
+  # this changes the size of x axis labels for the facet+
+labs(title="\n Global consumption across age\n  of foods associated\n with health risk when underconsumed",
+        x ="", y = "\nPercent consumption relative \n to guidelines")+
+  scale_fill_viridis(discrete = TRUE)
+
   
-Over_age
+Under_age
 ```
-`
 
 
 ```{r}
@@ -2883,7 +2964,7 @@ sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%gl
 
 
 #### Underconsumed by Age
-```{r}
+```{r, fig.height=13, fig.width=8, eval = FALSE}
 Under_age<-all_age_diet_and_guidelines %>%
   filter(direction == "low") %>%
   filter(Relative_Percent <150)%>%
@@ -2896,15 +2977,25 @@ Under_age<-all_age_diet_and_guidelines %>%
     geom_hline(yintercept=100, 
                linetype="dashed", 
                color = "red", 
-               size =1) +
+               size =2) +
 theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1), 
+# this changes the size and angle of the x axis point labels 
+  theme(plot.title = element_text(size = 20, hjust = 0.5),
+        axis.text.x = element_text(angle = 60, 
+                                   hjust = 1,
+                                   size = 18), 
         legend.title = element_blank(),
-        legend.position = "none")+
-labs(title=" Global consumption of foods associated\n with health risk when underconsumed",
-        x ="", y = "Percent consumption relative \n to guidelines")+
-  facet_wrap_paginate(~food, nrow = 4, scales = "fixed")
+        # this is useful for removing the legend
+        legend.position = "none",
+       axis.text.y = element_text(size = 20), 
+        axis.title.y = element_text(size = 20), 
+        axis.title.x = element_text(size =15), 
+        strip.text.x = element_text(size = 25))+
+  # this changes the size of x axis labels for the facet+
+labs(title=" Global consumption across age\n  of foods associated\n with health risk when underconsumed",
+        x ="", y = "\nPercent consumption relative \n to guidelines")+
+  
+  
 #facet_wrap_paginate(.~ food, ncol = 2, scales = "free")
 
 Under_age
@@ -2918,13 +3009,40 @@ Under_age
 
 Now let's put all the plots together:
 
-```{r, fig.height=16, fig.width = 12}
+```{r, fig.height=32, fig.width = 32}
+#{r, fig.height=38, fig.width = 32}
 #cowplot::plot_grid(Over, Under, Over_age, Under_age, labels = c("A", "B","C", "D"), ncol = 2)
+title <- ggdraw() + 
+  draw_label(
+    " Global trends in the consumption of foods",
+    fontface = 'bold',
+    hjust = 0.5
+  ) +theme(
+    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 7)
+  )
 
-cowplot::plot_grid(Over, Over_age, Under, Under_age, labels = c("A", "B","C", "D"), ncol = 2,rel_widths = c(2, 1))
+cowplot::plot_grid("title",Over, Over_age, Under, Under_age, ncol = 2, rel_widths = c(2.5, 1))
+#cowplot::plot_grid(Over, Over_age, Under, Under_age, ncol = 2, rel_widths = c(2.35, 1), rel_heights = c(1.25, 1, 1.25,1))
+
 # library(patchwork)
 # Over+ Over_age + Under + Under_age + 
 #   plot_layout(widths = c(4, 2))
+
+# get legend
+# legend_p1 <- get_legend(bp1)
+# legend_p2 <- get_legend(bp)
+# 
+# # remove legend
+# bp1_wl <- bp1 + theme(legend.position='none')
+# bp_wl <- bp + theme(legend.position='none')
+# 
+# # plot
+# plot_grid(plot_grid(bp1_wl, bp_wl, align="h", rel_widths = c(1,0.675)),
+#           plot_grid(legend_p1,legend_p2, rel_widths = c(1,0.675)), nrow=2, rel_heights = c(1,0.4))
+
+
 
 ```
 
