@@ -38,16 +38,18 @@ library(knitr)
 
 
 
+#### {.outline }
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
+
 
 ## {.disclaimer_block}
 
 **Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given dataset, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
 
 ## Motivation
-An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} was recently published in the lancet journal that evaluates global dietary trends and the relationship of these dietary factors with mortality and fertility.
+An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} was recently published in the lancet journal that evaluates global dietary trends and the relationship of dietary factors with mortality and fertility.
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "thepaper.png"))
@@ -2676,7 +2678,7 @@ Under<-Under + geom_point(data = diet_and_guidelines %>%
              aes(fill = sex, 
                 shape = location_name))+
   theme_linedraw()+
-      theme(plot.title = element_text(size = 40, hjust = 0.5),
+      theme(plot.title = element_text(size = 40, hjust = 0.5, face = "bold"),
         axis.text.x = element_text(angle = 70, 
                                    hjust = 1,
                                    size = 32), 
@@ -2763,7 +2765,7 @@ Over <-Over + geom_point(data = diet_and_guidelines %>%
                   size = 7,
               aes(fill = sex, 
                  shape = location_name))+
-    theme(plot.title = element_text(size = 40, hjust = 0.5),
+    theme(plot.title = element_text(size = 40, hjust = 0.5, face = "bold"),
         axis.text.x = element_text(angle = 60, 
                                    hjust = 1,
                                    size = 32), 
@@ -2869,7 +2871,7 @@ Over_age<-all_age_diet_and_guidelines %>%
   facet_wrap_paginate(~food, scales = "free")+
  # ggforce::facet_zoom(ylim = c(0, 500))+
   theme_linedraw()+
-    theme(plot.title =  element_text(size = 30, hjust = 0.5),
+    theme(plot.title =  element_text(size = 30, hjust = 0.5, face = "bold"),
           axis.text.x = element_blank(),
       #axis.text.x = element_text(angle = 70, 
        #                            hjust = 1,
@@ -2921,7 +2923,7 @@ Under_age<-all_age_diet_and_guidelines %>%
   facet_wrap_paginate(~food, nrow = 5, scales = "free")+
  # ggforce::facet_zoom(ylim = c(0, 500))+
   theme_linedraw()+
-    theme(plot.title =  element_text(size = 30, hjust = 0.5),
+    theme(plot.title =  element_text(size = 30, hjust = 0.5, face = "bold"),
             axis.text.x = element_blank(),
       # axis.text.x = element_text(angle = 70, 
       #                              hjust = 1,
@@ -2980,7 +2982,7 @@ Under_age<-all_age_diet_and_guidelines %>%
                size =2) +
 theme_linedraw()+
 # this changes the size and angle of the x axis point labels 
-  theme(plot.title = element_text(size = 20, hjust = 0.5),
+  theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold"),
         axis.text.x = element_text(angle = 60, 
                                    hjust = 1,
                                    size = 18), 
@@ -3009,41 +3011,11 @@ Under_age
 
 Now let's put all the plots together:
 
-```{r, fig.height=32, fig.width = 32}
+```{r, fig.height=33, fig.width = 34}
 #{r, fig.height=38, fig.width = 32}
 #cowplot::plot_grid(Over, Under, Over_age, Under_age, labels = c("A", "B","C", "D"), ncol = 2)
-title <- ggdraw() + 
-  draw_label(
-    " Global trends in the consumption of foods",
-    fontface = 'bold',
-    hjust = 0.5
-  ) +theme(
-    # add margin on the left of the drawing canvas,
-    # so title is aligned with left edge of first plot
-    plot.margin = margin(0, 0, 0, 7)
-  )
 
-cowplot::plot_grid("title",Over, Over_age, Under, Under_age, ncol = 2, rel_widths = c(2.5, 1))
-#cowplot::plot_grid(Over, Over_age, Under, Under_age, ncol = 2, rel_widths = c(2.35, 1), rel_heights = c(1.25, 1, 1.25,1))
-
-# library(patchwork)
-# Over+ Over_age + Under + Under_age + 
-#   plot_layout(widths = c(4, 2))
-
-# get legend
-# legend_p1 <- get_legend(bp1)
-# legend_p2 <- get_legend(bp)
-# 
-# # remove legend
-# bp1_wl <- bp1 + theme(legend.position='none')
-# bp_wl <- bp + theme(legend.position='none')
-# 
-# # plot
-# plot_grid(plot_grid(bp1_wl, bp_wl, align="h", rel_widths = c(1,0.675)),
-#           plot_grid(legend_p1,legend_p2, rel_widths = c(1,0.675)), nrow=2, rel_heights = c(1,0.4))
-
-
-
+cowplot::plot_grid(Over, Over_age, Under, Under_age, ncol = 2, rel_widths = c(2.5, 1))
 ```
 
 
