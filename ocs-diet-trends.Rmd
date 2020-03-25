@@ -3401,20 +3401,96 @@ col = "black", shape = 23)+
 
 ## Summary
 
+We have evaluated average consumption estimates of 15 dietary factors with probably non-communicable disease (NCD) risk from 195 different countries around the world. To do so we imported data from a pdf using the `pdftools` package, as well as data from two csv files using readr. We used `tidyverse` packages such as `dplyr`, `stringr`, and `tidy` to clean and join the data from the pdf with the csv files. 
 
-Next, we want to propose our idea for a second case study in the same focus area of: 
+We learned that Regression is a powerful and flexible statistical tool that simplifies or estimates the relationships between variables using a mathematical model. We learned about the utility of the regression to compare groups, look for associations between variables, and to predict outcomes based on multiple predicitor or explanatory variables. We then compared this to other popular tests like the t-test and the ANOVA. We learned that these tests are actually equivalent to specialized types of regressions.
 
-- Question: How do diets (consumption of various major foods and nutrients) differ by regions (e.g. low-income countries vs not) and by gender around the world? What is the impact of the different diets on mortality or life expectancy?
-- Description: We would take some of the main results from this paper (https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(19)30041-8/fulltext){target="_blank"} and highlight them in a case study (similar to before not trying to reproduce the analysis). This paper shows the leading dietary risk factors for mortality included high intake of sodium, low intake of whole grains, and low intake of fruits. 
-- Why is this important? This analysis demonstrates the need to improve diet across nations and inform implementation of evidence-based dietary interventions. 
-- Data: This the link Jess Fanzo sent us (https://vizhub.healthdata.org/gbd-compare/){target="_blank"}, but we had to track down a specific set of files that were not included in the link to be able to do this analysis. These files were sent to us in a CSV format and we have been given permission to host them as part of our case study and just cite the original study. 
-- Major Data Science Objectives: 
-1) scraping data (gapminder) # probably not anymore
-2) loading data from data package 
-3) wrangling - joining dplyr 
-4) visualization - ggplot 
-- Statistics objectives: We are currently torn between demonstrating linear regression or factor analysis. Once we start the case study, it will be easier for us to understand. We’ll keep you posted on that. 
-# to get a ratio of veggie consumption: Veggies$mean/250 *100
-#https://www.guru99.com/r-anova-tutorial.html
+Our statistical analysis focused on evaluating differences in the consumption of red meat around the world between females and males and across different age groups. First we looked at the assumptions of [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20t-test){target="_blank"} and regressions, and determined that the relative percentage data of red meat consumption to the optimal guideline suggested amount was right skewed. We learned that we could transform the data by taking the log of these values to achieve more normally distrubted data. To compare males and females we used a t-test and learned that a t-test is a specialied form of a linear regression. To compare the 15 different age groups we used an anova and learned that the anova is also a specialized form of linear regression. We examined how we obtained the same results using either statistical test. This was also the case if we looked at the effect of gender and controlled for the paired country structure in the data by either including `location_name` in the model as another term or by using a mixed effects model to controll for this structure as a random effect but not specifically test for the influence of `location_name` on red meat consumption estimates. We learned that fixed effects are those that we wish to evaluate, while random effects are those that may infleunce the relationships of our variables of interest but that we do not wish to actively evaluate. Using these tests and models, we determined that males consume more red meat than women on average around the world. 
 
-To do this we need to check if our data violates the assumptions that these statistical test rely on in order to choose the appropriate test to compare groups.
+Our anova analysis of age determined that indeed there at least one age group consumed a significantly different amount of red meat compared to the other age groups, and this was still the case when we controlled `location_name`. However, we learned that we could that the anova does not provide information about which age groups are different. We learned how the regession however could provide some comparisons of different age groups relative to the reference age group. Furthermore, our data visualizations allowed us to determine that in general red met consumption appears to be higher in the younger age groups relative to the older age groups. 
+
+Finally, we also looked at differences in red meat consumption between the different countries and saw in our anova analysis and our regression analysis that there were significant differences. We were able to use a regression that included `sex`, `age_group_name`, and `location_name` to evaluate the influence of each of the three demographic factors on consumption while controlling or accounting for the other two. Our results demonstrated that all three influenced or were associated with red meat consumption.
+
+In preforming our statistical analyses we learned about the assumptions of the t-test, the regression, and the anova. We also learned about important methods to tests these assumptions.
+
+#### $t$-test assumptions:
+
+1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large total n>30 - can evaluate by plotting the distribution and by creating Q-Q plots)
+2) Equal variance between the two groups (make sure you do the correct test if the data is not normal)
+3) Balanced sample sizes of the two groups (got that!)
+4) Independent observations (or independent paired observations - got that too!)
+
+We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating Q-Q plots. 
+
+<u>If our data is not normally distributed, we can consider these options:</u>
+
+1) We can still perform a t-test if our n is large
+2) We can transform the data before performing a t-test
+3) We can use a nonparametric test (Wilcoxon signed rank test, the Wilcoxon rank sum test, and the Two-sample Kolmogorov-Smirnov (KS) test)
+4) We can perform a t-test with resampling methods (which should be especially considered when the groups are imbalanced)
+
+See this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity){target="_blank"} for more information on $t$-test assumptions.
+
+We learned that we can use q-qplots to compare distributions to the normal distribution to evaluate the normality of our data.
+
+We learned that we can test if 2 groups have equal variance using:
+1) the F test with `var.test()`
+2) Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data is not normally distributed)
+
+#### Linear regression assumptions
+L (linear) - There is a linear relationship between the variables.
+I (independent) - The samples are independent from one another.
+N (normal) - The residuals are normally distributed.
+E (equal variances) - The variance of the groups is similar.
+
+#### ANOVA assumptions 
+1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n>30)
+2) Equal variance between the groups - aka Homogeneity of variance (make sure you do the correct test if the data is not normal)
+3) Balanced sample sizes of the groups
+4) Independent observations (or independent paired observations)
+
+We learned about three tests for examining the equality of variance of 3 or more groups:
+1) [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} (works well if the data appears to be normally distributed)
+2) [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality
+3) [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner- Killeen test.
+
+
+Using the `ggplot2` package we were able to visualize trends in the data and to compare consumption of these dietary factors in the US with that of the other countries.
+We see that the populations in many countries are overconsuming foods that are associated with health risk when overconsumed. In particular processed meat and sugar-sweetened beverages appear to be the most over consumed. Importantly botho of these appear to be consumed at higher quantities by males and younger adults. People in the US  appear to consume less sugar-sweetened beverages than other countries, however, people are still overconsuming. Processed meat however appears to be especially bad in the US. In terms of food that need to be consumed in adquate amounts to overcome health risk, nearly all countries for all factors are not reaching guideline levels. However, there are some countries consuming more than adequate amounts of legumes, vegitables, fruits and fiber. People in the US apear to eat more milk products and consume more omega-3 fatty acid and calcium rich foods than other countries. All countries including the US consume very low levels of polyunsaturated fatty acids. These [fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat) are abundant in seads, nuts, avacodos, as well as fish. Likely the low level of consumption of nuts and seeds contributes to these low polyunsaturated fatty acid estimates. The supplementary table included in the article suggests that poor consumption of polyunsaturated fatty acids is associated with ischemic heart disease. The article takes this data further to evaluate the association of consumption levels of these foods with mortality.
+
+Analyses like the one in our case study are important for defining which groups could benefit the most from interventions, education, and policy changes when attempting to mitigate public health challenges. You can see in the [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} however that many additional considerations would be involved to perform a more thourough analysis to adequatly understand the data enough to recommend policy changes.
+
+
+### Suggested Homework
+
+Students can evaluate consumption estimates of another dietary factor besides red meat.
+
+### Helpful Links
+
+[BMI](https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html){target="_blank"}  
+[Long and Wide Data Formats](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}  
+[Distributions](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"}
+[Normal Distribution](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"}
+[Skewed Distributions](http://onlinestatbook.com/2/glossary/skew.html){target="_blank"} 
+[Bimodal Distribution](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} 
+[ggplot2](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}    
+[Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}  
+[Shapiro-Wilk Test](http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html)  
+[Student $t$-test](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20t-test)   
+[Paired Data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5579465/){target="_blank"}  
+[Welch's $t$-test](https://www.statisticshowto.datasciencecentral.com/welchs-test-for-unequal-variances/){target="_blank"}    
+[Parametric and Nonparametric Methods](https://www.mayo.edu/research/documents/parametric-and-nonparametric-demystifying-the-terms/doc-20408960)  
+[Variance](https://stattrek.com/statistics/dictionary.aspx?definition=variance){target="_blank"}  
+[Balanced Study Design](https://www.statisticshowto.datasciencecentral.com/balanced-and-unbalanced-designs/){target="_blank"}  
+[Independent Observations](https://www.stat.cmu.edu/~cshalizi/36-220/lecture-5.pdf){target="_blank"}  
+[Transformation](https://www.statisticshowto.datasciencecentral.com/transformation-statistics/){target="_blank"}  
+[Permutation/Resampling Methods](https://jhu-advdatasci.github.io/2019/lectures/21-resampling-techniques.html){target="_blank"}   
+[Central Limit Theorem](https://www.analyticsvidhya.com/blog/2019/05/statistics-101-introduction-central-limit-theorem/){target="_blank"}  
+[Mood's Two-Sample Scale Test](https://files.eric.ed.gov/fulltext/ED065559.pdf){target="_blank"}  
+[Wilcoxon Signed Rank Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)   
+[Wilcoxon Rank Sum Test](http://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_nonparametric/BS704_Nonparametric4.html){target="_blank"}  
+[Two-sample Kolmogorov-Smirnov Test](https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/ks2samp.htm){target="_blank"}  
+[Type 1 Error](https://web.ma.utexas.edu/users/mks/statmistakes/errortypes.html){target="_blank"}  
+[p-value](https://towardsdatascience.com/p-values-explained-by-data-scientist-f40a746cfc8){target="_blank"}  
+[Multiple Testing](https://www.gs.washington.edu/academics/courses/akey/56008/lecture/lecture10.pdf){target="_blank"}    
+[Bonferroni Method of Multiple Testing Correction](http://mathworld.wolfram.com/BonferroniCorrection.html){target="_blank"}
