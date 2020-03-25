@@ -117,10 +117,7 @@ library(car)
 library(ggiraph)
 library(ggforce)
 library(viridis)
-
-library(ggrepel)
 library(cowplot)
-
 ```
 
 
@@ -144,12 +141,9 @@ library(cowplot)
 [ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
 [ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
 [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color pallette that is easily interpreted by colorblind individuals
-[ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html){target="_blank"}    | to allow labels in figures not to overlap
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined
 ___
 
-
-[glue](https://www.tidyverse.org/blog/2017/10/glue-1.2.0/){target="_blank"}  | to paste or combine character strings and data together
 
 
 The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
@@ -2056,7 +2050,7 @@ t.test(log10(pull(filter(wide_diet, food == "red meat"),
        var.equal = TRUE, paired = TRUE)
 ```
 
-You can see that now our degrees of freedom are 194, which makes sense becuase now we have matched or paired values for the 195 different regions and so $df = n-1 parameter = 195 -1 = 194$. In this case we aren't calculating two different means in our t-test, but instead this is a one sample t-test of the differences between males and females across all the country pairs, so thus only one parameter. It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/) and results in the same degrees of freedom.
+You can see that now our degrees of freedom are 194, which makes sense becuase now we have matched or paired values for the 195 different regions and so $df = n-1 parameter = 195 -1 = 194$. In this case we aren't calculating two different means in our t-test, but instead this is a one sample t-test of the differences between males and females across all the country pairs, so thus only one parameter. It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} and results in the same degrees of freedom.
 
 Most importantly, again we get the same $t$-value and p-value with the two tests.
 
@@ -3002,10 +2996,6 @@ labs(title=" Global consumption across age\n  of foods associated\n with health 
 
 Under_age
 
-# library(grid)
-# gt = ggplot_gtable(ggplot_build(Under_age))
-# gt$widths[4] = 4*gt$widths[4]
-# grid.draw(gt)
 ```
 
 
@@ -3456,7 +3446,7 @@ We learned about three tests for examining the equality of variance of 3 or more
 
 
 Using the `ggplot2` package we were able to visualize trends in the data and to compare consumption of these dietary factors in the US with that of the other countries.
-We see that the populations in many countries are overconsuming foods that are associated with health risk when overconsumed. In particular processed meat and sugar-sweetened beverages appear to be the most over consumed. Importantly botho of these appear to be consumed at higher quantities by males and younger adults. People in the US  appear to consume less sugar-sweetened beverages than other countries, however, people are still overconsuming. Processed meat however appears to be especially bad in the US. In terms of food that need to be consumed in adquate amounts to overcome health risk, nearly all countries for all factors are not reaching guideline levels. However, there are some countries consuming more than adequate amounts of legumes, vegitables, fruits and fiber. People in the US apear to eat more milk products and consume more omega-3 fatty acid and calcium rich foods than other countries. All countries including the US consume very low levels of polyunsaturated fatty acids. These [fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat) are abundant in seads, nuts, avacodos, as well as fish. Likely the low level of consumption of nuts and seeds contributes to these low polyunsaturated fatty acid estimates. The supplementary table included in the article suggests that poor consumption of polyunsaturated fatty acids is associated with ischemic heart disease. The article takes this data further to evaluate the association of consumption levels of these foods with mortality.
+We see that the populations in many countries are overconsuming foods that are associated with health risk when overconsumed. In particular processed meat and sugar-sweetened beverages appear to be the most over consumed. Importantly botho of these appear to be consumed at higher quantities by males and younger adults. People in the US  appear to consume less sugar-sweetened beverages than other countries, however, people are still overconsuming. Processed meat however appears to be especially bad in the US. In terms of food that need to be consumed in adquate amounts to overcome health risk, nearly all countries for all factors are not reaching guideline levels. However, there are some countries consuming more than adequate amounts of legumes, vegitables, fruits and fiber. People in the US apear to eat more milk products and consume more omega-3 fatty acid and calcium rich foods than other countries. All countries including the US consume very low levels of polyunsaturated fatty acids. These [polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat) are abundant in seads, nuts, avacodos, as well as fish. Likely the low level of consumption of nuts and seeds contributes to these low polyunsaturated fatty acid estimates. The supplementary table included in the article suggests that poor consumption of polyunsaturated fatty acids is associated with ischemic heart disease. The article takes this data further to evaluate the association of consumption levels of these foods with mortality.
 
 Analyses like the one in our case study are important for defining which groups could benefit the most from interventions, education, and policy changes when attempting to mitigate public health challenges. You can see in the [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} however that many additional considerations would be involved to perform a more thourough analysis to adequatly understand the data enough to recommend policy changes.
 
@@ -3466,8 +3456,35 @@ Analyses like the one in our case study are important for defining which groups 
 Students can evaluate consumption estimates of another dietary factor besides red meat.
 
 ### Helpful Links
+[Tidyverse](https://www.tidyverse.org/){target="_blank”}
+[RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank”}
+[Interpunct](https://www.shorttutorials.com/mac-os-special-characters-shortcuts/middle-dot.html)
+[regular expressions](https://www.r-bloggers.com/regular-expressions-every-r-programmer-should-know/){target="_blank”}
+[inference](https://www.britannica.com/science/inference-statistics)
+[regression](https://lindeloev.github.io/tests-as-linear/){target="_blank”} 
+[different types of regression](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"}
+[ordinary least squares method](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank”}
+[residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank”}
+See [here](https://scientificallysound.org/2017/06/08/t-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
+[normally distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017)
+`lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank”}.
+[coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank”}
+[linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank”}
+[Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank”} 
 
-[BMI](https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html){target="_blank"}  
+[$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20t-test){target="_blank"} 
+Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data is not normally distributed)
+[standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"}
+
+<u>Tests of Homogeneity of Variance<u/>
+
+[Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"}
+[Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"}
+[Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}
+[polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat)
+
+Previous links
+
 [Long and Wide Data Formats](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}  
 [Distributions](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"}
 [Normal Distribution](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"}
@@ -3494,3 +3511,23 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [p-value](https://towardsdatascience.com/p-values-explained-by-data-scientist-f40a746cfc8){target="_blank"}  
 [Multiple Testing](https://www.gs.washington.edu/academics/courses/akey/56008/lecture/lecture10.pdf){target="_blank"}    
 [Bonferroni Method of Multiple Testing Correction](http://mathworld.wolfram.com/BonferroniCorrection.html){target="_blank"}
+
+Packages used in this case study
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
+[readr](https://readr.tidyverse.org/){target="_blank"}      | to import the csv file data
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data 
+[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
+[pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a pdf into R   
+[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the pdf of the data
+[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator
+[purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble
+[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with dplyr/stringr/tidyr/purrr
+[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers
+[ggpubr](https://cran.r-project.org/web/packages/ggpubr/index.html){target="_blank"}    | to easily add regression line equations to plots
+[forcats](https://forcats.tidyverse.org/){target="_blank"}    | to change details about factors (categorical variables)
+[lmerTest](https://cran.r-project.org/web/packages/lmerTest/lmerTest.pdf)| to perform linear mixed model testing
+[car](https://cran.r-project.org/web/packages/car/car.pdf)| to perform Levene's Test of Homogeneity of Variances
+[ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
+[ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
+[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color pallette 
