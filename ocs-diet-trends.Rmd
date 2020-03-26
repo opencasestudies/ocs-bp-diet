@@ -39,7 +39,7 @@ library(knitr)
 
 
 #### {.outline }
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width = "800 px"}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
@@ -103,6 +103,7 @@ library(here)
 library(readr)
 library(dplyr)
 library(skimr)
+library(summarytools)
 library(pdftools)
 library(stringr)
 library(magrittr)
@@ -127,6 +128,7 @@ library(cowplot)
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the csv file data
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data 
 [skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
+[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a pdf into R   
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the pdf of the data
 [magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator
@@ -161,7 +163,7 @@ Many dietary factors have well-estabished associations with health risk. The aut
 Here you can see a table of the sources for the health risks associated with the dietary factors. RCT stands for randomized control trials.
 
 
-```{r, echo = FALSE, out.width= "700 px"}
+```{r, echo = FALSE, out.width= "800 px"}
 knitr::include_graphics(here("img", "dietaryrisk.png"))
 ```
 
@@ -186,7 +188,7 @@ We will be using data that we requested from the [GBD](http://www.healthdata.org
 
 Looking at the csv file in excel:
 
-```{r, echo = FALSE, out.width="700px"}
+```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","csv.png"))
 ```
 
@@ -194,7 +196,7 @@ Here you can see that the data contains mean consumption values for both men and
 
 The second csv file has similar data, but consumption levels for different age groups are separated.
 
-```{r, echo = FALSE, out.width="700px"}
+```{r, echo = FALSE, out.width="800px"}
 knitr::include_graphics(here::here("img","age_sep3.png"))
 ```
 
@@ -229,14 +231,128 @@ However, both files appear to have the same column structure with 11 variables e
 
 The `skim()` function of the `skimr` package is also really helpful for getting a general sense of your data.
 
-```{R}
+```{r}
 skim(diet_data)
 ```
 
+
+ 
+ 
+
+ 
+ 
+ 
+         
 Notice how there is a column about the values that are missing. It looks like our data is very complete and we do not have any missing data.
 We also get a sense about the size of our data.
 
 The `n_unqiue` column shows us the number of unqiue values for each of our columns.
+
+Here is another method using the package `summarytools`:
+
+```{r, eval=FALSE}
+
+dfSummary(diet_data, plain.ascii = FALSE, style = "grid", 
+         graph.magnif = 0.75,  tmp.img.dir = "tmp")
+
+diet_data %>% filter(food == "milk") %>% group_by(sex) %>% descr(stats = "fivenum")
+```
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| No | Variable        | Stats / Values                  | Freqs (% of Valid)   | Graph               | Missing |
++====+=================+=================================+======================+=====================+=========+
+| 1  | year_id\        | 1 distinct value                | 2017 : 5880 (100.0%) | ![](tmp/ds0100.png) | 0\      |
+|    | [numeric]       |                                 |                      |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 2  | location_name\  | 1\. Afghanistan\                | 30 ( 0.5%)\          | ![](tmp/ds0101.png) | 0\      |
+|    | [character]     | 2\. Albania\                    | 30 ( 0.5%)\          |                     | (0%)    |
+|    |                 | 3\. Algeria\                    | 30 ( 0.5%)\          |                     |         |
+|    |                 | 4\. American Samoa\             | 30 ( 0.5%)\          |                     |         |
+|    |                 | 5\. Andorra\                    | 30 ( 0.5%)\          |                     |         |
+|    |                 | 6\. Angola\                     | 30 ( 0.5%)\          |                     |         |
+|    |                 | 7\. Antigua and Barbuda\        | 30 ( 0.5%)\          |                     |         |
+|    |                 | 8\. Argentina\                  | 30 ( 0.5%)\          |                     |         |
+|    |                 | 9\. Armenia\                    | 30 ( 0.5%)\          |                     |         |
+|    |                 | 10\. Australia\                 | 30 ( 0.5%)\          |                     |         |
+|    |                 | [ 186 others ]                  | 5580 (94.9%)         |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 3  | rei_id\         | Mean (sd) : 133.7 (53.9)\       | 15 distinct values   | ![](tmp/ds0102.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 111 < 118 < 333\                |                      |                     |         |
+|    |                 | IQR (CV) : 9 (0.4)              |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 4  | food\           | 1\. calcium\                    | 392 ( 6.7%)\         | ![](tmp/ds0103.png) | 0\      |
+|    | [character]     | 2\. fiber\                      | 392 ( 6.7%)\         |                     | (0%)    |
+|    |                 | 3\. fruits\                     | 392 ( 6.7%)\         |                     |         |
+|    |                 | 4\. legumes\                    | 392 ( 6.7%)\         |                     |         |
+|    |                 | 5\. milk\                       | 392 ( 6.7%)\         |                     |         |
+|    |                 | 6\. nuts and seeds\             | 392 ( 6.7%)\         |                     |         |
+|    |                 | 7\. polyunsaturated fatty aci\  | 392 ( 6.7%)\         |                     |         |
+|    |                 | 8\. processed meat\             | 392 ( 6.7%)\         |                     |         |
+|    |                 | 9\. red meat\                   | 392 ( 6.7%)\         |                     |         |
+|    |                 | 10\. seafood omega-3 fatty aci\ | 392 ( 6.7%)\         |                     |         |
+|    |                 | [ 5 others ]                    | 1960 (33.3%)         |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 5  | age_group_name\ | 1\. All Available Ages          | 5880 (100.0%)        | ![](tmp/ds0104.png) | 0\      |
+|    | [character]     |                                 |                      |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 6  | sex\            | 1\. Female\                     | 2940 (50.0%)\        | ![](tmp/ds0105.png) | 0\      |
+|    | [character]     | 2\. Male                        | 2940 (50.0%)         |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 7  | parameter\      | 1\. continuous                  | 5880 (100.0%)        | ![](tmp/ds0106.png) | 0\      |
+|    | [character]     |                                 |                      |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 8  | mean\           | Mean (sd) : 34.8 (60.1)\        | 5880 distinct values | ![](tmp/ds0107.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 0 < 8.4 < 566.7\                |                      |                     |         |
+|    |                 | IQR (CV) : 42.2 (1.7)           |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 9  | upper\          | Mean (sd) : 37.9 (65.3)\        | 5880 distinct values | ![](tmp/ds0108.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 0 < 9.2 < 624.2\                |                      |                     |         |
+|    |                 | IQR (CV) : 46.1 (1.7)           |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 10 | lower\          | Mean (sd) : 31.9 (55.4)\        | 5880 distinct values | ![](tmp/ds0109.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 0 < 7.5 < 513.2\                |                      |                     |         |
+|    |                 | IQR (CV) : 38.8 (1.7)           |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 11 | unit\           | 1\. %energy/day\                | 784 (13.3%)\         | ![](tmp/ds0110.png) | 0\      |
+|    | [character]     | 2\. g/day                       | 5096 (86.7%)         |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+
+
+
+
+
+
+
+
+
+
+
+
+Group: sex = Female  
+N: 196  
+
+                lower     mean   rei_id    upper   year_id
+------------ -------- -------- -------- -------- ---------
+         Min     2.71     3.02   115.00     3.35   2017.00
+          Q1    20.75    22.33   115.00    24.07   2017.00
+      Median    55.69    59.52   115.00    64.01   2017.00
+          Q3   108.55   115.08   115.00   123.31   2017.00
+         Max   299.87   316.62   115.00   333.67   2017.00
+         
+  Group: sex = Male  
+N: 196  
+
+                lower     mean   rei_id    upper   year_id
+------------ -------- -------- -------- -------- ---------
+         Min     2.87     3.16   115.00     3.48   2017.00
+          Q1    21.64    23.33   115.00    25.10   2017.00
+      Median    58.08    62.30   115.00    67.53   2017.00
+          Q3   111.47   119.81   115.00   127.37   2017.00       
+
+ 
 
 Let's take a look at `sep_age_diet_data`.
 
@@ -337,7 +453,7 @@ Let's also get the data from the PDF of the paper so that we can calculate consu
 
 We are interested in this table on page 3:
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "Table.png"))
 ```
 
@@ -361,7 +477,7 @@ We can see that we have 15 different character strings. Each one contains the te
 
 Again, the table we are interested in is on the third page, so let's grab just that portion of the PDF.
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "page3.png"))
 ```
 
@@ -381,13 +497,13 @@ Here we can see that the `table` object now contains the text from the 3rd page 
 
 One way to approach this is to split the string by some pattern that we notice in the table.
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "Table.png"))
 ```
 
 Only the capitalized form of the word "Diet" appears to be within the table, and is not present in the preceding text (altough "diet" is). All the rows of interest of the table appear to start with the word "Diet".
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "Diet_on_page3.png"))
 ```
 
@@ -414,7 +530,7 @@ table %>%
 ```
 RStudio creates really helpful cheatsheets like this one which shows you all the major functions in `stringr`. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "strings-1_str_split.png"))
 ```
 
@@ -444,7 +560,7 @@ nth(table, 2)
 
 Indeed this looks like the first row of interest in our table:
 
-```{r,echo = FALSE,out.width= "700px"}
+```{r,echo = FALSE,out.width= "800px"}
 knitr::include_graphics(here("img", "firstrow.png"))
 ```
 
@@ -461,7 +577,7 @@ dplyr::last(table)
 
 ```
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "end_of_table.png"))
 ```
 
@@ -534,7 +650,7 @@ table %<>%
 
 Now we will try to split the strings for each row based on the presence of  2 spaces to create the columns of the table, as there appears to be larger than a space between the columns to create substrings. The substrings will be separated by quotes.
 
-```{r, echo = FALSE,out.width = "700px"}
+```{r, echo = FALSE,out.width = "800px"}
 knitr::include_graphics(here("img", "strings-2_highlight.png"))
 ```
 
@@ -663,7 +779,7 @@ Looking pretty good!
 However, we want to separate the different amounts within the amount column.
 
 Recall what the orginal table looked like:
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here("img", "firstrow.png"))
 ```
 
@@ -710,7 +826,7 @@ Ok, looking better, but we still need a bit of cleaning to remove symbols and ex
 
 The `"*"` and the `")"` are what we call metacharacters or [regular expressions](https://www.r-bloggers.com/regular-expressions-every-r-programmer-should-know/){target="_blank"}. These are characters that have special meanings.
 
-```{r, echo = FALSE, out.width = "700px"}
+```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here("img", "RegExCheatsheet.png"))
 ```
 
@@ -1171,7 +1287,7 @@ In that case we could use the `arrange()` function of `dplyr` to sort the data a
 
 However, we will instead use a joining function of `dplyr`. These functions combine the data together based on **common values**. There are a variety of options.
 
-```{r, echo = FALSE, out.with = "400 px", fig.align= "center"}
+```{r, echo = FALSE, out.with = "300 px", fig.align= "center"}
 knitr::include_graphics(here("img","join.png"))
 ```
 
@@ -1723,14 +1839,14 @@ Importantly the slope ($m$ or $a$ or $\beta_{1}$) gives us a measure of the stre
 Check out this [interactive explanation](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank"} of how the ordinary least squares method works.
 
 Here is an image of what we are saying about the ordinary least squares regression to fit a line to data:
-![](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)
+<center>![](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)</center>
 
 ###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
 
 
 In some cases we can fit a line perfectly and all points will lie on the line with no distance to the line:
 
-```{r, echo = FALSE, out.width="300ptx"}
+```{r, echo = FALSE, out.width="400ptx"}
 
 data_x<-sample(1:100, 20, replace=TRUE)
 data_y<-data_x +10
@@ -1741,7 +1857,7 @@ ggplot(data =thedata, aes(x =x, y = y)) +geom_point() +geom_smooth(method = "lm"
 In this case, the slope or $\beta_{1}$ is 1 and the intercept is $\beta_{0}$ 10. We can see that if $X$ were 50, $Y$ would be approximately 60. This is very unusal in statistical analysis however, as often the relationship between variables is more complicated.
 
 In other cases there will be greater distances between the line and the points. Like this regression:
-```{r, echo = FALSE, out.width="300ptx"}
+```{r, echo = FALSE, out.width="400ptx"}
 set.seed(13)
 thedata %<>% mutate(y2 = rnorm(20, sd = 40))
 
@@ -1761,7 +1877,7 @@ In R we indicate a linear model like this:
 ```{r, eval = FALSE}
 y ~ x
 ```
-Here our response/otcome variable is on the left of the `~` while our covariates or explanatory variables are on the right of the `~`.
+Here our response/outcome variable is on the left of the `~` while our covariates or explanatory variables are on the right of the `~`.
 
 So let's get back to our data...What types of outcomes do we have?
 
@@ -1808,7 +1924,7 @@ Before we get started, let's think about the assumptions of both tests.
 3) Balanced sample sizes of the two groups (got that!)
 4) Independent observations (or independent paired observations - got that too!)
 
-We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating Q-Q plots. 
+We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating [Q-Q plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}. 
 
 <u>If our data is not normally distributed, we can consider these options:</u>
 
@@ -1819,11 +1935,18 @@ We can evaluate if our data is [normally distributed](https://www.physiology.org
 
 See this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity){target="_blank"} for more information on $t$-test assumptions.
 
-#### Linear regression assumptions
+#### Linear regression assumptions:
 L (linear) - There is a linear relationship between the variables.
+
 I (independent) - The samples are independent from one another.
-N (normal) - The residuals are normally distributed.
-E (equal variances) - The variance of the groups is similar.
+
+N (normal) - The residuals are normally distributed. Note that the variables themesleves do not need to be normally distributed.
+
+E (equal variances) - The variance of the residuals for the groups is similar. This is called [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. In otherwords the residuals are of similar size along the line.
+
+It's also important that if there are more than one predictor variables, that these are not correlated.
+
+See [here](https://www.jmp.com/en_us/statistics-knowledge-portal/what-is-regression/simple-linear-regression-assumptions.html){target="_blank"} for additional information about the assumptions of linear regressions.
 
 #### Distributions
 
@@ -1879,7 +2002,7 @@ diet_and_guidelines_long %>%
   geom_qq_line()
 ```
 
-Ok, so we can get our data to look fairly normal, which is good for our $t$-test assumptions.  The other thing we need to check is if the variance in red meat consumption is similar between the two genders. We can use the `var.test()`  of the `stats` package using the log normalized data, as this data is fairly normally distributed. We can use the mood.test on the raw data which is skewed.
+Ok, so we can get our data to look fairly normal. It isn't perfect, but we have a large number of samples, so this is good for our $t$-test assumptions. The other thing we need to check is if the variance in red meat consumption is similar between the two genders. We can use the `var.test()`  of the `stats` package using the log normalized data, as this data is fairly normally distributed. We can use the mood.test on the raw data which is skewed.
 
 ```{r}
 mood.test(pull(filter(diet_and_guidelines,
@@ -1895,13 +2018,32 @@ var.test(log10(pull(filter(diet_and_guidelines,
 
 The p value >.05 for both tests, thus we can conclude that there is not enough evidence to reject the null (no difference in the spread of the distributions), thus we conclude that variance is roughly equal. Great... so we are in pretty good shape for both the $t$-test and the linear regression.
 
-So now we can comparing the consumption of red meat by both genders using both a $t$-test and a linear regression:
+So now we can comparing the consumption of red meat by both genders using both a $t$-test and a linear regression. We can use the base `plot()` function to get information about our residuals. This helps us to assess if we are violating our linear regression assumptions. Typically we would first check the nontransformed data, because it is not required that the predictor variables have a normal distribution. However to allow for our comparison with the t-test, we will assess the log transformed `Relative_Percent` data.
 
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
   lm(log10(Relative_Percent) ~ sex, data=.) %>%
   plot()
+```
+
+Our second plot shows us that our residuals are a bit negatively or [left skewed](http://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html), in this case just like the `Relative_Percent` data. However, linear regression is relatively robust to tailed distributions and again for the sake of comparison we will show the results here. It is possible that perhaps another term needs to be included in our model to improve this. We will check this in a bit.
+
+We can see that our residuals are similar between males and females, as the first and third plot show similar values in the two lines. This is suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. This like our variance test gives us information about the differences in varaince between the two groups. Here is what the the plots would look like if the variance were not the same:
+
+```{r, eval = FALSE}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  mutate(example_perc =case_when(
+    sex == "Female" ~  log(Relative_Percent),
+    sex == "Male" ~ Relative_Percent)) %>%
+    lm(log10(example_perc) ~ sex, data=.) %>%
+  plot()
+
+```
+
+
+```{r}
 
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
@@ -1971,7 +2113,7 @@ diet_and_guidelines%>%
 
 ```
 
-We can see that the slope of the linear model is equivalent to the difference bewteen the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
+We can see that the slope of the linear model is equivalent to the difference between the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
 
 Also, since we have female and male values each from the same countries, our data is what we called paired. Thus the values from the same country could be related to one another becuase of cultural difference in diet, thus the assumption of the unpaired $t$-test that the samples are independent is violated.  Therefore, we need to model our data in a way that accounts for this. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
@@ -2002,11 +2144,35 @@ Mean relative consumption of red meat is dependent on sex and country.
 
 Then the coefficient for `sex` will be different from what we had in our previous `lm()` model, as it will be calculated while keeping `location_name` or the country where the consumption value was obtained fixed, or in other words "controlling for `location_name`." This will also result in output for each of the countries. The [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} here represent the average consumption value for each country while accounting for sex.
 
+First let's take a look at our plots for this new model:
+
+```{r}
+
+diet_and_guidelines %<>%
+  mutate_at(vars(location_name), factor)
+
+
+plot(lm(
+  log10(pull(filter(diet_and_guidelines, food == "red meat"),
+                  Relative_Percent)) ~
+  pull(filter(diet_and_guidelines, food == "red meat"),
+                  sex)+
+  pull(filter(diet_and_guidelines, food == "red meat"),
+            location_name)))
+```
+This looks much better than our previous plots.
+
+This [guide](https://data.library.virginia.edu/diagnostic-plots/) provides more information on how to interpret these residual diagnostic plots.
+
+Based on our [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}, we appear to have some outliers perhaps at the extreme ends of our tails but overall the residuals look fairly normal based on theand our [residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"} shows us about if the relationship between our oucome variable and our predictors looks linear, if there is unequal error variance between groups, and if there are possible outliers. Ideally this should look like a band of points equally centered around zero. Here are [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} of these plots that might show issues of concern. Overall our plot looks fairly good. The shape of our data looks fairly linear (the residuals dont appear to have a shape other than a band or line), There dont appear to be any extreme outliers (no data points are especailly far away) and the points have the same general range around the line for the various fitted values. There are a few points with wider residuals at the higher fitted values, but overall this looks quite reasonable. our [scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"} also shows us that our variance looks fairly equal across groups as our values show a relatively even spread. A larger  bend in the line would indicate more variation in the variance across our independent variable groups also known as [heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"}. There is only a slight bend in the line for our data suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. So our assumptions look pretty good:
+
+1) Linear - the relationship appears to be fairly linear 
+2) Independence - now that we have taken care of the location structure in our data, our samples are independent
+3) Normality - the residuals appear to be fairly normally distributed and we have a large number of samples to help account for minor violations
+4) Equal variance - the variance in the residuals appear to be fairly equal across the groups of the independent/predictor variables.
 
 #### {.scrollable }
 ```{r}
-diet_and_guidelines %<>%
-  mutate_at(vars(location_name), factor)
 
 summary(lm(
   log10(pull(filter(diet_and_guidelines, food == "red meat"),
@@ -2031,7 +2197,26 @@ However in simplistic terms, **fixed effects** are generally speaking the variab
 
 In our case, we are interested in the influence of sex on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in otherwords we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (Relative_Percent consumption when sex is assigned to the zero value - not male) may be different for each country.
 
+Again lets see what our plots look like first:
 
+```{r}
+
+lmer_sex_loc<-lmerTest::lmer(
+  log10(pull(filter(diet_and_guidelines, food == "red meat"),
+                  Relative_Percent)) ~
+  pull(filter(diet_and_guidelines, food == "red meat"),
+                  sex)+
+  (1| pull(filter(diet_and_guidelines, food == "red meat"),
+            location_name)))
+plot(lmer_sex_loc)
+
+qqnorm(resid(lmer_sex_loc))
+qqline(resid(lmer_sex_loc))
+```
+
+Notice that the plots look the same as with the fixed effect model. 
+
+Let's take a look at the results:
 
 ```{r}
 
@@ -2904,7 +3089,8 @@ Under_age<-all_age_diet_and_guidelines %>%
   stat_summary(fun.data = calc_stat, 
                 geom="boxplot",
                 outlier.shape = NA, 
-               color = "black" , 
+               color = "black",
+               lwd = 1.1,
             aes(fill = age_group_name))+
     geom_hline(yintercept=100, 
                linetype="dashed", 
@@ -3405,12 +3591,12 @@ In preforming our statistical analyses we learned about the assumptions of the t
 
 #### $t$-test assumptions:
 
-1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large total n>30 - can evaluate by plotting the distribution and by creating Q-Q plots)
+1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large total n>30 - can evaluate by plotting the distribution and by creating [Q-Q plots]([Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}))
 2) Equal variance between the two groups (make sure you do the correct test if the data is not normal)
-3) Balanced sample sizes of the two groups (got that!)
-4) Independent observations (or independent paired observations - got that too!)
+3) Balanced sample sizes of the two groups
+4) Independent observations (or independent paired observations)
 
-We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating Q-Q plots. 
+We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"} by plotting the distribution and by creating [Q-Q plots]([Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"} to compare the distribution of our data to the theoretical [normal distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"}.
 
 <u>If our data is not normally distributed, we can consider these options:</u>
 
@@ -3421,28 +3607,29 @@ We can evaluate if our data is [normally distributed](https://www.physiology.org
 
 See this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity){target="_blank"} for more information on $t$-test assumptions.
 
-We learned that we can use q-qplots to compare distributions to the normal distribution to evaluate the normality of our data.
-
 We learned that we can test if 2 groups have equal variance using:
 1) the F test with `var.test()`
 2) Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data is not normally distributed)
 
-#### Linear regression assumptions
-L (linear) - There is a linear relationship between the variables.
-I (independent) - The samples are independent from one another.
-N (normal) - The residuals are normally distributed.
-E (equal variances) - The variance of the groups is similar.
+#### Linear regression assumptions:
 
-#### ANOVA assumptions 
-1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n>30)
-2) Equal variance between the groups - aka Homogeneity of variance (make sure you do the correct test if the data is not normal)
-3) Balanced sample sizes of the groups
-4) Independent observations (or independent paired observations)
+L (linear) - There is a linear relationship between the variables. 
+I (independent) - The samples are independent from one another. 
+N (normal) - The residuals are normally distributed. 
+E (equal variances) - The variance of the residuals of the groups is similar.  
+It is also important that predictor variables are not correlated with one another. 
+
+#### ANOVA assumptions:
+
+1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n>30) 
+2) Equal variance between the groups - aka Homogeneity of variance (make sure you do the correct test if the data is not normal) 
+3) Balanced sample sizes of the groups 
+4) Independent observations (or independent paired observations) 
 
 We learned about three tests for examining the equality of variance of 3 or more groups:
-1) [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} (works well if the data appears to be normally distributed)
-2) [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality
-3) [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner- Killeen test.
+1) [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} (works well if the data appears to be normally distributed) 
+2) [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality 
+3) [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner- Killeen test 
 
 
 Using the `ggplot2` package we were able to visualize trends in the data and to compare consumption of these dietary factors in the US with that of the other countries.
@@ -3466,7 +3653,14 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [ordinary least squares method](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank”}
 [residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank”}
 See [here](https://scientificallysound.org/2017/06/08/t-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
-[normally distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017)
+[normally distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"} 
+[Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"} 
+[guide to residual diagnostic plots](https://data.library.virginia.edu/diagnostic-plots/) and [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} 
+[residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"}
+[scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"}
+[homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"} 
+[heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"} 
+
 `lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank”}.
 [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank”}
 [linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank”}
@@ -3482,6 +3676,8 @@ Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pd
 [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"}
 [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}
 [polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat)
+
+
 
 Previous links
 
@@ -3517,6 +3713,7 @@ Packages used in this case study
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the csv file data
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data 
 [skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
+[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a pdf into R   
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the pdf of the data
 [magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator
@@ -3531,3 +3728,5 @@ Packages used in this case study
 [ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
 [ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
 [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color pallette 
+
+
