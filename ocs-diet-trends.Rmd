@@ -2866,7 +2866,8 @@ Under<-Under + geom_point(data = diet_and_guidelines %>%
         legend.position = "none",
        axis.text.y = element_text(size = 35), 
         axis.title.y = element_text(size = 35), 
-        axis.title.x = element_text(size =25))+
+        axis.title.x = element_text(size =25),
+       panel.background = element_rect(colour = "black", size=1.5))+
 labs(title="\n Global consumption of foods associated with\nhealth risk when underconsumed",
         x ="", y = "Percent consumption relative \n to guidelines")
 
@@ -2882,16 +2883,17 @@ Over<-diet_and_guidelines %>%
   #filter(food != "sugar-sweetened beverages") %>%
   filter(direction == "high") %>%
   ggplot(aes(y = Relative_Percent, 
-             x = food, 
-             color = sex)) +
+             x = food))+ 
   geom_point(position=position_jitterdodge(), 
              color = "dark grey",
              alpha = 7/10,
+# this specifies how to separate the points for male and female
              aes(fill = sex),
-             size = 7)+ # this specifies how to separate the points
+             size = 7)+ 
   geom_boxplot(outlier.shape = NA, 
                color = "black" , 
                lwd=2.5,
+              #key_glyph = draw_key_rect),
                aes(fill = sex))+
     scale_fill_manual(values = 
                         c("#481567FF", 
@@ -2903,8 +2905,11 @@ Over<-diet_and_guidelines %>%
   theme_linedraw()+
   theme(axis.text.x = element_text(angle = 60, hjust = 1), 
         legend.title = element_blank(),
-        legend.position = "bottom")+
- scale_y_continuous(breaks=c(0,100,500, 1000, 2000), labels =c(0,"100% thresh.",500, 1000, 2000) )+
+        legend.position = "bottom",
+          strip.background = element_rect(fill = "grey91",
+                                colour = "grey91"),
+          panel.background = element_rect(colour = "black", size=1))+
+ scale_y_continuous(breaks=c(100,500, 1000, 2000), labels =c("100% thresh.",500, 1000, 2000) )+
     ggforce::facet_zoom(ylim = c(0, 1300))+
   guides(guide_legend(
     direction = "horizontal",
@@ -2921,7 +2926,7 @@ Over
 
 ```
 
-```{r, fig.width=17, fig.height=14}
+```{r, fig.width=15, fig.height=12}
 
 Over<-Over + geom_point(data = diet_and_guidelines %>%
               filter(direction == "high",
@@ -2944,21 +2949,23 @@ Over <-Over + geom_point(data = diet_and_guidelines %>%
                   size = 7,
               aes(fill = sex, 
                  shape = location_name))+
-    theme(plot.title = element_text(size = 40, hjust = 0.5, face = "bold"),
+    theme(plot.title = element_text(size = 40, 
+                                    hjust = 0.5, 
+                                    face = "bold"),
         axis.text.x = element_text(angle = 60, 
                                    hjust = 1,
                                    size = 32), 
         legend.title = element_blank(),
-        # this is useful for removing the legend
         legend.position = "bottom",
-       axis.text.y = element_text(size = 35), 
+        axis.text.y = element_text(size = 35), 
         axis.title.y = element_text(size = 35), 
         axis.title.x = element_text(size =25),
-       legend.text = element_text(size = 30, vjust = .01),
-         legend.key.height = unit(2, "cm"),
-       legend.key.width  = unit(2, "cm"))+
+        legend.text = element_text(size = 30, vjust = .01),
+        legend.key.height = unit(2, "cm"),
+        legend.key.width  = unit(2, "cm"),
+        panel.background = element_rect(colour = "black", size=1.5))+
   expand_limits(y=-10)+
-
+guides(colour = guide_legend(override.aes=list(shape = 15, size = 5, points = 0)))+
  # guides(fill = guide_legend(override.aes = list(size=20)))+
 
 labs(title=" Global consumption of foods associated with\n health risk when overconsumed",
@@ -3024,7 +3031,7 @@ Then we can use it in our plot code:
 This is thanks to this:
 https://stackoverflow.com/questions/25124895/no-outliers-in-ggplot-boxplot-with-facet-wrap
 
-```{r, fig.width = 6, fig.height=15}
+```{r, fig.width = 2, fig.height=4}
 map_df(all_age_diet_and_guidelines %>% select(Relative_Percent), calc_stat)
 
 Over_age<-all_age_diet_and_guidelines %>%
@@ -3064,7 +3071,8 @@ Over_age<-all_age_diet_and_guidelines %>%
         strip.text.x = element_text(size = 25, face = "bold"),
        legend.text = element_text(size = 25),
                legend.key.height = unit(1.2, "cm"),
-       legend.key.width  = unit(1.2, "cm"))+
+       legend.key.width  = unit(1.2, "cm"),
+      panel.background = element_rect(colour = "black", size=1.5))+
 labs(title=" Global consumption across age\n  of foods associated\n with health risk when overconsumed",
         x ="Age", y = "\nPercent consumption relative \n to guidelines")+
   #guides(fill = guide_legend(nrow = 4, byrow = TRUE))+
@@ -3079,7 +3087,7 @@ Over_age
 ```
 
 
-```{r, fig.width=6, fig.height=15}
+```{r, fig.width=3, fig.height=6}
 Under_age<-all_age_diet_and_guidelines %>%
   filter(direction == "low") %>%
   ggplot(aes(y = Relative_Percent, 
@@ -3114,7 +3122,9 @@ Under_age<-all_age_diet_and_guidelines %>%
         axis.text.y = element_text(size = 28), 
         axis.title.y = element_text(size = 30), 
         axis.title.x = element_text(size =25), 
-        strip.text.x = element_text(size = 25, face = "bold")) +
+        strip.text.x = element_text(size = 25, face = "bold"),
+      panel.background = element_rect(colour = "black", size=1.5),
+      axis.ticks.x = element_blank()) +
   # this changes the size of x axis labels for the facet+
 labs(title="\n Global consumption across age\n  of foods associated\n with health risk when underconsumed",
         x ="", y = "\nPercent consumption relative \n to guidelines")+
@@ -3643,64 +3653,58 @@ Analyses like the one in our case study are important for defining which groups 
 Students can evaluate consumption estimates of another dietary factor besides red meat.
 
 ### Helpful Links
-[Tidyverse](https://www.tidyverse.org/){target="_blank”}
-[RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank”}
-[Interpunct](https://www.shorttutorials.com/mac-os-special-characters-shortcuts/middle-dot.html)
-[regular expressions](https://www.r-bloggers.com/regular-expressions-every-r-programmer-should-know/){target="_blank”}
-[inference](https://www.britannica.com/science/inference-statistics)
-[regression](https://lindeloev.github.io/tests-as-linear/){target="_blank”} 
-[different types of regression](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"}
-[ordinary least squares method](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank”}
-[residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank”}
-See [here](https://scientificallysound.org/2017/06/08/t-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
-[normally distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"} 
-[Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"} 
-[guide to residual diagnostic plots](https://data.library.virginia.edu/diagnostic-plots/) and [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} 
-[residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"}
-[scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"}
-[homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"} 
-[heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"} 
-
-`lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank”}.
-[coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank”}
-[linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank”}
-[Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank”} 
-
+[Tidyverse](https://www.tidyverse.org/){target="_blank"} 
+[RStudio cheatsheets](https://rstudio.com/resources/cheatsheets/){target="_blank"} 
+[Interpunct](https://www.shorttutorials.com/mac-os-special-characters-shortcuts/middle-dot.html){target="_blank"} 
+[Regular expressions](https://www.r-bloggers.com/regular-expressions-every-r-programmer-should-know/){target="_blank"} 
+[Inference](https://www.britannica.com/science/inference-statistics){target="_blank"} 
+[Regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"} 
+[Different types of regression](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} 
+[Ordinary least squares method](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank"} 
+[Residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"} 
 [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20t-test){target="_blank"} 
-Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data is not normally distributed)
-[standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"}
+[ANOVA](http://onlinestatbook.com/2/analysis_of_variance/intro.html){target="_blank"} 
+[$t$-tests and ANOVA are equivalent to regression](https://scientificallysound.org/2017/06/08/t-test-as-linear-models-r/){target="_blank"} also see [here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression 
+[Normally Distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"} 
+[Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"} 
+[Guide to residual diagnostic plots](https://data.library.virginia.edu/diagnostic-plots/) and [Examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} 
+[Residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"} 
+[Scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"} 
+[Homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"} 
+[Heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"} 
+[Interpreting `lm()` output](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank"} 
+[Coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} 
+[Linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank"} 
+[Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} 
+[Mood's Two-Sample Scale Test](https://files.eric.ed.gov/fulltext/ED065559.pdf){target="_blank"}  
+[Standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"} 
+[polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat){target="_blank"}
 
-<u>Tests of Homogeneity of Variance<u/>
 
-[Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"}
-[Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"}
-[Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}
-[polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat)
+<u>Tests of Homogeneity of Variance for 3 or more groups<u/>
 
-
+[Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} 
+[Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} 
+[Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"} 
+ 
 
 Previous links
 
-[Long and Wide Data Formats](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}  
-[Distributions](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"}
-[Normal Distribution](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"}
+[Long and Wide Data Formats](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}    
+[Distributions](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} 
 [Skewed Distributions](http://onlinestatbook.com/2/glossary/skew.html){target="_blank"} 
 [Bimodal Distribution](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} 
 [ggplot2](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}    
-[Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}  
-[Shapiro-Wilk Test](http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html)  
-[Student $t$-test](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20t-test)   
+[Shapiro-Wilk Test](http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html){target="_blank"}   
 [Paired Data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5579465/){target="_blank"}  
 [Welch's $t$-test](https://www.statisticshowto.datasciencecentral.com/welchs-test-for-unequal-variances/){target="_blank"}    
-[Parametric and Nonparametric Methods](https://www.mayo.edu/research/documents/parametric-and-nonparametric-demystifying-the-terms/doc-20408960)  
+[Parametric and Nonparametric Methods](https://www.mayo.edu/research/documents/parametric-and-nonparametric-demystifying-the-terms/doc-20408960){target="_blank"}   
 [Variance](https://stattrek.com/statistics/dictionary.aspx?definition=variance){target="_blank"}  
 [Balanced Study Design](https://www.statisticshowto.datasciencecentral.com/balanced-and-unbalanced-designs/){target="_blank"}  
 [Independent Observations](https://www.stat.cmu.edu/~cshalizi/36-220/lecture-5.pdf){target="_blank"}  
 [Transformation](https://www.statisticshowto.datasciencecentral.com/transformation-statistics/){target="_blank"}  
 [Permutation/Resampling Methods](https://jhu-advdatasci.github.io/2019/lectures/21-resampling-techniques.html){target="_blank"}   
-[Central Limit Theorem](https://www.analyticsvidhya.com/blog/2019/05/statistics-101-introduction-central-limit-theorem/){target="_blank"}  
-[Mood's Two-Sample Scale Test](https://files.eric.ed.gov/fulltext/ED065559.pdf){target="_blank"}  
-[Wilcoxon Signed Rank Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)   
+[Central Limit Theorem](https://www.analyticsvidhya.com/blog/2019/05/statistics-101-introduction-central-limit-theorem/){target="_blank"} [Wilcoxon Signed Rank Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)   
 [Wilcoxon Rank Sum Test](http://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_nonparametric/BS704_Nonparametric4.html){target="_blank"}  
 [Two-sample Kolmogorov-Smirnov Test](https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/ks2samp.htm){target="_blank"}  
 [Type 1 Error](https://web.ma.utexas.edu/users/mks/statmistakes/errortypes.html){target="_blank"}  
@@ -3708,25 +3712,27 @@ Previous links
 [Multiple Testing](https://www.gs.washington.edu/academics/courses/akey/56008/lecture/lecture10.pdf){target="_blank"}    
 [Bonferroni Method of Multiple Testing Correction](http://mathworld.wolfram.com/BonferroniCorrection.html){target="_blank"}
 
-Packages used in this case study
-[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
-[readr](https://readr.tidyverse.org/){target="_blank"}      | to import the csv file data
-[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data 
-[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
-[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style
+Packages used in this case study:
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data 
+[readr](https://readr.tidyverse.org/){target="_blank"}      | to import the csv file data 
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
+[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data 
+[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style 
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a pdf into R   
-[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the pdf of the data
-[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator
-[purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble
-[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with dplyr/stringr/tidyr/purrr
-[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns
-[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers
-[ggpubr](https://cran.r-project.org/web/packages/ggpubr/index.html){target="_blank"}    | to easily add regression line equations to plots
-[forcats](https://forcats.tidyverse.org/){target="_blank"}    | to change details about factors (categorical variables)
-[lmerTest](https://cran.r-project.org/web/packages/lmerTest/lmerTest.pdf)| to perform linear mixed model testing
-[car](https://cran.r-project.org/web/packages/car/car.pdf)| to perform Levene's Test of Homogeneity of Variances
-[ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
-[ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
-[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color pallette 
+[stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the pdf of the data 
+[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator 
+[purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble 
+[tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with  dplyr/stringr/tidyr/purrr 
+[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns 
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers 
+[ggpubr](https://cran.r-project.org/web/packages/ggpubr/index.html){target="_blank"}    | to easily add regression line equations to plots 
+[forcats](https://forcats.tidyverse.org/){target="_blank"}    | to change details about factors (categorical variables)  
+[lmerTest](https://cran.r-project.org/web/packages/lmerTest/lmerTest.pdf)| to perform linear mixed model testing  
+[car](https://cran.r-project.org/web/packages/car/car.pdf)| to perform Levene's Test of Homogeneity of Variances  
+[ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive  
+[ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots 
+[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color pallette  
+[cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined 
+
 
 
