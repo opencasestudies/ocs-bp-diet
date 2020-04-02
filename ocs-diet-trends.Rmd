@@ -1412,7 +1412,7 @@ arrange(guidelines, food)
  Looks good!
  
  
-### Calculate relative consumption 
+### Calculating relative consumption 
 
 Again, we would like to compare the consumption rates of this dietary factors by different groups of people, but ideally we want to know this relative to the optimal guidelines.
 
@@ -1724,7 +1724,7 @@ We have some general sense about global trends for the risk-associated dietary f
 
 We are interested in how much the 2 genders differ, how much the 15 different age groups differ, and how the 195 countries compare. 
 
-In order to make [inference](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between sex, age group and country identity with relative consumption of the dietary factors of interest. One way to look at the strength of association is to use a statistical method called regression.
+In order to make [inference](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between sex, age group, and country identity with relative consumption of the dietary factors of interest. One way to look at the strength of association is to use a statistical method called regression.
 
 We may have learned that we can compare two groups using a $t$-test. For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
 
@@ -1736,7 +1736,7 @@ It turns out that both the $t$-test and the ANOVA, are equivalent to specialized
 
 So what is regression? How can we use regression to compare our groups of interest and look at the relationship between group identity and consumption of dietary factors associated with health risk?
 
-The statistical version of the term was coined in 1877 in this [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between hereditary traits and population averages. The author particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word in general means to go back to a simpler mode. It was noticed that individuals with parents who had an extreme trait, such as exceptional height, tended to have a height more similar to the average of the population rather than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in the author's words the offspring showed:
+The statistical version of the term regression was coined in 1877 in this [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between hereditary traits and population averages. The author particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word in general means to go back to a simpler mode. It was noticed that individuals with parents who had an extreme trait, such as exceptional height, tended to have a height more similar to the average of the population rather than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in the author's words the offspring showed:
 
 > "a *regression* towards mediocrity"
 
@@ -1762,7 +1762,7 @@ We can also write this model like this:
 
 $$Y = \beta_{1}X +\beta_{0}$$
 
-Now $\beta_{1}$ called Beta one is our slope notation and $B0$ Beta not is our intercept notation.
+Now $\beta_{1}$ called Beta one is our slope notation and $B0$ Beta zero (also called Beta not) is our intercept notation.
 
 Importantly the slope ($m$ or $a$ or $\beta_{1}$) gives us a measure of the strength of the influence of the independent variable(s)($X_{i}$) on the dependent variable ($Y$).
 
@@ -1785,9 +1785,9 @@ thedata<-bind_cols(x=data_x,y= data_y)
 ggplot(data =thedata, aes(x =x, y = y)) +geom_point() +geom_smooth(method = "lm", se=FALSE, color="black", formula = y ~ x) +stat_regline_equation()
 ```
 
-In this case, the slope or $\beta_{1}$ is 1 and the intercept is $\beta_{0}$ 10. We can see that if $X$ were 50, $Y$ would be approximately 60. This is very unusual in statistical analysis however, as often the relationship between variables is more complicated.
+In this case, the slope or $\beta_{1}$ is 1 and the intercept is $\beta_{0}$ 10. We can see that if $X$ were 50, $Y$ would be approximately 60. This is very unusual in statistical analysis however, as often the relationship between variables is more complicated and there is more noise in our data.
 
-In other cases there will be greater distances between the line and the points. 
+In these other cases there will be greater distances between the line and the points. 
 
 Like this regression:
 ```{r, echo = FALSE, out.width="400ptx"}
@@ -1802,21 +1802,19 @@ ggplot(data = thedata, aes(x = x, y = y2)) +
 
 In this case, because there is some vertical distance between the line and the data points, there is a bit of what is called error in the model. The formula for the relationship between $X$ and $Y$ does not perfectly describe the data. The distance between the line and each data point is what we call a [residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}. Our least squares method finds the line with the minimized value of the sum of the residual values.
 
-
-
 This concept has been extended to allow for comparisons of **different types of outcomes (the ys)**, to involve **various numbers of covariates (independent variables - the xs)**, and to allow for **different shapes of lines**. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
 
 In R we indicate a linear model like this:
 ```{r, eval = FALSE}
 y ~ x
 ```
-Here our response/outcome variable is on the left of the `~` while our covariates or explanatory variables are on the right of the `~`.
+Here our response/outcome variable is on the left of the `~` while our covariates/explanatory variables are on the right of the `~`.
 
 So let's get back to our data...What types of outcomes do we have?
 
 <b><u>Our outcomes ($Y$): </u></b>
 
-We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** because our values can take on any numeric value within the range of possible values. Binary outcomes in contrast,  have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
+We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** because our values can take on any numeric value within the range of possible values. Binary outcomes, in contrast, have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
 
 Continuous outcomes can be evaluated with various types of linear regressions, while binary outcomes can be evaluated with what is called **logistic** regression. See [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
 
@@ -1827,7 +1825,6 @@ We have both continuous outcomes of raw consumption rates or percentages of cons
 We have data about age group, sex, and region information for all of our outcomes.
 
 Again we are interested in comparing the sexes, the different age groups, and the different countries for their consumption of the different dietary factors. We can apply regression to determine if there is any influence of these group identities on the dietary consumption outcomes. 
-
 
 Before we get started, let's remove the global values from our data and set them aside, as this is really a composite of all the country values.
 
@@ -1843,7 +1840,7 @@ Let's focus on the dietary factors that appeared to potentially have a differenc
 
 > "If we just look at differences by sex for the specific dietary factors,  males appear to potentially consume more of many of the factors, including possibly more sodium, fiber, calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit."
 
-First let's take a look at red meat.
+Let's take a look at red meat.
 
 We can compare the red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
 
@@ -1875,7 +1872,7 @@ I (independent) - The samples are independent from one another.
 
 N (normal) - The residuals are normally distributed. Note that the variables themselves do not need to be normally distributed.
 
-E (equal variances) - The variance of the residuals for the groups is similar. This is called [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. In other words the residuals are of similar size along the line.
+E (equal variances) - The variance of the residuals for the groups is similar. This is called [homoscedasticity](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. In other words the residuals are of similar size along the line.
 
 It's also important that if there are more than one predictor variables, that these are not correlated.
 
@@ -1897,7 +1894,7 @@ diet_and_guidelines %>%
   facet_wrap(~ sex) 
 ```
 
-Now we add another dimension to our facet with the plus sign. Now it becomes very useful that we reformatted our data to the long format, as it makes it easy to facet across the different percentages that we calculated. We can specify that we want to have different y axis scales using the `scales` argument as:  `scales = "free"`.
+Now we add another dimension to our facet with the plus sign. Now it becomes very useful that we reformatted our data to the long format, as it makes it easy to facet across the different percentages that we calculated. We can specify that we want to have different Y axis scales using the `scales` argument as:  `scales = "free"`.
 
 ```{r}
 diet_and_guidelines_long %>%
@@ -1935,7 +1932,7 @@ diet_and_guidelines_long %>%
   geom_qq_line()
 ```
 
-OK, so we can get our data to look fairly normal. It isn't perfect, but we have a large number of samples, so this is good for our $t$-test assumptions. The other thing we need to check is if the variance in red meat consumption is similar between the two genders. We can use the `var.test()`  of the `stats` package using the log normalized data, as this data is fairly normally distributed. We can use the mood.test on the raw data which is skewed.
+OK, so we can get our data to look fairly normal. It isn't perfect, but we have a large number of samples, so this is good for our $t$-test assumptions. The other thing we need to check is if the variance in red meat consumption is similar between the two genders. We can use the `var.test()`  of the `stats` package using the log normalized data, as this data is fairly normally distributed. We could also use the mood.test on the raw data which is skewed.
 
 ```{r}
 mood.test(pull(filter(diet_and_guidelines,
@@ -1949,9 +1946,9 @@ var.test(log10(pull(filter(diet_and_guidelines,
                      food == "red meat"), sex))
 ```
 
-The p value >.05 for both tests, thus we can conclude that there is not enough evidence to reject the null (no difference in the spread of the distributions), thus we conclude that variance is roughly equal. Great... so we are in pretty good shape for both the $t$-test and the linear regression.
+The p value >.05 for both tests, thus we can conclude that there is not enough evidence to reject the null (no difference in the spread of the distributions), thus we conclude that variance is roughly equal. Great, so we are in pretty good shape for both the $t$-test and the linear regression.
 
-So now we can comparing the consumption of red meat by both genders using both a $t$-test and a linear regression. We can use the base `plot()` function to get information about our residuals. This helps us to assess if we are violating our linear regression assumptions. Typically we would first check the nontransformed data, because it is not required that the predictor variables have a normal distribution. However to allow for our comparison with the $t$-test, we will assess the log transformed `Relative_Percent` data.
+So now we can compare the consumption of red meat by both genders using both a $t$-test and a linear regression. We can use the base `plot()` function to get information about our residuals. This helps us to assess if we are violating our linear regression assumptions. Typically we would first check the nontransformed data, because it is not required that the predictor variables have a normal distribution. However to allow for our comparison with the $t$-test, we will assess the log transformed `Relative_Percent` data. To do this we first need to specify our model using `lm()`. Because we are piping in our data to our model, we need to indicate that this is the data we intend to use by using `.`  for the `data` argument.
 
 ```{r}
 diet_and_guidelines %>%
@@ -1962,12 +1959,14 @@ diet_and_guidelines %>%
 
 Our second plot shows us that our residuals are a bit negatively or [left skewed](http://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html), in this case just like the `Relative_Percent` data. However, linear regression is relatively robust to tailed distributions and again for the sake of comparison we will show the results here. It is possible that perhaps another term needs to be included in our model to improve this. We will check this in a bit.
 
-We can see that our residuals are similar between males and females, as the first and third plot show similar values in the two lines. This is suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. This like our variance test gives us information about the differences in variance between the two groups. Here is what the the plots would look like if the variance were not the same:
+We can see that our residuals are similar between males and females, as the first and third plot show similar values in the two lines. This is suggestive of [homoscedasticity](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. This like our variance test gives us information about the differences in variance between the two groups. Here is what the the plots would look like if the variance were not the same:
 
-```{r, eval = FALSE}
+```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
   mutate(example_perc =case_when(
+# this will artifically make our female data have different 
+#  varaince from the male data
     sex == "Female" ~  log(Relative_Percent),
     sex == "Male" ~ Relative_Percent)) %>%
     lm(log10(example_perc) ~ sex, data=.) %>%
@@ -1976,16 +1975,17 @@ diet_and_guidelines %>%
 ```
 
 
+OK, so now we will evaluate the relationship between `sex` identity and `Relative_Percent` consumption of `red meat` using both a $t$-test and a linear regression:
+
 ```{r}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  t.test(log10(Relative_Percent) ~ sex, data= ., var.equal = TRUE)
 
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
   lm(log10(Relative_Percent) ~ sex, data=.) %>%
   summary()
-
-diet_and_guidelines %>%
-  filter(food == "red meat") %>%
-  t.test(log10(Relative_Percent) ~ sex, data= ., var.equal = TRUE)
 ```
 
 Notice how the $t$ value and the p-value are the same! (Well almost, the $t$ value is negative in the `t.test()` output because the female group is being used as reference group, while the male group is being used as the reference group in `lm()`). We can fix this using the `fct_inorder()` function of the `forcats` package which is all about factors. This function allows us to order the factor by what appears first. In this case "male" appears first, so now our output will match that of the `lm()` function.
@@ -2008,7 +2008,7 @@ diet_and_guidelines %>%
 
 ```
 
-Now they match. Notice that the degrees of freedom also match, both results show 388 degrees of freedom. We are estimating 2 parameters for the linear model the two $\beta$ coefficients, (the slope and intercept), and for the $t$-test we are estimating the means of two groups (males and females). Overall we have two samples (male and female) for each of the 195 countries. 
+Now they match. Notice that the degrees of freedom also match, both results show 388 degrees of freedom. We are estimating two parameters for the linear model the two $\beta$ coefficients, (the slope and intercept), and for the $t$-test we are estimating the means of two groups (males and females). Overall we have two samples (male and female) for each of the 195 countries. 
 
 Thus, the overall sample number is: $n = 195*2 = 390$
 
@@ -2016,7 +2016,7 @@ $$df = n - # parameters estimating$$
 Thus the degrees of freedom can be calculated as: $df = 390 -2 = 388$
 
 
-In the `lm()` output, the Beta not ($\beta_{0}$) which can be interpreted as the intercept or the mean value when sex is not male (so in this case when sex is female) has the same value as the calculated mean of in the `t.test()` output. The Beta one ($\beta_{1}$)  can be interpreted as the slope of the regression line or the difference between the means of the two groups. We can also think of this as as the change in $Y$ with one unit change in $X$.  
+In the `lm()` output, the Beta zero ($\beta_{0}$) which can be interpreted as the intercept or the mean value when sex is not male (so in this case when sex is female) has the same value as the calculated mean of in the `t.test()` output. The Beta one ($\beta_{1}$)  can be interpreted as the slope of the regression line or the difference between the means of the two groups. We can also think of this as as *the change in $Y$ with one unit change in $X$*.  
 
 If we subtract the means calculated in the `t.test()` output, we get the value of $\beta_{1}$ (the slope or the `sexMale estimate`) of the `lm()` output!
 
@@ -2062,18 +2062,17 @@ wide_diet <-diet_and_guidelines %>%
 
 glimpse(wide_diet)
 
-#The older function spread() would not allow for multiple columns/variables 
+#The older function tidyr::spread() would not allow for multiple columns/variables 
 ```
 
 ### Paired $t$-test and linear model with two fixed effects
 Now will perform the paired versions of our tests. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
 
-The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `Relative_Percent` consumption while keeping the country identity fixed or constant, or in other words controlling / adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate / explanatory variable terms, we would call this a **multiple linear regression**.
+The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `Relative_Percent` consumption while keeping the country identity fixed or constant, or in other words controlling/adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate/explanatory variable terms, we would call this a **multiple linear regression**.
 
 So now our model in words will be: 
 
-Mean relative consumption of red meat is dependent on sex and country.
-
+Mean relative consumption of red meat is dependent on sex and country. Or in other words, sex and location infleunce the consumption of red meat of different populations around the world.
 
 Then the coefficient for `sex` will be different from what we had in our previous `lm()` model, as it will be calculated while keeping `location_name` or the country where the consumption value was obtained fixed, or in other words "controlling for `location_name`." This will also result in output for each of the countries. The [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} here represent the average consumption value for each country while accounting for sex.
 
@@ -2093,16 +2092,23 @@ plot(lm(
   pull(filter(diet_and_guidelines, food == "red meat"),
             location_name)))
 ```
+
 This looks much better than our previous plots.
 
 This [guide](https://data.library.virginia.edu/diagnostic-plots/) provides more information on how to interpret these residual diagnostic plots.
 
-Based on our [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}, we appear to have some outliers perhaps at the extreme ends of our tails but overall the residuals look fairly normal. The [residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"} shows us if the relationship between our outcome variable and our predictors looks linear, if there is unequal error variance between groups, and if there are possible outliers. Ideally this should look like a band of points equally centered around zero. Here are [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} of these plots that might show issues of concern. Overall our plot looks fairly good. The shape of our data looks fairly linear (the residuals don't appear to have a shape other than a band or line), There font appear to be any extreme outliers (no data points are especially far away) and the points have the same general range around the line for the various fitted values. There are a few points with wider residuals at the higher fitted values, but overall this looks quite reasonable. our [scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"} also shows us that our variance looks fairly equal across groups as our values show a relatively even spread. A larger  bend in the line would indicate more variation in the variance across our independent variable groups also known as [heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"}. There is only a slight bend in the line for our data suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. So our assumptions look pretty good:
+Based on our [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}, we appear to have some outliers perhaps at the extreme ends of our tails but overall the residuals look fairly normal. The [residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"} shows us if the relationship between our outcome variable and our predictors looks linear, if there is unequal error variance between groups, and if there are possible outliers. Ideally this should look like a band of points equally centered around zero. Here are [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} of these plots that might show issues of concern. 
+
+Overall our plot looks fairly good. The shape of our data looks fairly linear (the residuals don't appear to have a shape other than a band or line), there does not appear to be any extreme outliers (no data points are especially far away) and the points have the same general range around the line for the various fitted values. There are a few points with wider residuals at the higher fitted values, but overall this looks quite reasonable. 
+
+Our [scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"} also shows us that our variance looks fairly equal across groups as our values show a relatively even spread. A larger  bend in the line would indicate more variation in the variance across our independent variable groups also known as [heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"}. There is only a slight bend in the line for our data suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. So our assumptions look pretty good:
 
 1) Linear - the relationship appears to be fairly linear 
 2) Independence - now that we have taken care of the location structure in our data, our samples are independent
 3) Normality - the residuals appear to be fairly normally distributed and we have a large number of samples to help account for minor violations
-4) Equal variance - the variance in the residuals appear to be fairly equal across the groups of the independent/predictor variables.
+4) Equal variance - the variance in the residuals appear to be fairly equal across the groups of the independent/predictor variables
+
+So now we will get the sumary for our model:
 
 #### {.scrollable }
 ```{r}
@@ -2126,9 +2132,10 @@ Alternatively, we can perform a slightly different regression.
 In this case we will use the `lmer()` function of the `lmerTest` package. This function allows us to perform what is called a [linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank"}. This type of regression is called **mixed** because it contains both **fixed** and **random** effects.
 
 There are many different definitions for **fixed** and **random** effects and the difference is conceptually complex and context specific. 
+
 However in simplistic terms, **fixed effects** are generally speaking the variables of interest that we have reason to believe explain or predict the outcome or response variable, while random effects are those that may introduce additional variance in the influence of those predictor variables on the outcome variable. For example, they may provide information about **group or batch structures** within the data.  
 
-In our case, we are interested in the influence of sex on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in other words we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (Relative_Percent consumption when sex is assigned to the zero value - not male) may be different for each country.
+In our case, we are interested in the influence of `sex` on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. We don't want to model for `location_name` itself, but just model it's influence on the relationship of `sex` on consumption of red meat. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in other words we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (Relative_Percent consumption when sex is assigned to the zero value - not male) may be different for each country.
 
 Again lets see what our plots look like first:
 
@@ -2170,12 +2177,12 @@ t.test(log10(pull(filter(wide_diet, food == "red meat"),
 
 You can see that now our degrees of freedom are 194, which makes sense because now we have matched or paired values for the 195 different regions and so $df = n-1 parameter = 195 -1 = 194$. In this case we aren't calculating two different means in our $t$-test, but instead this is a one sample $t$-test of the differences between males and females across all the country pairs, so thus only one parameter. It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} and results in the same degrees of freedom.
 
-Most importantly, again we get the same $t$-value and p-value with the two tests.
+Most importantly, again we get the **same** $t$-value and p-value with the two tests!
 
 
-You can see that yet again our degrees of freedom are 194, and again we get the same $t$-value and p-value with all tests. In this case we also have information about how each of the countries might influence mean consumption. So the decision of which test to perform depends on your question of interest. In this case we were particularly interested in the influence of sex, so setting `location_name` to a random effect provides the same level of detail about sex without as much information about `location_name`, so that might be ideal. The results as we can see are the same.
+You can see that yet again our degrees of freedom are 194, and again we get the same $t$-value and p-value with all tests. In this case we also have information about how each of the countries might influence mean consumption. So the decision of which test to perform depends on your question of interest. In this case we were particularly interested in the influence of `sex`, so setting `location_name` to a random effect provides the same level of detail about sex without as much information about `location_name`, so that might be ideal. As we can see, the results, in this case, are the same.
 
-We can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the means or that sex has no association or influence on red meat consumption. Therefore, it appears that men consume significantly more red meat than females globally. 
+We can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the means or that `sex` has no association or influence on red meat consumption. Therefore, it appears that men consume significantly more red meat than females globally. 
 
 Let's choose another dietary factor to compare between males and females. 
 
@@ -2237,7 +2244,7 @@ means<-wide_diet %>%
 means
 ```
 
-Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-value and the $p$-value match. The $\beta_{1}$ coefficient value (slope) matches the difference between the means value calculated in $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. 
+Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-value and the p-value match. The $\beta_{1}$ coefficient value (slope) matches the difference between the means value calculated in $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. Ideally you would want to check the residual plots of the model, but we will skip this for the sake of space. 
 
 ### ANalysis Of VAriance (ANOVA) test
 
@@ -2245,14 +2252,12 @@ Now we are interested in the influence of age group on dietary consumption, beca
 
 If we wanted to test the hypothesis that there are any age group differences, that at least one of the groups is different from the others; we could use an [ANOVA test](http://onlinestatbook.com/2/analysis_of_variance/intro.html){target="_blank"}. This test allows us to compare means of 3 or more groups by evaluating the variance of the data within the groups and among the groups. 
 
-
-
 Our null hypothesis is that all age groups have equal means:
 $$ H_0: \mu_{1} = \mu_{2} =\mu_{3}=\mu_{4} = ... \mu_{15} $$
 
 The alternative hypothesis is that at least one age group mean is not equal to the others.
 
-*Importantly*, if we reject the null, we do not know which group means are different from one another. Subsequent testing is required if we want to know this information. In this case we call this type of non-specific hypothesis an "omnibus" hypothesis.
+**Importantly**, if we reject the null, we *do not know which group means are different from one another*. Subsequent testing is required if we want to know this information. In this case we call this type of non-specific hypothesis an "omnibus" hypothesis.
 
 You could actually perform an ANOVA to compare two means, but in this case you would get an $F$-statistic instead of a $t$-statistic which would be equivalent to $t^2$. However it is not conventional to use ANOVA for only 2 means. The $F$-statistic is derived form the $F$-test is used for a few different type of tests. In the ANOVA the F-test is calculated as:
 
@@ -2267,7 +2272,7 @@ It turns out that the ANOVA test is also equivalent to a specialized form of reg
 
 We will demonstrate this by evaluating how the consumption of red meat varies by age group using an ANOVA and a linear regression.
 
-Thinking about our interest in wanting to know how consumption differs between age groups from the linear regression perspective, we could also describe our null hypothesis as:
+Thinking about how we want to know if red meat consumption differs between age groups from the linear regression perspective, we could also describe our null hypothesis as:
 
 There is no influence of age group identity on consumption or there is no relationship between age group identity and consumption.
 
@@ -2292,7 +2297,7 @@ all_age_diet_and_guidelines %<>%
 The ANOVA assumptions are quite similar to the $t$-test assumptions:
 
 1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n>30)
-2) Equal variance between the groups - aka Homogeneity of variance (make sure you do the correct test if the data is not normal)
+2) Equal variance between the groups - aka [Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"} (make sure you do the correct test if the data is not normal)
 3) Balanced sample sizes of the groups
 4) Independent observations (or independent paired observations)
 
@@ -2307,22 +2312,24 @@ all_age_diet_and_guidelines %>%
   geom_qq() +
   geom_qq_line()
 ```
+
 OK, these look pretty good.
 
 Now let's look at variance.
 
 The [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} works well if the data appears to be quite normally distributed, while the [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality of the data.
-Another popular test is the [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner- Killeen test.
+
+Another popular test is the [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, which is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner-Killeen test.
 
 All three tests test the null hypothesis that the variances are equal among all of the groups.
 
-Note: Remember that $\sigma$ is the [standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"}  and that variance = $\sigma^2$
+Note: Remember that $\sigma$ is the [standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"}  and that $\sigma^2$ is the variance.
 
-recall that $\sigma^2 = \frac{\sum(x_i - \mu)^2}{N}$ when we are thinking of the true populations of the groups
+Recall that  $\sigma^2 = \frac{\sum(x_i - \mu)^2}{N}$  when we are thinking of the true populations of the groups.  
 
-Where $N$ is the population size
-      $x_i$ are each value from the population
-      $\mu$ is the mean of the population
+Where $N$ is the population size  
+      $x_i$ are each value from the population  
+      $\mu$ is the mean of the population  
 
 Thus the variance is the average difference of the values in the distribution from the mean of the distribution. 
 
@@ -2369,7 +2376,7 @@ fligner.test(
             age_group_name)) 
 ```
 
-In all cases our data does not appear to violate the Homogeneity of Variances assumption as our p value was < 0.05 for all three tests, thus there is not enough evidence to reject the null.
+In all cases our data does not appear to violate the [Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"} as our p value was > 0.05 for all three tests, thus there is not enough evidence to reject the null. 
 
 We will also confirm again that our data is balanced for all groups, meaning we have the same or similar number of samples for each group.
 
@@ -2380,7 +2387,9 @@ all_age_diet_and_guidelines %>%
 #195 countries and 2 sex groups = 390
 ```
 
-Now we will use the `aov()` function of the `stats` package. We will be performing what is called a [one-way ANOVA](http://onlinestatbook.com/2/analysis_of_variance/one-way.html){target="_blank"} because we only have one dependent/response/outcome variable.
+Looks good!
+
+Now we will use the `aov()` function of the `stats` package to perform the ANOVA test. We will be performing what is called a [one-way ANOVA](http://onlinestatbook.com/2/analysis_of_variance/one-way.html){target="_blank"} because we only have one dependent/response/outcome variable. We will also perform a linear regression for comparison.
 
 #### {.scrollable }
 ```{r}
@@ -2402,22 +2411,24 @@ all_age_diet_and_guidelines%>%
 ####
 
 
-We can see that the $F$-statistic (at the bottom of the lm output) is the same in both outputs and the p-value for the $F$-statistic is the same!
+We can see that the $F$-statistic (at the bottom of the `lm()` output) is the same in both outputs and the p-value for the $F$-statistic is the same!
 
-We also see that the degrees of freedom for the $F$-statistic is 14. This makes sense because we have 15 different age groups and degrees of freedom for the $F$-statistic are calculated as $$df = n - 1$$. 
+We also see that the degrees of freedom for the $F$-statistic is 14. This makes sense because we have 15 different age groups and degrees of freedom for the $F$-statistic are calculated as $df = n - 1$. 
 
 
-So in our case: 
-$$df = 15 -1$$
+So in our case: $df = 15 -1$.
+
+
 The difference here is that with the `lm()` test we also get information about how the individual age groups influence `Relative_Percent` consumption of `fruits`. Notice that if we look at all the age groups:
+
 ```{r}
 all_age_diet_and_guidelines %>% 
   distinct(age_group_name)
-
 ```
-We can see that our `lm()` results are missing one of the age groups, the `25 to 29` age group. That is because this is the reference group and the coefficients indicate the slope or difference in `Relative_Percent` consumption rates for each listed age group compared to the reference group. 
 
-Now let's account for the paired `location_name`  structure within our data as well. To do this we add this as another term in the `aov()` and the `lm()` formula with a `+`. Note that now that we have two categorical independent variables / covariates/ predictors.  In this case we are comparing both the age groups and the location groups. The `anova()` function of the `stats` package will be used with the `lm()` function print the resulting $F$-statistic, but not the statistics for each of the levels of the age groups and location groups. This function does not actually directly perform ANOVA like the `aov()` function, but instead prints a variance table using a `lm()` or `glm()` object.
+We can see that our `lm()` results are missing one of the age groups, the `25 to 29` age group. That is because this is the **reference group** and the coefficients indicate the slope or difference in `Relative_Percent` consumption rates for each listed age group *compared* to the reference group. 
+
+Now let's account for the paired `location_name`  structure within our data as well. To do this we add this as another term in the `aov()` and the `lm()` formula with a `+`. Note that now that we have two categorical independent variables/covariates/predictors.  In this case we are comparing both the age groups and the location groups. The `anova()` function of the `stats` package will be used with the `lm()` function to print the resulting $F$-statistic, but not the statistics for each of the levels of the age groups and location groups. This function does not actually directly perform ANOVA like the `aov()` function, but instead prints a variance table using a `lm()` or `glm()` object.
 
 #### {.scrollable }
 
@@ -2448,7 +2459,7 @@ anova(lm(
 ```
 #### 
 
-We can see that indeed the $F$-values and p-values match. In this case, this analysis suggests that there is a significant infleunce of age group identity on consumption, even when controlling for location identity and vice versa. The ANOVA results indicate that the means are different across these groups, but it does not inform us about which groups are different. If we instead perform the `lm()` analysis and use `summary()` to print the results instead of `anova()`, we can get more information about possible specific group differences. Recall however, that these are relative to the reference level for the age group and location and that these values are calculated for the effect on consumption while controlling for the other model term.
+We can see that indeed the $F$-values and p-values match. In this case, this analysis suggests that there is a significant infleunce of age group identity on consumption, even when controlling for location identity and vice versa. The ANOVA results indicate that the means are different across these groups, but it **does not** inform us about which groups are different. If we instead perform the `lm()` analysis and use `summary()` to print the results instead of `anova()`, we can get more information about possible specific group differences. Recall *however*, that these are **relative to the reference** level for the age group and location and that these values are calculated for the effect on consumption while controlling for the other model term.
 
 #### {.scrollable }
 ```{r}
@@ -2467,7 +2478,7 @@ summary(lm(
 ####
 
 
-We could instead perform a similar analysis as we did for the two group analysis where we controlled for the paired data structure using a random effect based on location. This is how we would could account for this data structure within the `aov()` function using `Error()` and again using the `lmer()` function with `1|variable_name`.
+We could instead perform a similar analysis as we did for the two group analysis where we controlled for the paired data structure using a random effect based on location. This is how we would could account for this data structure within the `aov()` function using `Error()` and again using the `lmer()` function with `1|variable_name` and the `anova()` function to print the results.
 
 #### {.scrollable }
 ```{r}
@@ -2499,9 +2510,9 @@ log10(pull(filter(all_age_diet_and_guidelines,
 Notice now the results only show for the `age_group_name`, but they are the same as in the analysis with the fixed effect for `location_name`.
 
 
-### Modeling all of our groups of interest
+### Modeling all groups of interest
 
-Now that we know that linear regressions allow us to perform group comparisons like $t$-tests and ANOVAs, but can also provide is with additional information, we can extend our analysis a bit further. We could  include `sex`, `location_name`, and `age_group_name` in the same linear model and get information about how each of these factors influences dietary consumption, while accounting for the other factors. 
+Now that we know that linear regressions allow us to perform group comparisons like $t$-tests and ANOVAs, and can also provide is with additional information, we can extend our analysis a bit further. We could  include `sex`, `location_name`, and `age_group_name` in the same linear model and get information about how each of these factors influences dietary consumption, while accounting for the other factors. 
 
 ```{r}
 
@@ -2521,30 +2532,39 @@ anova(lm(
 
 ```
 
-We can see that sex, location, and age group all influence consumption of red meat. 
+We can see that `sex`, `location_name`, and `age_group_name` all individually significantly influence the consumption of red meat, even when controlling for the other two predictor variables.
 
 ## Data Visualization
 
-
-### Red Meat
 Now that we have statistically analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
 
+### Red Meat
 
 Let's try to make a plot that shows the relationship of age group, sex, and location on consumption of red meat.
 
-First we will filter our data for only the data associated with red meat, and then we will create a boxplot graph with age group as the x axis, but include box plots for each sex for each age group. We can include an additional subplot to just look at the relationship of sex and consumption.
+First we will filter our data for only the data associated with red meat, and then we will create a boxplot graph with age group as the x axis, but include box plots for each sex for each age group. We can include an additional subplot to just look at the relationship of sex and consumption. Recall that the `ggplot2` package is very useful for making figures and uses a layering structure to make plots using the `+` between layers.
 
 ```{r}
 
 all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  ggplot(aes(y = Relative_Percent , x= age_group_name, col = sex))+
-  geom_boxplot()+
-  geom_jitter(aes(x =sex, y =Relative_Percent), 
-                width = .2, size =2, shape =21)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1),
-        legend.position = "none")
+  filter(food == "red meat") %>%
+  ggplot(aes(x = age_group_name,
+             y = Relative_Percent, 
+           col = sex)) +
+  geom_boxplot() +
+# this adds the individual points for the sex comparison
+  geom_jitter(aes(x = sex, 
+                  y = Relative_Percent), 
+# width specifies how wide the points will be plotted
+              width = .2, 
+               size = 2, 
+              shape = 21) +
+# this angles the x axis text and removes the legend
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1),
+    legend.position = "none")
 ```
+
 OK, this is pretty good, but we can do better.
 
 Let's try specifically looking at the countries that over-consumed red meat. We can look at these countries by filtering our data where `Relative_Percent` was greater than 100%. Now we will overlap the jitter points and the boxplot using the `position_jitterdoge()` as the position in `geom_pont()`. In order to not obscure our boxplots, we can use the argument `alpha` to make our jitter points more transparent.
@@ -2552,45 +2572,54 @@ Let's try specifically looking at the countries that over-consumed red meat. We 
 ```{r}
 
 all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  filter(Relative_Percent >100) %>%
+  filter(food == "red meat") %>%
+  filter(Relative_Percent > 100) %>%
   ggplot(aes(y = Relative_Percent,
-             x= age_group_name, fill = sex))+
-  geom_point(position=position_jitterdodge(), 
-             aes(col = sex),
-             alpha = 3/10)+
-  geom_boxplot(outlier.shape=NA)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+             x = age_group_name, 
+          fill = sex)) +
+# this position option will separate the points by sex 
+# this is determined by the fill argument in the ggplot() function
+# could also use col argument but it would change the style a bit
+  geom_point(position = position_jitterdodge(),
+              aes(col = sex),
+                alpha = 3/10) +
+  geom_boxplot(outlier.shape=NA) +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 ```
 
 What are the countries that have such high consumption rates?
 
 ```{r}
 all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  filter(Relative_Percent >1000)
+  filter(food == "red meat") %>%
+  filter(Relative_Percent > 1000)
 ```
  
  Looks like the males in Laos and Timor_Leste have the highest consumption.
 
- 
  
 Now let's plot just the populations that eat less than the optimal amount by filtering for `Relative_Percent` < 100%.
  
 ```{r}
 
 all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  filter(Relative_Percent <100) %>%
-  ggplot(aes(y = Relative_Percent , x= age_group_name, fill = sex))+
-  geom_point(position=position_jitterdodge(), 
-             aes(col = sex), 
-             alpha = 3/10)+
-  geom_boxplot(outlier.shape=NA)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-
+  filter(food == "red meat") %>%
+  filter(Relative_Percent < 100) %>%
+  ggplot(aes(y = Relative_Percent, 
+             x = age_group_name, 
+          fill = sex)) +
+  geom_point(position = position_jitterdodge(), 
+              aes(col = sex), 
+                alpha = 3/10) +
+  geom_boxplot(outlier.shape=NA) +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 ```
-Nice! It would be nice to be able to know what countries the data points correspond to. One way to do this is using a package called `ggiraph`. This package is really helpful for creating interactive graphs. We will use the `geom_point_interactive()` function to allow us to hover over points to display the country name. We indicate what label we want with the `tooltip` argument.
+
+Nice! It would be nice to be able to know what countries each data point corresponds to. One way to do this is using a package called `ggiraph`. This package is really helpful for creating interactive graphs. 
+
+We will use the `geom_point_interactive()` function to allow us to hover over points to display the country name. We indicate what label we want with the `tooltip` argument.
 This function is similar to the normal `geom_point()` function. Thus, we will include the same arguments as before. However, we will also split the male and female data using `facet_wrap()` to make things a bit less overwhelming.
 
 Notice that we are creating a plot object before we use the `geom_point_interactive()`.
@@ -2598,23 +2627,24 @@ Notice that we are creating a plot object before we use the `geom_point_interact
 We are also rendering the plot with the `girafe()` function of the `ggiraph` package.
 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 
 g<-all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  filter(Relative_Percent <100) %>%
+  filter(food == "red meat") %>%
+  filter(Relative_Percent < 100) %>%
   ggplot(aes(y = Relative_Percent , 
-             x= age_group_name, 
-             fill = sex))+
-  geom_boxplot(outlier.shape=NA)+
+             x = age_group_name, 
+          fill = sex)) +
+  geom_boxplot(outlier.shape = NA) +
   facet_wrap(~sex)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
   
  g <- g + geom_point_interactive(aes(
                 color = sex, 
-                tooltip = location_name), 
-                size = 2,
-                position=position_jitterdodge(), 
+              tooltip = location_name), 
+                 size = 2,
+             position = position_jitterdodge(), 
                 alpha = 3/10) 
  
 girafe(code = print(g))
@@ -2629,45 +2659,52 @@ From this plot we can see the countries with populations that do well by not ove
 Let's do the same thing for the over-consuming countries. We can also take this one step further to show all the points for the same country when we hover over one data point by using the `data_id` argument of the `geom_point_interactive()` function. 
 
 
-We can also add links to Wikipedia pages for these countries using the `onclick` argument. See this [link](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html){target="_blank"} for more information on using the `ggirpah` package.
+We can also add links to Wikipedia pages for these countries using the `onclick` argument. See this [link](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html){target="_blank"} for more information on using the `ggirpah` package. We will use the base `sprintf()` function to format our urls for the Wikipedia links into C style to open a new tab for the link when a user clicks on the figure.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 
 all_age_diet_and_guidelines %<>% 
   mutate(link = sprintf("window.open(\"%s%s\")",
-  "http://en.wikipedia.org/wiki/",  as.character(pull(all_age_diet_and_guidelines,location_name))))
+  "http://en.wikipedia.org/wiki/",  
+  as.character(pull(all_age_diet_and_guidelines,
+                              location_name))))
 
 g<-all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  filter(Relative_Percent >100) %>%
+  filter(food == "red meat") %>%
+  filter(Relative_Percent > 100) %>%
   ggplot(aes(y = Relative_Percent , 
              x= age_group_name, 
-             fill = sex))+
-  geom_boxplot(outlier.shape=NA)+
-  facet_wrap(~sex)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
-  expand_limits(y = 99) + theme(legend.position = "none")
+             fill = sex)) +
+  geom_boxplot(outlier.shape=NA) +
+  facet_wrap(~sex) +
+  theme(legend.position = "none",
+            axis.text.x = element_text(angle = 70, 
+                                       hjust = 1)) +
+  expand_limits(y = 99)
+
   
  g <- g + geom_point_interactive(aes(
                 color = sex, 
-                tooltip = location_name,
-                data_id = location_name,
-                onclick = link), 
-                size = 2,
-                position=position_jitterdodge(), 
+              tooltip = location_name,
+              data_id = location_name,
+              onclick = link), 
+                 size = 2,
+             position = position_jitterdodge(), 
                 alpha = 3/10) 
+ 
 g<-g + geom_point_interactive(data =
 all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  filter(Relative_Percent >100) %>%
+  filter(food == "red meat") %>%
+  filter(Relative_Percent > 100) %>%
   filter(location_name == "United States"),
    aes(fill = location_name, 
-       tooltip = location_name,
-       data_id = location_name,
-       onclick = link),
+    tooltip = location_name,
+    data_id = location_name,
+    onclick = link),
        size = 4,
-       position=position_jitterdodge(),
-       alpha = 5/10, color = "black")
+   position = position_jitterdodge(),
+      alpha = 5/10, 
+      color = "black")
  
 girafe(code = print(g))
 
@@ -2678,11 +2715,13 @@ How do different age groups look:
 ```{r}
 
 all_age_diet_and_guidelines %>%
-  filter(food == "red meat")%>%
-  ggplot(aes(y = Relative_Percent , x= sex, fill = age_group_name))+
-  geom_boxplot()+
-  #geom_point(pch = 21, position = position_jitterdodge()) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  filter(food == "red meat") %>%
+  ggplot(aes(y = Relative_Percent , 
+             x = sex, 
+          fill = age_group_name)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 
 ```
 
@@ -2691,7 +2730,7 @@ all_age_diet_and_guidelines %>%
 
 We would like to get a general sense of how consumption of these dietary factors differs around the world and we would like to know how the US compares to other countries. 
 
-Before we do this let's change the labels of the foods so that they will fit more easily
+Before we do this let's change the labels of the foods by adding new line breaks so that they will fit more easily.
 
 ```{r}
 diet_and_guidelines[["food"]] <- str_replace_all(
@@ -2732,6 +2771,7 @@ all_age_diet_and_guidelines %>%
 ```
 
 #### Under-consumed foods
+
 To choose the colors for our plot we can use show_col to preview color options from the viridis palette
 ```{r}
 scales:: show_col(viridis_pal()(3))
@@ -2743,64 +2783,73 @@ Under<-diet_and_guidelines %>%
   filter(Relative_Percent <110) %>%
   ggplot(aes(y = Relative_Percent, 
              x = food, 
-             color = sex)) +
-  geom_point(position=position_jitterdodge(), 
-             color = "dark grey",
-             alpha = 7/10,
-             size = 7,
+         color = sex)) +
+  geom_point(position = position_jitterdodge(), 
+                color = "dark grey",
+                alpha = 7/10,
+                 size = 7,
     # this specifies how to separate the points:
-             aes(fill = sex))+ 
+             aes(fill = sex)) + 
   geom_boxplot(outlier.shape = NA, 
                color = "black" ,
                lwd=2.5,
-               aes(fill = sex))+
-
+               aes(fill = sex)) +
+  #this allows us to use specific colors
     scale_fill_manual(values = 
                         c("#481567FF", 
-                          "#1F968BFF"))+
-      geom_hline(yintercept=100, 
-               linetype="dashed",
-               color = "red", 
-               size =3) +
-   scale_y_continuous(breaks=c(0,25,50, 75, 100), labels =c(0,25, 50, 75, "100% \n optimal amount") )
+                          "#1F968BFF")) +
+      geom_hline(yintercept = 100, 
+                   linetype = "dashed",
+                      color = "red", 
+                       size = 3) +
+   scale_y_continuous(breaks=c(0,25,50, 75, 100), 
+                      labels =c(0,25, 50, 75, 
+                      "100% \n optimal amount"))
 
 Under
 
 #create a larger black point for the US data
-Under<-Under + geom_point(data = diet_and_guidelines %>%
-                    filter(direction == "low",
+Under<-Under +
+  geom_point(data = diet_and_guidelines %>%
+      filter(direction == "low",
          location_name == "United States"),
-             position=position_jitterdodge(
-               jitter.width=0.01,
-               dodge.width=0.7), 
-               color = "black",
-               size = 11,
-             aes(fill = sex, shape = location_name))
+         position = position_jitterdodge(
+     jitter.width = 0.01,
+      dodge.width = 0.7), 
+            color = "black",
+             size = 11,
+         aes(fill = sex, 
+            shape = location_name))
 
 #create a smaller yellow point on top for the US data
  
-Under<-Under + geom_point(data = diet_and_guidelines %>%
-                    filter(direction == "low",
-                       location_name == "United States"),
-             position=position_jitterdodge(
-               jitter.width=0.01,
-               dodge.width=0.7), 
-               color = "#FFDF00",
-               size = 7,
-             aes(fill = sex, 
-                shape = location_name))+
-  theme_linedraw()+
-      theme(plot.title = element_text(size = 40, hjust = 0.5, face = "bold"),
-        axis.text.x = element_text(angle = 70, 
-                                   hjust = 1,
+Under<-Under + 
+  geom_point(data = diet_and_guidelines %>%
+      filter(direction == "low",
+         location_name == "United States"),
+         position = position_jitterdodge(
+    jitter.width = 0.01,
+     dodge.width = 0.7), 
+           color = "#FFDF00",
+            size = 7,
+        aes(fill = sex, 
+           shape = location_name)) +
+  theme_linedraw() +
+  theme(plot.title = element_text(size = 40,
+                                 hjust = 0.5, 
+                                  face = "bold"),
+       axis.text.x = element_text(angle = 70, 
+                                  hjust = 1,
                                    size = 32), 
-        legend.title = element_blank(),
+       #to remove the legend title
+       legend.title = element_blank(),
         # this is useful for removing the legend
         legend.position = "none",
        axis.text.y = element_text(size = 35), 
-        axis.title.y = element_text(size = 35), 
-        axis.title.x = element_text(size =25),
-       panel.background = element_rect(colour = "black", size=1.5))+
+      axis.title.y = element_text(size = 35), 
+      axis.title.x = element_text(size = 25),
+  panel.background = element_rect(colour = "black", 
+                                    size = 1.5)) +
 labs(title="\n Global consumption of foods associated with\nhealth risk when under-consumed",
         x ="", y = "Percent consumption relative \n to guidelines")
 
@@ -2810,99 +2859,95 @@ Under
 #### Over-consumed foods
 
 ```{r, fig.height=8, fig.width=10}
-
-#obesity_text<-tibble(Relative_Percent=c(350),food=c("sugar-sweetened beverages"),label=c("Optimal"))
 Over<-diet_and_guidelines %>%
-  #filter(food != "sugar-sweetened beverages") %>%
   filter(direction == "high") %>%
   ggplot(aes(y = Relative_Percent, 
-             x = food))+ 
-  geom_point(position=position_jitterdodge(), 
-             color = "dark grey",
-             alpha = 7/10,
+             x = food)) + 
+  geom_point(position = position_jitterdodge(), 
+                color = "dark grey",
+                alpha = 7/10,
 # this specifies how to separate the points for male and female
              aes(fill = sex),
-             size = 7)+ 
+                 size = 7)  + 
   geom_boxplot(outlier.shape = NA, 
-               color = "black" , 
-               lwd=2.5,
+                       color = "black" , 
+                         lwd = 2.5,
               #key_glyph = draw_key_rect),
-               aes(fill = sex))+
-    scale_fill_manual(values = 
-                        c("#481567FF", 
-                          "#1F968BFF"))+
-    geom_hline(yintercept=100, 
-               linetype="dashed",
-               color = "red", 
-               size =3) +
-  theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 60, hjust = 1), 
-        legend.title = element_blank(),
-        legend.position = "bottom",
-          strip.background = element_rect(fill = "grey88",
-                                colour = "grey88"),
-          panel.background = element_rect(colour = "black", size=1))+
- scale_y_continuous(breaks=c(100,500, 1000, 2000), labels =c("100% thresh.",500, 1000, 2000) )+
-    ggforce::facet_zoom(ylim = c(0, 1300))+
-  guides(guide_legend(
-    direction = "horizontal",
-  #  label.hjust = 0.5,
-    label.vjust = .5))
-#, override.aes = list(size=15))
+                aes(fill = sex))+
+scale_fill_manual(values = 
+                      c("#481567FF", 
+                        "#1F968BFF")) +
+    geom_hline(yintercept = 100, 
+                 linetype = "dashed",
+                    color = "red", 
+                     size = 3) +
+  theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 60, 
+                                   hjust = 1), 
+       legend.title = element_blank(),
+    legend.position = "bottom",
+   strip.background = element_rect(fill = "grey88",
+                                 colour = "grey88"),
+   panel.background = element_rect(colour = "black",
+                                     size = 1)) +
+ scale_y_continuous(breaks = c(100,500, 1000, 2000), 
+                    labels = c("100% thresh.",500, 1000, 2000)) +
+    ggforce::facet_zoom(ylim = c(0, 1300)) +
+  guides(guide_legend(direction = "horizontal",
+                    label.vjust = .5))
 
 Over
-
-
-
-
-
 
 ```
 
 ```{r, fig.width=18, fig.height=15}
 
-Over<-Over + geom_point(data = diet_and_guidelines %>%
-              filter(direction == "high",
-               location_name == "United States"),
-             position=position_jitterdodge(
-               jitter.width=0.01,
-               dodge.width=0.7), 
-               color = "black",
-               size = 11,
-              aes(fill = sex, 
-                 shape = location_name))
+Over<-Over + 
+  geom_point(data = diet_and_guidelines %>%
+    filter(direction == "high",
+       location_name == "United States"),
+         position = position_jitterdodge(
+     jitter.width = 0.01,
+      dodge.width = 0.7), 
+            color = "black",
+            size = 11,
+        aes(fill = sex, 
+           shape = location_name))
 
-Over <-Over + geom_point(data = diet_and_guidelines %>%
+Over <-Over + 
+  geom_point(data = diet_and_guidelines %>%
               filter(direction == "high",
                  location_name == "United States"),
-              position=position_jitterdodge(
-                  jitter.width=0.01,
-                  dodge.width=0.7),
-                  color = "#FFDF00",
-                  size = 7,
-              aes(fill = sex, 
-                 shape = location_name))+
-  scale_color_discrete(breaks="United States")+
-
-    theme(plot.title = element_text(size = 40, 
-                                    hjust = 0.5, 
-                                    face = "bold"),
-        axis.text.x = element_text(angle = 60, 
-                                   hjust = 1,
-                                   size = 32), 
-        legend.title = element_blank(),
-        legend.position = "bottom",
-        axis.text.y = element_text(size = 35), 
-        axis.title.y = element_text(size = 35), 
-        axis.title.x = element_text(size =25),
-        legend.text = element_text(size = 30, vjust = .01),
-        legend.key.height = unit(2, "cm"),
-        legend.key.width  = unit(2, "cm"),
-        panel.background = element_rect(colour = "black", size=1.5))+
-  expand_limits(y=-10)+
-guides(colour = guide_legend(override.aes=list(shape = 15, size = 5, points = 0)))+
- # guides(fill = guide_legend(override.aes = list(size=20)))+
-
+         position = position_jitterdodge(
+                  jitter.width = 0.01,
+                  dodge.width = 0.7),
+            color = "#FFDF00",
+             size = 7,
+         aes(fill = sex, 
+            shape = location_name)) +
+  scale_color_discrete(breaks = "United States") +
+ theme(plot.title = element_text(size = 40, 
+                                hjust = 0.5, 
+                                 face = "bold"),
+      axis.text.x = element_text(angle = 60, 
+                                 hjust = 1,
+                                  size = 32), 
+     legend.title = element_blank(),
+  legend.position = "bottom",
+      axis.text.y = element_text(size = 35), 
+     axis.title.y = element_text(size = 35), 
+     axis.title.x = element_text(size = 25),
+      legend.text = element_text(size = 30, 
+                               vjust = .01),
+legend.key.height = unit(2, "cm"),
+legend.key.width  = unit(2, "cm"),
+panel.background  = element_rect(colour = "black", 
+                                   size = 1.5))+
+expand_limits(y = -10)+
+guides(colour = guide_legend(
+  override.aes = list(shape = 15, 
+                       size = 5, 
+                     points = 0))) +
 labs(title=" Global consumption of foods associated with\n health risk when over-consumed",
         x ="", y = "Percent consumption relative \n to guidelines")
 
@@ -2919,29 +2964,30 @@ cowplot::plot_grid(Over, Under, ncol = 1)
 ```{r,fig.height=13}
  
 Over_age<-all_age_diet_and_guidelines %>%
-  #filter(food != "trans fatty acids") %>%
   filter(direction == "high") %>%
-  filter(Relative_Percent<4000)%>%
+  filter(Relative_Percent < 4000) %>%
   ggplot(aes(y = Relative_Percent, 
              x = age_group_name, 
-             fill = age_group_name)) +
+          fill = age_group_name)) +
   geom_boxplot(outlier.shape = NA, 
-               color = "black" , 
-            aes(fill = age_group_name))+
-    geom_hline(yintercept=100, 
-               linetype="dashed", 
-               color = "red", 
-               size =2) +
-  facet_wrap_paginate(~food, scales = "free")+
-  theme_linedraw()+
+                       color = "black" , 
+                    aes(fill = age_group_name)) +
+  geom_hline(yintercept = 100, 
+               linetype = "dashed", 
+                  color = "red", 
+                   size = 2) +
+  theme_linedraw() +
   theme(axis.text.x = element_text(angle = 60, 
                                    hjust = 1), 
-        legend.title = element_blank(),
-        legend.position = "none")+
-labs(title=" Global consumption of foods\n associated with\n health risk when over-consumed",
-        x ="", y = "Percent consumption relative \n to guidelines")+
-    facet_wrap_paginate(~food, ncol = 2, scales = "free")+
-  scale_fill_viridis(discrete = TRUE)
+       legend.title = element_blank(),
+    legend.position = "none") +
+labs(title = " Global consumption of foods\n associated with\n health risk when over-consumed",
+         x = "", 
+         y = "Percent consumption relative \n to guidelines") +
+    facet_wrap_paginate(~food, 
+                        ncol = 2, 
+                      scales = "free") +
+scale_fill_viridis(discrete = TRUE)
   
 Over_age
 ```
@@ -2969,107 +3015,105 @@ https://stackoverflow.com/questions/25124895/no-outliers-in-ggplot-boxplot-with-
 map_df(all_age_diet_and_guidelines %>% select(Relative_Percent), calc_stat)
 
 Over_age<-all_age_diet_and_guidelines %>%
-  #filter(food != "trans fatty acids") %>%
   filter(direction == "high") %>%
   ggplot(aes(y = Relative_Percent, 
              x = age_group_name, 
-             fill = age_group_name)) +
+          fill = age_group_name)) +
   # here we will replace geom_boxplot()
   stat_summary(fun.data = calc_stat, 
-                geom="boxplot",
-                outlier.shape = NA, 
-               color = "black" ,
-               lwd=1.1,
-            aes(fill = age_group_name))+
-    geom_hline(yintercept=100, 
-               linetype="dashed", 
-               color = "red", 
-               size =2) +
-   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 60, hjust = 1), 
-        legend.title = element_blank())+
-  facet_wrap_paginate(~food, scales = "free")+
- # ggforce::facet_zoom(ylim = c(0, 500))+
-  theme_linedraw()+
-    theme(plot.title =  element_text(size = 30, hjust = 0.5, face = "bold"),
-          axis.text.x = element_blank(),
-      #axis.text.x = element_text(angle = 70, 
-       #                            hjust = 1,
-        #                           size = 18), 
+                   geom = "boxplot",
+          outlier.shape = NA, 
+                  color = "black" ,
+                    lwd = 1.1,
+               aes(fill = age_group_name)) +
+  geom_hline(yintercept = 100, 
+               linetype = "dashed", 
+                  color = "red", 
+                   size = 2) +
+   theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 60, 
+                                   hjust = 1), 
+       legend.title = element_blank()) +
+  facet_wrap_paginate(~ food, scales = "free") +
+  theme_linedraw() +
+    theme(plot.title =  element_text(size = 30, 
+                                    hjust = 0.5, 
+                                     face = "bold"),
+         axis.text.x = element_blank(),
         legend.title = element_blank(),
-        # this is useful for removing the legend
-        legend.position = "bottom",
-        axis.text.y = element_text(size = 28), 
+     legend.position = "bottom",
+         axis.text.y = element_text(size = 28), 
         axis.title.y = element_text(size = 30), 
-        axis.title.x = element_text(size =30), 
-        strip.text.x = element_text(size = 25, face = "bold"),
-       legend.text = element_text(size = 25),
-               legend.key.height = unit(1.2, "cm"),
-       legend.key.width  = unit(1.2, "cm"),
-      panel.background = element_rect(colour = "black", size=1.5))+
-labs(title=" Global consumption across age\n  of foods associated\n with health risk when over-consumed",
-        x ="Age", y = "\nPercent consumption relative \n to guidelines")+
-  #guides(fill = guide_legend(nrow = 4, byrow = TRUE))+
-    guides(fill = guide_legend(nrow= 5, byrow = TRUE))+
-
-      facet_wrap_paginate(~food, ncol = 2, scales = "free")+
+        axis.title.x = element_text(size = 30), 
+        strip.text.x = element_text(size = 25, 
+                                    face = "bold"),
+         legend.text = element_text(size = 25),
+   legend.key.height = unit(1.2, "cm"),
+    legend.key.width = unit(1.2, "cm"),
+    panel.background = element_rect(colour = "black", 
+                                      size = 1.5)) +
+labs(title = " Global consumption across age\n  of foods associated\n with health risk when over-consumed",
+         x = "Age", 
+         y = "\nPercent consumption relative \n to guidelines") +
+    guides(fill = guide_legend(nrow = 5, 
+                              byrow = TRUE)) +
+    facet_wrap_paginate(~food, ncol = 2, 
+                             scales = "free") +
   scale_fill_viridis(discrete = TRUE)
-
-#guide_legend(nrow = 4)
   
 Over_age
 ```
 
+#### Under-consumed by Age
 
 ```{r, fig.width=13, fig.height=16}
 Under_age<-all_age_diet_and_guidelines %>%
   filter(direction == "low") %>%
   ggplot(aes(y = Relative_Percent, 
              x = age_group_name, 
-             fill = age_group_name)) +
+          fill = age_group_name)) +
   # here we will replace geom_boxplot()
   stat_summary(fun.data = calc_stat, 
-                geom="boxplot",
-                outlier.shape = NA, 
-               color = "black",
-               lwd = 1.1,
-            aes(fill = age_group_name))+
-    geom_hline(yintercept=100, 
-               linetype="dashed", 
-               color = "red", 
-               size =2) +
-   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 60, hjust = 1), 
+                   geom = "boxplot",
+          outlier.shape = NA, 
+                  color = "black",
+                    lwd = 1.1,
+               aes(fill = age_group_name)) +
+    geom_hline(yintercept = 100, 
+                 linetype = "dashed", 
+                    color = "red", 
+                     size = 2) +
+   theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 60, 
+                                   hjust = 1), 
         legend.title = element_blank(),
-        legend.position = "bottom")+
-  facet_wrap_paginate(~food, nrow = 5, scales = "free")+
- # ggforce::facet_zoom(ylim = c(0, 500))+
+        legend.position = "bottom") +
+  facet_wrap_paginate(~food, nrow = 5, scales = "free") +
   theme_linedraw()+
-    theme(plot.title =  element_text(size = 30, hjust = 0.5, face = "bold"),
-            axis.text.x = element_blank(),
-      # axis.text.x = element_text(angle = 70, 
-      #                              hjust = 1,
-      #                              size = 18), 
-         legend.title = element_blank(),
-        # this is useful for removing the legend
-        legend.position = "none",
-        axis.text.y = element_text(size = 28), 
+    theme(plot.title = element_text(size = 30,
+                                   hjust = 0.5, 
+                                    face = "bold"),
+         axis.text.x = element_blank(),
+        legend.title = element_blank(),
+     legend.position = "none",
+         axis.text.y = element_text(size = 28), 
         axis.title.y = element_text(size = 30), 
-        axis.title.x = element_text(size =25), 
-        strip.text.x = element_text(size = 25, face = "bold"),
-      panel.background = element_rect(colour = "black", size=1.5),
-      axis.ticks.x = element_blank()) +
-  # this changes the size of x axis labels for the facet+
-labs(title="\n Global consumption across age\n  of foods associated\n with health risk when under-consumed",
-        x ="", y = "\nPercent consumption relative \n to guidelines")+
+        axis.title.x = element_text(size = 25), 
+        strip.text.x = element_text(size = 25, 
+                                    face = "bold"),
+    panel.background = element_rect(colour = "black", 
+                                      size = 1.5),
+        axis.ticks.x = element_blank()) +
+labs(title = "\n Global consumption across age\n  of foods associated\n with health risk when under-consumed",
+         x = "", 
+         y = "\nPercent consumption relative \n to guidelines")+
   scale_fill_viridis(discrete = TRUE)
-
   
 Under_age
 ```
 
 
-```{r}
+```{r, eval =FALSE, echo = FALSE}
 collapsed <-diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
 notcollapsed <-all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
 range(collapsed$mean)
@@ -3087,59 +3131,14 @@ diet_and_guidelines%>%filter(food == "sodium", location_name== "Malaysia") %>% g
 sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%glimpse()
 ```
 
-
-
-#### Under-consumed by Age
-```{r, fig.height=13, fig.width=8, eval = FALSE}
-Under_age<-all_age_diet_and_guidelines %>%
-  filter(direction == "low") %>%
-  filter(Relative_Percent <150)%>%
-  ggplot(aes(y = Relative_Percent, 
-             x = age_group_name, 
-             fill = age_group_name)) +
-  geom_boxplot(outlier.shape = NA, 
-               color = "black" , 
-            aes(fill = age_group_name))+
-    geom_hline(yintercept=100, 
-               linetype="dashed", 
-               color = "red", 
-               size =2) +
-theme_linedraw()+
-# this changes the size and angle of the x axis point labels 
-  theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold"),
-        axis.text.x = element_text(angle = 60, 
-                                   hjust = 1,
-                                   size = 18), 
-        legend.title = element_blank(),
-        # this is useful for removing the legend
-        legend.position = "none",
-       axis.text.y = element_text(size = 20), 
-        axis.title.y = element_text(size = 20), 
-        axis.title.x = element_text(size =15), 
-        strip.text.x = element_text(size = 25))+
-  # this changes the size of x axis labels for the facet+
-labs(title=" Global consumption across age\n  of foods associated\n with health risk when under-consumed",
-        x ="", y = "\nPercent consumption relative \n to guidelines")+
-  
-  
-#facet_wrap_paginate(.~ food, ncol = 2, scales = "free")
-
-Under_age
-
-```
-
-
 Now let's put all the plots together:
 
 ```{r, fig.height=33, fig.width = 34}
-#{r, fig.height=38, fig.width = 32}
-#cowplot::plot_grid(Over, Under, Over_age, Under_age, labels = c("A", "B","C", "D"), ncol = 2)
-
 cowplot::plot_grid(Over, Over_age, Under, Under_age, ncol = 2, rel_widths = c(2.5, 1))
 ```
 
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 collapsed <-diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
 notcollapsed <-all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
 range(collapsed$mean)
@@ -3151,9 +3150,6 @@ notcollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
 # but the collapsed value is much much lower...
 collapsed%>% filter(location_name == "Malaysia")
 ```
-
-
-
 
 
 ### United Sates Data
@@ -3173,20 +3169,20 @@ Let's visualize this with a plot:
 ```{r}
 diet_and_guidelines %>%
   filter(location_name == "United States") %>%
-  ggplot(aes(opt_achieved ))+
+  ggplot(aes(opt_achieved )) +
   geom_bar(position = "dodge")
 ```
 
 Let's look at Females and Males separately:
 ```{r}
 diet_and_guidelines%>%
-  filter(sex == "Female", 
-         location_name == "United States") %>%
+    filter(sex == "Female", 
+ location_name == "United States") %>%
 count(opt_achieved, food)
 
 diet_and_guidelines%>%
-  filter(sex == "Male", 
-         location_name == "United States") %>%
+    filter(sex == "Male", 
+ location_name == "United States") %>%
 count(opt_achieved, food)
 
 ```
@@ -3200,8 +3196,8 @@ Let's visualize this:
 ```{r}
 diet_and_guidelines %>%
   filter(location_name == "United States") %>%
-  ggplot(aes(opt_achieved , fill= sex))+
-  geom_bar(position = "dodge")
+  ggplot(aes(opt_achieved , fill = sex))+
+      geom_bar(position = "dodge")
 ```
   
 
@@ -3210,12 +3206,15 @@ diet_and_guidelines %>%
 
 all_age_diet_and_guidelines %>%
 filter(location_name == "United States") %>%
-ggplot(aes(y = Relative_Percent , x= food, fill = sex))+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+ggplot(aes(y = Relative_Percent , 
+           x = food, 
+        fill = sex)) +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1)) +
   facet_wrap(~direction, scales = "free") +
-  geom_boxplot()+
- geom_point(position=position_jitterdodge(), 
-             alpha = 3/10)
+  geom_boxplot() +
+  geom_point(position = position_jitterdodge(), 
+                alpha = 3/10)
 
 ```
 OK, so we can  indeed see that overall consumption of sodium and trans fatty acids is pretty close to optimal. So that's great. However, Both males and females are over-consuming processed meat, red meat, and sugar-sweetened beverages. On the other hand both genders are not getting adequate intake of all the other dietary factors for optimal health. The population in the United states has especially poor intake of polyunsaturated fats. it also looks like in most cases females are getting less of the dietary factors that pose health risks when under-consumed, with the exception of fruits.
@@ -3226,17 +3225,17 @@ How about if we look at age groups. First let's see how often the optimal amount
 ```{r}
 all_age_diet_and_guidelines %>%
  filter(location_name == "United States", 
-        direction == "high") %>%
+            direction == "high") %>%
   count(opt_achieved)
 
 all_age_diet_and_guidelines%>%
-  filter(sex == "Male", 
-         location_name == "United States") %>%
+     filter(sex == "Male", 
+  location_name == "United States") %>%
 count(opt_achieved, food)
 
 all_age_diet_and_guidelines%>%
-  filter(sex == "Female", 
-         location_name == "United States") %>%
+    filter(sex == "Female", 
+ location_name == "United States") %>%
 count( opt_achieved, food)
 ```
 
@@ -3244,9 +3243,12 @@ count( opt_achieved, food)
 
 all_age_diet_and_guidelines %>%
   filter(location_name == "United States") %>%
-  ggplot()+
-  geom_bar( postion = "dodge", aes(x =food, fill = opt_achieved))+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))#facet_wrap_paginate(~food,strip.position = "right")+theme(legend.position = "none")
+  ggplot() +
+  geom_bar( postion = "dodge", 
+              aes(x = food,
+               fill = opt_achieved)) +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 
 
 count(all_age_diet_and_guidelines %>%
@@ -3254,29 +3256,30 @@ count(all_age_diet_and_guidelines %>%
       food, 
       opt_achieved) %>% 
   ggplot(aes(x = food, 
-             fill = opt_achieved, 
+          fill = opt_achieved, 
              y = n )) + 
-  geom_bar(position="dodge", 
-           stat="identity")+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  geom_bar(position = "dodge", 
+               stat = "identity") +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 
 ```
 
 ```{r}
 
 all_age_diet_and_guidelines %>%
-filter(location_name == "United States", direction == "high") %>%
-ggplot(aes(y = Relative_Percent , x= food, fill = age_group_name))+
+filter(location_name == "United States", 
+           direction == "high") %>%
+ggplot(aes(y = Relative_Percent, 
+           x = food, 
+        fill = age_group_name))+
   facet_wrap(~food, scales = "free") +
-  geom_boxplot()+
- geom_point(position=position_jitterdodge(), 
-             alpha = 3/10)
-
-#  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
-
+  geom_boxplot() +
+  geom_point(position = position_jitterdodge(), 
+                alpha = 3/10)
 ```
-Let's add gender to this :
 
+Let's add gender to this :
 ```{r}
 
 pd <- position_dodge(0.5)
@@ -3286,17 +3289,20 @@ all_age_diet_and_guidelines %>%
              direction == "high") %>%
   ggplot(aes(y = Relative_Percent, 
              x = sex)) +
-  facet_wrap_paginate(facets = .~food, nrow = 3, scales = "free", strip.position = "right")+
+  facet_wrap_paginate(facets = .~food, 
+                        nrow = 3, 
+                      scales = "free", 
+              strip.position = "right") +
   geom_point(position = pd,  
              aes(fill = age_group_name), 
                 alpha = 6/10,
                   col = "black", 
 #only shape 21-24 allow for fill and outline colors
                 shape = 23,
-                 size = 3)+
+                 size = 3) +
 #change the colors from rainbow to purple/green/yellow
-  scale_fill_viridis(discrete = TRUE)+
-  expand_limits(y=100)+
+  scale_fill_viridis(discrete = TRUE) +
+  expand_limits(y=100) +
   theme_linedraw()
 ```
 
@@ -3311,20 +3317,23 @@ all_age_diet_and_guidelines %>%
              direction == "high",
             food %in% c(pull(filter(
               all_age_diet_and_guidelines, 
-              opt_achieved == "No"),food)))%>%
+              opt_achieved == "No"),food))) %>%
   ggplot(aes(y = Relative_Percent, 
              x = sex)) +
-  facet_wrap_paginate(facets = .~food, ncol = 2, scales = "free", strip.position = "right")+
+  facet_wrap_paginate(facets = .~food, 
+                        ncol = 2, 
+                      scales = "free", 
+              strip.position = "right") +
   geom_point(position = pd,  
              aes(fill = age_group_name), 
                 alpha = 6/10,
                   col = "black", 
 #only shape 21-24 allow for fill and outline colors
                 shape = 23,
-                 size = 3)+
+                 size = 3) +
 #change the colors from rainbow to purple/green/yellow
-  scale_fill_viridis(discrete = TRUE)+
-  expand_limits(y=100)+
+  scale_fill_viridis(discrete = TRUE) +
+  expand_limits(y=100) +
   theme_linedraw()
 ```
 
@@ -3343,17 +3352,19 @@ all_age_diet_and_guidelines %>%
           opt_achieved == "No") %>%
   ggplot(aes(y = Relative_Percent, 
              x = sex)) +
-    facet_wrap_paginate(facets = .~food, ncol = 3, strip.position = "right")+
+    facet_wrap_paginate(facets = .~food, 
+                          ncol = 3,
+                strip.position = "right") +
 
   geom_point(position = pd,  
              aes(fill = age_group_name), 
                 alpha = 6/10,
                   col = "black", 
 #only shape 21-24 allow for fill and outline colors
-                shape = 23, size = 3)+
+                shape = 23, size = 3) +
 #this changes the colors from rainbow to pupule/yellow/green
-  scale_fill_viridis(discrete = TRUE)+
-  ylim(c(0,100))+
+  scale_fill_viridis(discrete = TRUE) +
+  ylim(c(0,100)) +
   theme_linedraw()
 ```
 
@@ -3372,12 +3383,13 @@ all_age_diet_and_guidelines %>%
                 alpha = 6/10,
                   col = "black", 
 #only shape 21-24 allow for fill and outline colors
-                shape = 23, size = 3)+
+                shape = 23, size = 3) +
 #this changes the colors from rainbow to pupule/yellow/green
-  scale_fill_viridis(discrete = TRUE)+
-  ylim(c(0,100))+
-  theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  scale_fill_viridis(discrete = TRUE) +
+  ylim(c(0,100)) +
+  theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 70,
+                                   hjust = 1))
 
 ```
 
@@ -3392,18 +3404,20 @@ all_age_diet_and_guidelines %>%
           opt_achieved == "No") %>%
   ggplot(aes(y = Relative_Percent, 
              x = food)) +
-facet_wrap(~ sex, nrow = 2)+
+facet_wrap(~ sex, nrow = 2) +
   geom_point(position = pd,  
              aes(fill = age_group_name), 
                 alpha = 6/10,
                   col = "black", 
 #only shape 21-24 allow for fill and outline colors
-                shape = 23, size = 3)+
+                shape = 23, 
+                 size = 3) +
 #this changes the colors from rainbow to pupule/yellow/green
-  scale_fill_viridis(discrete = TRUE)+
-  ylim(c(0,100))+
-  theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  scale_fill_viridis(discrete = TRUE) +
+  ylim(c(0,100)) +
+  theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 
 ```
 
@@ -3418,27 +3432,32 @@ We could also display the data differently with the x axis as `age_group_name` a
 
 all_age_diet_and_guidelines %>%
   filter(location_name == "United States", 
-           direction == "low",
-        opt_achieved == "No") %>%
+             direction == "low",
+          opt_achieved == "No") %>%
   ggplot(aes(y = Relative_Percent , 
              x = age_group_name,
-           fill = sex)) +
+          fill = sex)) +
 
-  geom_point( data =all_age_diet_and_guidelines %>%
+  geom_point( data = all_age_diet_and_guidelines %>%
   filter(location_name == "United States", 
-           direction == "low",
-        opt_achieved == "No"),
-             alpha = 3/10, size = 3,
-aes(y = Relative_Percent , 
-             x = age_group_name,
-           fill = sex),
-col = "black", shape = 23)+
-  ylim(c(0,100))+
+             direction == "low",
+          opt_achieved == "No"),
+             alpha = 3/10, 
+              size = 3,
+             aes(y = Relative_Percent , 
+                 x = age_group_name,
+              fill = sex),
+               col = "black", 
+             shape = 23) +
+  ylim(c(0,100)) +
   
-  facet_wrap_paginate(facets = .~food, ncol = 2, scales = "free")+
-  theme_linedraw()+
-  scale_fill_viridis(discrete = TRUE)+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  facet_wrap_paginate(facets = .~food, 
+                        ncol = 2, 
+                      scales = "free") +
+  theme_linedraw() +
+  scale_fill_viridis(discrete = TRUE) +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 ```
 
 
@@ -3452,34 +3471,36 @@ Now let's focus on the really problematic foods:
 trouble_foods <-all_age_diet_and_guidelines %>%
   filter(location_name == "United States", 
           opt_achieved == "No",
-           Relative_Percent >100 | Relative_Percent <=25) %>%
+         Relative_Percent >100 | Relative_Percent <=25) %>%
   select(food)%>%
- distinct()
+  distinct()
 
 all_age_diet_and_guidelines %>%
   filter(location_name == "United States",
          food  %in% pull(trouble_foods, food)) %>%
   ggplot(aes(y = Relative_Percent , 
              x = age_group_name,
-           fill = sex)) +
-  geom_point(
-             alpha = 3/10, size = 3,
-aes(y = Relative_Percent , 
-             x = age_group_name,
-           fill = sex),
-col = "black", shape = 23)+
-  expand_limits(y=0)+
-  
-  
-  facet_wrap_paginate(facets = .~food, nrow = 3, scales = "free")+
-  scale_fill_viridis(discrete = TRUE)+
+          fill = sex)) +
+  geom_point(alpha = 3/10, 
+              size = 3,
+             aes(y = Relative_Percent , 
+                 x = age_group_name,
+              fill = sex),
+               col = "black",
+             shape = 23) +
+  expand_limits(y=0) +
+  facet_wrap_paginate(facets = .~food,
+                        nrow = 3, 
+                      scales = "free") +
+  scale_fill_viridis(discrete = TRUE) +
   theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 
 ```
 
 
-It would be nice to scale the under-consumed foods with a max of 100%
+It would be nice to scale the under-consumed foods with a max of 100%:
 
 ```{r}
 
@@ -3487,36 +3508,34 @@ It would be nice to scale the under-consumed foods with a max of 100%
 trouble_foods <-all_age_diet_and_guidelines %>%
   filter(location_name == "United States", 
           opt_achieved == "No",
-           Relative_Percent >100 | Relative_Percent <=25) %>%
-  select(food)%>%
- distinct()
+          Relative_Percent >100 | Relative_Percent <=25) %>%
+  select(food) %>%
+  distinct()
 
 all_age_diet_and_guidelines %>%
   filter(location_name == "United States",
          food  %in% pull(trouble_foods, food)) %>%
   ggplot(aes(y = Relative_Percent , 
              x = age_group_name,
-           fill = sex)) +
-  geom_point(
-             alpha = 3/10, size = 3,
-aes(y = Relative_Percent , 
-             x = age_group_name,
-           fill = sex),
-col = "black", shape = 23)+
-  expand_limits(y=0)+
+          fill = sex)) +
+  geom_point(alpha = 3/10, 
+              size = 3,
+             aes(y = Relative_Percent , 
+                 x = age_group_name,
+              fill = sex),
+               col = "black", 
+             shape = 23) +
+  expand_limits(y=0) +
   
   
-  facet_wrap_paginate(facets = .~food, nrow = 3, scales = "free")+
-  scale_fill_viridis(discrete = TRUE)+
-  theme_linedraw()+
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
-
-
-
-
+  facet_wrap_paginate(facets = .~food, 
+                        nrow = 3, 
+                      scales = "free") +
+  scale_fill_viridis(discrete = TRUE) +
+  theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 70, 
+                                   hjust = 1))
 ```
-
-
 
 
 ## Summary
@@ -3566,7 +3585,7 @@ It is also important that predictor variables are not correlated with one anothe
 #### ANOVA assumptions:
 
 1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n>30) 
-2) Equal variance between the groups - aka Homogeneity of variance (make sure you do the correct test if the data is not normal) 
+2) Equal variance between the groups - aka the [Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"} (make sure you do the correct test if the data is not normal) 
 3) Balanced sample sizes of the groups 
 4) Independent observations (or independent paired observations) 
 
@@ -3615,6 +3634,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"}  
 [Mood's Two-Sample Scale Test](https://files.eric.ed.gov/fulltext/ED065559.pdf){target="_blank"}   
 [Standard deviation](https://www.statsdirect.com/help/basic_descriptive_statistics/standard_deviation.htm){target="_blank"}  
+[Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"}   
 [polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat){target="_blank"} 
 
 
