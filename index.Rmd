@@ -606,6 +606,11 @@ pdf_table %<>%
                         replacement = ".")
 ```
 
+Looks good!
+
+```{r}
+last(pdf_table)
+```
 
 Now we will try to split the strings for each row based on the presence of two spaces to create the columns of the table, as there appears to be larger than a space between the columns to create substrings. The substrings will be separated by quotes.
 
@@ -761,7 +766,8 @@ guidelines %<>%
                   c("optimal", "lower", "upper"),
                   sep = "[(|–]") 
 
-head(guidelines)
+guidelines
+
 ```
 
 
@@ -905,7 +911,7 @@ Nice! that's pretty clean but we can do a bit more.
 
 One of the next things to notice about our data is the character classes of our variables.
 
-Notice that the optimal amounts of consumption are currently of  class character as indicated by the `<chr>` just below the column names/variable names of the `guidelines` tibble:
+Notice that the optimal amounts of consumption are currently of class character as indicated by the `<chr>` just below the column names/variable names of the `guidelines` tibble:
 
 ```{r}
 guidelines
