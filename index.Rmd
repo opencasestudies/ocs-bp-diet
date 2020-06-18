@@ -49,7 +49,8 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 **Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
 
 ## Motivation
-An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} recently published in the lancet journal evaluated global dietary trends and the relationship of dietary factors with mortality and fertility.
+An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} recently published in the 
+Lancet journal evaluated global dietary trends and the relationship of dietary factors with mortality and fertility.
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "thepaper.png"))
@@ -64,7 +65,7 @@ This article evaluated food consumption patterns in 195 countries for 15 differe
 
 > "High intake of sodium ..., low intake of whole grains ..., and low intake of fruits ... were the leading dietary risk factors for deaths and DALYs globally and in many countries." 
 
-This figure from the supplement shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths and illustrates how the top 3 risk factors are often issues for many different regions of the world.
+This figure from the paper's supplementary materials shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths and illustrates how the top 3 risk factors are often issues for many different regions of the world.
 
 ```{r, echo = FALSE, out.width= "700 px"}
 knitr::include_graphics(here("img", "deaths.png"))
@@ -130,7 +131,7 @@ library(cowplot)
 [summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R 
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data
-[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator
+[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` piping operator
 [purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble
 [tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with dplyr/stringr/tidyr/purrr
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns
@@ -141,7 +142,7 @@ library(cowplot)
 [car](https://cran.r-project.org/web/packages/car/car.pdf)| to perform Levene's Test of Homogeneity of Variances
 [ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
 [ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
-[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color palette that is easily interpreted by colorblind individuals
+[viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in a color palette that is easily interpreted by colorblind individuals
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined
 ___
 
@@ -157,7 +158,7 @@ Here is an excerpt from the article itself about the context of the work:
 knitr::include_graphics(here("img", "context.png"))
 ```
 
-Many dietary factors have well-established associations with health risk. The authors that generated this data set identified 15 dietary factors that have probably health risk based on literature search.
+Many dietary factors have well-established associations with health risk. The authors that generated this data set identified 15 dietary factors that have probable health risk based on literature search.
 
 Here you can see a table of the sources for the health risks associated with the dietary factors. RCT stands for randomized control trials.
 
@@ -175,15 +176,15 @@ knitr::include_graphics(here("img", "cardiorisk.png"))
 
 ### Limitations
 
-There are some important limitations regarding the data from this article to keep in mind. The definition of certain dietary factors varied across some of the collection sources. Intakes of certain healthy foods like vegetables and fruits are likely positively correlated and likely negatively correlated with intakes of unhealthy foods. Much of the data was collected with 24 hour recall surveys which are prone to issues due to inaccuracy of memory recall or other biases such as a tendency for some people to report healthier behaviors. The guidelines in the PDF are not specified by gender even though it is known that there are different dietary requirements for optimal health for certain nutrients. The article discusses some limitations about accounting for overall food consumption when calculating consumption of particular foods:
+There are some important limitations regarding the data from this article to keep in mind. The definition of certain dietary factors varied across some of the collection sources. Intakes of certain healthy foods like vegetables and fruits are likely positively correlated with each other and likely negatively correlated with intakes of unhealthy foods. Much of the data was collected with 24 hour recall surveys which are prone to issues due to inaccuracy of memory recall or other biases such as a tendency for some people to report healthier behaviors. The guidelines in the PDF are not specified by gender even though it is known that there are different dietary requirements for optimal health for certain nutrients by gender. The article discusses some limitations about accounting for overall food consumption when calculating consumption of particular foods:
 
 > "To remove the effect of energy intake as a potential confounder and address measurement error in dietary assessment tools, most cohorts have adjusted for total energy intake in their statistical models. This energy adjustment means that diet components are defined as risks in terms of the share of diet and not as absolute levels of exposure. In other words, an increase in intake of foods and macronutrients should be compensated by a decrease in intake of other dietary factors to hold total energy intake constant. Thus, the relative risk of change in each component of diet depends on the other components for which it is substituted. However, the relative risks estimated from meta-analyses of cohort studies do not generally specify the type of substitution.
 
-There are also important nuances to keep in mind regrading some of the dietary factors. For example calcium consumption was calculated based on consumption of dairy products, however calcium can be acquired from other sources including plant-based sources. However in these data, the influence of plant-based consumption of calcium was also not accounted for, nor was supplementation through vitamin sources. 
+There are also important nuances to keep in mind regarding some of the dietary factors. For example calcium consumption was calculated based on consumption of dairy products, while calcium can be acquired from other sources including plant-based sources. However in these data, the influence of plant-based consumption of calcium was not accounted for, nor was supplementation through vitamin sources. 
 
 ## What are the data?
 
-We will be using data that we requested from the [GBD](http://www.healthdata.org/gbd){target="_blank"} about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files. The first one includes consumption levels at the global level and for different countries for all ages combined.
+We will be using data that we requested from the [GBD](http://www.healthdata.org/gbd){target="_blank"} about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files, dietary_risk_exposure_all_ages_2017.csv and dietary_risk_exposure_sep_ages_2017.csv. The first one includes consumption levels at the global level and for different countries for all ages combined.
 
 Looking at the CSV file in excel:
 
@@ -226,7 +227,7 @@ dplyr::glimpse(diet_data)
 glimpse(sep_age_diet_data)
 ```
 
-Here we can tell that the `sep_age_diet_data` is much larger than the `diet_data`. The `diet_data` has only 5,880 rows while the `sep_age_diet_data` has 88,200 rows!.
+Here we can tell that the `sep_age_diet_data` is much larger than the `diet_data`. The `diet_data` has only 5,880 rows while the `sep_age_diet_data` has 88,200 rows!
 
 However, both files appear to have the same column structure with 11 variables each.
 
@@ -238,81 +239,18 @@ skim(diet_data)
 ```
 
          
-Notice how there is a column about the values that are missing. It looks like our data is very complete and we do not have any missing data.
+Notice how there is a column providing the number of missing observations for each variable. It looks like our data is very complete and we do not have any missing data.
 We also get a sense about the size of our data.
 
 The `n_unqiue` column shows us the number of unique values for each of our columns.
 
 Here is another method using the package `summarytools`:
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 
 dfSummary(diet_data, plain.ascii = FALSE, style = "grid", 
          graph.magnif = 0.75,  tmp.img.dir = "tmp")
 ```
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| No | Variable        | Stats / Values                  | Freqs (% of Valid)   | Graph               | Missing |
-+====+=================+=================================+======================+=====================+=========+
-| 1  | year_id\        | 1 distinct value                | 2017 : 5880 (100.0%) | ![](tmp/ds0100.png) | 0\      |
-|    | [numeric]       |                                 |                      |                     | (0%)    |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 2  | location_name\  | 1\. Afghanistan\                | 30 ( 0.5%)\          | ![](tmp/ds0101.png) | 0\      |
-|    | [character]     | 2\. Albania\                    | 30 ( 0.5%)\          |                     | (0%)    |
-|    |                 | 3\. Algeria\                    | 30 ( 0.5%)\          |                     |         |
-|    |                 | 4\. American Samoa\             | 30 ( 0.5%)\          |                     |         |
-|    |                 | 5\. Andorra\                    | 30 ( 0.5%)\          |                     |         |
-|    |                 | 6\. Angola\                     | 30 ( 0.5%)\          |                     |         |
-|    |                 | 7\. Antigua and Barbuda\        | 30 ( 0.5%)\          |                     |         |
-|    |                 | 8\. Argentina\                  | 30 ( 0.5%)\          |                     |         |
-|    |                 | 9\. Armenia\                    | 30 ( 0.5%)\          |                     |         |
-|    |                 | 10\. Australia\                 | 30 ( 0.5%)\          |                     |         |
-|    |                 | [ 186 others ]                  | 5580 (94.9%)         |                     |         |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 3  | rei_id\         | Mean (sd) : 133.7 (53.9)\       | 15 distinct values   | ![](tmp/ds0102.png) | 0\      |
-|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
-|    |                 | 111 < 118 < 333\                |                      |                     |         |
-|    |                 | IQR (CV) : 9 (0.4)              |                      |                     |         |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 4  | food\           | 1\. calcium\                    | 392 ( 6.7%)\         | ![](tmp/ds0103.png) | 0\      |
-|    | [character]     | 2\. fiber\                      | 392 ( 6.7%)\         |                     | (0%)    |
-|    |                 | 3\. fruits\                     | 392 ( 6.7%)\         |                     |         |
-|    |                 | 4\. legumes\                    | 392 ( 6.7%)\         |                     |         |
-|    |                 | 5\. milk\                       | 392 ( 6.7%)\         |                     |         |
-|    |                 | 6\. nuts and seeds\             | 392 ( 6.7%)\         |                     |         |
-|    |                 | 7\. polyunsaturated fatty aci\  | 392 ( 6.7%)\         |                     |         |
-|    |                 | 8\. processed meat\             | 392 ( 6.7%)\         |                     |         |
-|    |                 | 9\. red meat\                   | 392 ( 6.7%)\         |                     |         |
-|    |                 | 10\. seafood omega-3 fatty aci\ | 392 ( 6.7%)\         |                     |         |
-|    |                 | [ 5 others ]                    | 1960 (33.3%)         |                     |         |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 5  | age_group_name\ | 1\. All Available Ages          | 5880 (100.0%)        | ![](tmp/ds0104.png) | 0\      |
-|    | [character]     |                                 |                      |                     | (0%)    |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 6  | sex\            | 1\. Female\                     | 2940 (50.0%)\        | ![](tmp/ds0105.png) | 0\      |
-|    | [character]     | 2\. Male                        | 2940 (50.0%)         |                     | (0%)    |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 7  | parameter\      | 1\. continuous                  | 5880 (100.0%)        | ![](tmp/ds0106.png) | 0\      |
-|    | [character]     |                                 |                      |                     | (0%)    |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 8  | mean\           | Mean (sd) : 34.8 (60.1)\        | 5880 distinct values | ![](tmp/ds0107.png) | 0\      |
-|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
-|    |                 | 0 < 8.4 < 566.7\                |                      |                     |         |
-|    |                 | IQR (CV) : 42.2 (1.7)           |                      |                     |         |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 9  | upper\          | Mean (sd) : 37.9 (65.3)\        | 5880 distinct values | ![](tmp/ds0108.png) | 0\      |
-|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
-|    |                 | 0 < 9.2 < 624.2\                |                      |                     |         |
-|    |                 | IQR (CV) : 46.1 (1.7)           |                      |                     |         |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 10 | lower\          | Mean (sd) : 31.9 (55.4)\        | 5880 distinct values | ![](tmp/ds0109.png) | 0\      |
-|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
-|    |                 | 0 < 7.5 < 513.2\                |                      |                     |         |
-|    |                 | IQR (CV) : 38.8 (1.7)           |                      |                     |         |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-| 11 | unit\           | 1\. %energy/day\                | 784 (13.3%)\         | ![](tmp/ds0110.png) | 0\      |
-|    | [character]     | 2\. g/day                       | 5096 (86.7%)         |                     | (0%)    |
-+----+-----------------+---------------------------------+----------------------+---------------------+---------+
-
 
 Let's take a look at `sep_age_diet_data`.
 
@@ -344,7 +282,7 @@ diet_data %>%
   distinct(rei_name)
 ```
 
-OK, so that gives us an idea of what dietary factors we can explore. 
+OK, so that gives us an idea of what dietary factors we can explore, and we can see that there are 15 of them. 
 
 Let's see if the `location_name` values are the same between both CSV files. To do this we will use the `setequal()` function of `dplyr`.
 ```{r}
@@ -398,7 +336,7 @@ sep_age_diet_data %>%
   count(sex, age_group_name, location_name)
 ```
 
-OK, so it looks like there are probably the consumption values for each of the different dietary factors (which there were 15 different factors) for each age group, for each gender, and for each country.
+OK, so it looks like these are probably the consumption values for each of the different dietary factors (since there were 15 different factors) for each age group and gender combination within each country.
 
 We can confirm this by filtering the data to one of the age groups, for a single gender, and for a single location. To do this we can use the `filter()` function of the `dplyr` package. Notice that we need to use two equal signs `==` to specify what values we would like for each variable.
 
@@ -409,7 +347,13 @@ dplyr::filter(sex == "Female",
     location_name == "Afghanistan")
 ```
 
-Let's also get the data from the PDF of the paper so that we can calculate consumption of these dietary factors as percentage of daily requirement, which would be more interpretable.
+This confirms that for each of the 15 dietary factors, our unit of observation is a combination of gender, age and country. However, before we proceed with our analysis, we will want to perform some additional data wrangling. To do this, we will introduce the `pdftools` package, which will allow us to pull additional data from the manuscript itself.
+
+
+
+## Data Wrangling
+
+While all of the mean consumption values are reported in grams, each dietary factor has a different amount that is considered optimal for consuming. To make the consumption values more comparable across factors, let's also get some data from the PDF of the paper so that we can calculate consumption of these dietary factors as percentages of the daily optimum.
 
 We are interested in this table on page 3:
 
@@ -424,7 +368,7 @@ paper <- pdftools::pdf_text(here("docs",
 "Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"))
 ```
 
-We can use the `base` `summary()` function to get a sense of what the data looks like. By `base` we mean that these functions are part of the `base` package and are loaded automatically. Thus `library(base)` is not required.
+We can use the `base` `summary()` function to get a sense of what the data looks like. By `base` we mean that these functions are part of the `base` package and are loaded automatically on startup of R. Thus `library(base)` is not required.
 ```{r}
 #This is equivalent to the following, but this is unecessary:
 #base::summary(paper)
@@ -433,10 +377,7 @@ summary(paper)
 
 We can see that we have 15 different character strings. Each one contains the text on each of the 15 different pages of the PDF.
 
-
-## Data Wrangling
-
-Again, the table we are interested in is on the third page, so let's grab just that portion of the PDF.
+Again, the table we are interested in is on the third page, so let's grab just that portion of the PDF. The top of this page looks like:
 
 ```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "page3.png"))
@@ -461,7 +402,7 @@ One way to approach this is to split the string by some pattern that we notice i
 knitr::include_graphics(here::here("img", "Table.png"))
 ```
 
-Only the capitalized form of the word `"Diet"` appears to be within the table, and it is not present in the preceding text (although `"diet"` is). All the rows of interest of the table appear to start with the word `"Diet"`.
+All the rows of interest of the table appear to start with the word `"Diet"`. Moreover, only the capitalized form of the word `"Diet"` appears to be within the table, and it is not present in the preceding text (although `"diet"` is). 
 
 ```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "Diet_on_page3.png"))
@@ -488,7 +429,7 @@ pdf_table %>%
 pdf_table %>%
   glimpse()
 ```
-RStudio creates really helpful cheat sheets like this one which shows you all the major functions in the `stringr` package. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
+In order to extract the values that we want from these character strings, we will use some additional functions from the `stringr` package. RStudio creates really helpful cheat sheets like this one which shows you all the major functions in the `stringr` package. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
 
 ```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here::here("img", "strings-1_str_split.png"))
@@ -498,7 +439,6 @@ You can see that we could have also used the `str_split_fixed()` function which 
 
 For more information about `str_split()` see [here](http://rfunction.com/archives/1499){target="_blank"}.
 
-
 Let's separate the values within the list using the base `unlist` function, this will allow us to easily select the different substrings within the object called `pdf_table`.
 
 ```{r}
@@ -506,7 +446,7 @@ pdf_table %<>%
   unlist()
 ```
 
-It's important to realize that the first split will split the text before the first occurrence of `"Diet"` as the first value in the output. We could use the `first()` function of the `dplyr` package to look at this value. However, we will suppress the output as this is quite large.
+It's important to realize that the first split will split the text before the first occurrence of `"Diet"` as the first value in the output. (This is why there are 17 elements in `pdf_table` rather than 15, the number of rows in the table.) We could use the `first()` function of the `dplyr` package to look at this value. However, we will suppress the output as this is quite large.
 
 ```{r, eval = FALSE}
 dplyr::first(pdf_table)
@@ -576,7 +516,7 @@ And the last row is what we want:
 last(pdf_table)
 ```
 
-Notice that there the decimal points from the PDF are being recognized as an interpunct instead of a period or decimal. An interpunct is a centered dot, as opposed to a period or decimal that is aligned to the bottom of the line.
+At this point, we have a better look at the current representation of the table data in R, and we might notice something that will need to be fixed. In the string above, the decimal points from the PDF are being recognized as something called an interpunct instead of a period or decimal. An interpunct is a centered dot, as opposed to a period or decimal that is aligned to the bottom of the line.
 
 The interpunct was previously used to separate words in certain languages, like ancient Latin.
 
@@ -587,7 +527,7 @@ The interpunct was previously used to separate words in certain languages, like 
 
 ###### [[source](https://www.yourdictionary.com/image/articles/3417.Latin.jpg)]
 
-You can produce an interpunct on a mac like this:
+You can produce an interpunct on a Mac like this:
 
 
 <p align="center">
@@ -612,15 +552,13 @@ Looks good!
 last(pdf_table)
 ```
 
-Now we will try to split the strings for each row based on the presence of two spaces to create the columns of the table, as there appears to be larger than a space between the columns to create substrings. The substrings will be separated by quotes.
+Now we will try to split the strings for each row based on the presence of two spaces to create the columns of the table, as there appears to be more than one space between the columns. The resulting substrings will be separated by quotes.
+
+For additional details, the second page of the `stringr` cheat sheet has more information about using "Special Characters" in `stringr`. For example `\\s` is interpreted as a space as the `\\` indicates that the `s` should be interpreted as a special character and not simply the letter s.  The `{2,}` indicates two or more spaces, while `{2}` would indicate exactly two spaces.
 
 ```{r, echo = FALSE,out.width = "800px"}
 knitr::include_graphics(here("img", "strings-2_highlight.png"))
 ```
-
-
-The second page of the `stringr` cheat sheet has more information about using "Special Characters" in `stringr`. For example `\\s` is interpreted as a space as the `\\` indicates that the `s` should be interpreted as a special character and not simply the letter s.  The `{2,}` indicates two or more spaces, while `{2}` would indicate exactly two spaces.
-
 
 #### {.scrollable }
 ```{r}
@@ -630,9 +568,9 @@ glimpse(table_split) #scroll the output!
 ```
 ####
 
-If we look closely, we can see that the sugar-sweetened beverage and the seafood category had only one space between the first and second columns. These are the columns about the dietary category and the one that describes in more detail what the consumption suggestion is about.
+Now we can see that each of our 15 strings has been split into pieces, but unfortunately, it was not completely consistent across dietary factors. Why did this happen? If we look closely, we can see that the sugar-sweetened beverage and the seafood category had only one space between the first and second columns. These are the columns about the dietary category and the one that describes in more detail what the consumption suggestion is about.
 
-The values for these two columns appear to be together still in the same substring for these two categories. There are no quotation marks adjacent to the word `"Mean"`.
+The values for these two columns appear to be together still in the same substring for these two categories. We can see this because there are no quotation marks adjacent to the word `"Mean"`.
 
 Here you can see how the next substring should have started with the word `"Mean"` by the new inclusion of a quotation mark `"`. The red rectangles indicate the problematic substrings, while the green rectangles show examples where the split worked correctly.
 
@@ -691,13 +629,13 @@ glimpse(table_split)
 
 Looks better!
 
-We want just the first (the food **category**) and third column (the optimal consumption **amount** suggested) for each row in the table.
+We want just the first (the food **category**) and third column (the optimal consumption **amount** suggested) for each row in the table. However, the table is current stored as a list of character vectors, so it is not quite so simple to extract these values.
 
 We can use the `map` function of the `purrr` package to accomplish this.
 
-The `map` function allows us to perform the same action multiple times across each element within an object.
+The `map` function allows us to perform the same action multiple times across each element within an object, in this case, a list.
 
-This following will allow us to select the first or third substring from each element of the `pdf_table` object.
+The following will allow us to select the first or third substring from each element of the `pdf_table` object.
 
 ```{r}
 category <- map(table_split, 1)
@@ -741,14 +679,16 @@ guidelines
 
 Looking pretty good!
 
-However, we want to separate the different amounts within the amount column.
+### Separating values within a variable
+
+Recall that the main goal of this data wrangling is to extract the optimal intake level for each dietary factor. So while we have managed to pull and organize the data from the pdf table, we need to further process the results to isolate this numeric value.
+
+Do to this, we want to separate the different numbers within the `amount` column, to isolate the optimal amount, and the optimal range, and eventually convert them to numeric values.
 
 Recall what the original table looked like:
 ```{r, echo = FALSE, out.width = "800px"}
 knitr::include_graphics(here("img", "firstrow.png"))
 ```
-
-### Separating values within a variable
 
 We can use the `tidyr::separate()` function to separate the data within the amount column into three new columns based on the optimal level and the optimal range. We can separate the values based on the open parentheses `"("` and the long dash `"–"` characters. Again we will use the bar `"|"` to indicate that we want to separate by either character.
 
@@ -771,7 +711,7 @@ guidelines
 ```
 
 
-Let's Also create a new variable/column in our tibble that indicates the direction of over- or under-consumption that can be harmful for each dietary factor.
+Let's also create a new variable/column in our tibble that indicates the direction of over- or under-consumption that can be harmful for each dietary factor.
 
 ```{r}
 guidelines %<>%
@@ -909,9 +849,9 @@ Nice! that's pretty clean but we can do a bit more.
 
 ### Data type conversion
 
-One of the next things to notice about our data is the character classes of our variables.
+One of the next things to notice about our data is all of our variables are of class character, which is not how we want them to be.
 
-Notice that the optimal amounts of consumption are currently of class character as indicated by the `<chr>` just below the column names/variable names of the `guidelines` tibble:
+For example, the optimal amounts of consumption are currently of class character, which is indicated by the `<chr>` just below the column names/variable names of the `guidelines` tibble:
 
 ```{r}
 guidelines
@@ -920,7 +860,7 @@ guidelines
 
 To convert these values to numeric we can use the `mutate_at()` function of the `dplyr` package.
 
-The `mutate_at()` function allows us to perform a function on specific columns/variables within a tibble. We need to indicate which variables that we would like to convert using `vars()`. In this case if we look at the beginning of the `guidelines` tibble, we can see that `optimal`, `lower` and `upper` should be converted. As these three columns are sequential, we can simply put a `:` between `optimal` and `upper` to indicate that we want all the variables in between these columns to be converted. 
+The `mutate_at()` function allows us to perform a function on specific columns/variables within a tibble. We need to indicate which variables we would like to convert using `vars()`. In this case if we look at the beginning of the `guidelines` tibble, we can see that `optimal`, `lower` and `upper` should be converted. As these three columns are sequential, we can simply put a `:` between `optimal` and `upper` to indicate that we want all the variables in between these columns to be converted. 
 
 ```{r}
 guidelines %<>%
@@ -930,7 +870,7 @@ guidelines
 
 Great! Now these variables are of class `<dbl>` (stands for double) which indicates that they are numeric. Here is a [link](http://uc-r.github.io/integer_double/){target="_blank"} for more information on numeric classes in R.
 
-If we had not replaced the `"·"` interpunct values to a period conversion from character to numeric would be problematic and would result in NA values.
+If we had not replaced the `"·"` interpunct values to a period, conversion from character to numeric would be problematic and would result in NA values.
 
 ### Data value reassignments
 
@@ -1056,22 +996,24 @@ guidelines
 OK! Now we know how much of each dietary factor we generally need for optimal health according to the guidelines used in this article.
 
 
-We would like to see how the mean consumption rates for the different groups of people compared to the optimal intake guidelines.
+
+### Comparing data
+
+Recall that the main goal of pulling the guideline amounts from the pdf was that we would like to see how the mean consumption rates for the different groups of people compared to the optimal intake guidelines.
 
 One way we could do this is to calculate a consumption percentage of the optimal value.
 
 To calculate this it would be helpful to put the guideline amounts with the average consumption rates into the same tibble, especially because the observed consumption data (`diet_data` and `sep_age_diet_data`) are very different dimensions from the `guidelines` data. 
 
-In order to create a tibble with our observed consumption rates with the suggested consumption rates, we will join our data using `dplyr`. In order to do so it is important that our different data sets have the same values. So let's first assess if that is the case.
+In order to create a tibble with our observed consumption rates with the suggested consumption rates, we will join our data using `dplyr`. In order to do so it is important that our different data sets have at least one column with the same values that we can use to join them together. So let's first assess if that is the case.
 
-### Comparing data
 
 ```{r}
 distinct(diet_data, rei_name)
 select(guidelines, food)
 ```
 
-We can see that we need to remove the `"Diet low in"` and `"Diet high in"` phrases from the observed consumption data.
+We are actually pretty close: there are 15 dietary factors in each data set, and the names are nearly the same. To make them match completely, we can see that we need to remove the `"Diet low in"` and `"Diet high in"` phrases from the observed consumption data.
 
 ```{r}
 
@@ -1127,7 +1069,7 @@ class(Y)
 ```
 
 Since we are using tibbles, which are of class `tbl_df` we can use either `all_equal` or `all.equal()`.
-Notice that it doesnt report rows being a different order becuase it first tells what rows have unique values or rows with a value that has a different number of frequency.
+Notice that it doesn't report rows being a different order becuase it first tells what rows have unique values or rows with a value that has a different number of frequency.
 
 ```{r}
 all_equal(X, Y, ignore_row_order = TRUE)
@@ -1138,7 +1080,7 @@ all.equal(X, Y, ignore_row_order = FALSE)
 # Doesn't report rows being different order
 ```
 
-`setequal()` dones not provide clues about what is different but TRUE (no differences) or FALSE (indicating at least one difference)
+`setequal()` does not provide clues about what is different but TRUE (no differences) or FALSE (indicating at least one difference).
 
 ```{r}
 # Reports false indicating at least one difference
@@ -1226,7 +1168,7 @@ setdiff(distinct(diet_data, rei_name),
 :( That wont work. This is because `setdiff()` requires that the column names are the same in the objects that we are comparing.
 
 
-We can use the `rename()` of `dplyr` function to do this. We list the value that we want to change to first. We find "food" more intuitive so we are going to change "rei_name" to "food" for the `diet_data` and the `sep_age_diet_data`
+We can use the `rename()` function from `dplyr` to do this. We list the value that we want to change to first. We find "food" more intuitive so we are going to change "rei_name" to "food" for the `diet_data` and the `sep_age_diet_data`:
 
 ```{r}
 diet_data %<>%
@@ -1278,7 +1220,7 @@ Great!  There are no differences :)
 
 Now we can put our guideline data together with the `diet_data` and the `sep_age_diet_data`.
 
-Remember that the `food` data in our `guidelines` tibble is not necessarily in the same order as that of the consumption data tibbles. Thus this could be a problem if we decided to expand the `guidelines` rows (to repeat for the number of fruit observations etc.) and add them to our observed consumption tibbles. 
+Remember that the `food` data in our `guidelines` tibble is not necessarily in the same order as that of the consumption data tibbles. Thus this could be a problem if we decided to expand the `guidelines` rows (to repeat for the number of fruit observations etc.) and add them to our observed consumption tibbles by binding them together by column. 
 
 ```{r, echo = FALSE, out.with = "300 px", fig.align= "center"}
 knitr::include_graphics(here("img","bind.png"))
@@ -1286,7 +1228,7 @@ knitr::include_graphics(here("img","bind.png"))
 
 In that case we could use the `arrange()` function of `dplyr` to sort the data alphabetically.
 
-However, we will instead use a joining function of `dplyr`. These functions combine the data together based on **common values**. There are a variety of options.
+However, we will instead use a joining function of `dplyr`. These functions combine the data together based on **common values** and don't require the rows to be in the same order. There are a variety of options.
 
 ```{r, echo = FALSE, out.with = "300 px", fig.align= "center"}
 knitr::include_graphics(here("img","join.png"))
@@ -1294,7 +1236,7 @@ knitr::include_graphics(here("img","join.png"))
 
 In our case we would like to retain all of the values of `diet_data` and `sep_age_diet_data`. We would like to add new columns of values to these tibbles that correspond to the guideline information about amounts of consumption for each food type in the `guidelines` tibble. We shouldn't have any values of `food` in `guidelines` that don't match, so we will not get any `NA` values. Therefore, in our case any of the mutating join functions should result in the same output.
 
-It's important to check if we have any overlapping variable names before we join the data. We can use the base R function `names()`  and the `intersect()` function of the `dplyr` package for this.
+It's important to check if we have any overlapping variable names before we join the data. Otherwise, these columns will either be used to identify which rows to join, or new copies of the columns, with a default name to distinguish the columns of one data set from those of the other, will be created. We can use the base R function `names()`  and the `intersect()` function of the `dplyr` package to identify which column names are common to our two data sets.
 
 ```{r}
 dplyr::intersect(names(diet_data), 
@@ -1325,9 +1267,9 @@ dplyr::bind_cols(count(diet_data, unit, food),
        count(guidelines, unit_optimal, food))
 ```
 
-We can see that the only potential issue is the `seafood omega-3 fatty acids` data which is in g/day for the observed data(`diet_data` and `all_age_diet_and_guidelines`), but the unit is mg/day in the `guidelines` data.
+We can see that the only potential issue is the `seafood omega-3 fatty acids` data which is in g/day for the observed data(`diet_data` and `all_age_diet_and_guidelines`), but in mg/day in the `guidelines` data.
 
-We can account for this by dividing the guideline seafood omega-3 fatty acids data by 1000 to convert it to grams from milligrams.
+We can account for this by dividing the `guidelines` `seafood omega-3 fatty acids data` by 1000 to convert it to grams from milligrams.
 
 To do this we will use the `if_else()` function in the `dplyr` package. This allows us to specify a condition (in this case if the unit is `"mg"`), as well as values if this is condition is met (true), or if the condition is not met (false). 
 
@@ -1419,16 +1361,17 @@ all_age_diet_and_guidelines %>%
 #For easy comparison we will arrange by food alphabetically
 arrange(guidelines, food)
 ```
- Looks good!
+
+Looks good!
  
  
 ### Calculating relative consumption 
 
-Again, we would like to compare the consumption rates of this dietary factors by different groups of people, but ideally we want to know this relative to the optimal guidelines.
+Recall that our aim is to compare the consumption rates of these dietary factors by different groups of people, and ideally, to facilitate cross-factor comparisons, we want to consider consumption rates relative to the optimal guidelines.
 
-Thus lets calculate values of consumption that are relative to the suggested guidelines.
+To do this, let's calculate values of consumption that are relative to the suggested guidelines.
 
-There are a few ways we could do this. One is to calculate a percentage of consumption based on the mean value for each observed value relative to the optimal value. To do this we will use the `mutate()` function of the `dplyr`package. This will create a new variable called `Relative_Percent` that will be equal to the division result of the `mean` variable value and the `optimal` variable multiplied by 100 to create a percentage relative to the optimal amount suggested.
+There are a few approaches we could take. One is to calculate a `"percentage of optimal consumption"` using the mean value for each observed factor relative to its optimal value. To do this we will use the `mutate()` function of the `dplyr`package. This will create a new variable called `Relative_Percent` that will be equal to the ratio of the `mean` value and the `optimal` value, multiplied by 100, to create a percentage relative to the optimal amount suggested.
 
 ```{r}
 diet_and_guidelines %<>%
@@ -1438,7 +1381,7 @@ all_age_diet_and_guidelines %<>%
  mutate(Relative_Percent = (mean/optimal)*100)
 ```
 
-Another option is to incorporate the range of optimal intakes and the direction that is associated with health risk. If the direction of risk is `high` and the consumption was greater than the `optimal` mean value, than the percentage is calculated based on the `upper_optimal` value, while if the direction of risk is `low` and the consumption is less than the optimal mean value, then the percentage is calculated based on the `lower_optimal` value. We will use the `case_when()` function of the `dplyr` package to do this. This allows us to specify values (indicated on the right side of the `~`symbol) based on specific conditions (indicated on the left side of the `~` symbol). We can specify multiple conditions using the `&` symbol.
+Another option is to incorporate the range of optimal intakes and the direction that is associated with health risk. If the direction of risk is `high` and the consumption was greater than the `optimal` mean value, than the percentage is calculated based on the `upper_optimal` value, while if the direction of risk is `low` and the consumption is less than the `optimal` mean value, then the percentage is calculated based on the `lower_optimal` value. We will use the `case_when()` function of the `dplyr` package to do this. This allows us to specify values (indicated on the right side of the `~`symbol) based on specific conditions (indicated on the left side of the `~` symbol). We can specify multiple conditions using the `&` symbol.
 
 ```{r}
 
@@ -1474,7 +1417,7 @@ all_age_diet_and_guidelines %<>%
 
 ```
 
-Another option is to create a binary outcome of if optimal consumption was achieved or not.
+Another option is to create a binary outcome indicating whether optimal consumption was achieved or not.
 
 ```{r}
 
@@ -1496,7 +1439,7 @@ glimpse(diet_and_guidelines)
 glimpse(all_age_diet_and_guidelines)
 ```
 
-One last thing that can be useful with data wrangling is to **reshape** the data into what is called the **long** format. This is very useful for creating visualizations with a very useful package called `ggplot2`.
+One last thing that can be useful with data wrangling is to **reshape** the data into what is called the **long** format. This is very useful for creating visualizations with a powerful and flexible package called `ggplot2`.
 
 To coerce an object into long format, we create **more rows and fewer columns**. For a more information about this, please see this [case study](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}.
 
@@ -1504,7 +1447,7 @@ We would like to put together the different types of percentages of the optimal 
 
 To get our data in long format we can use the `pivot_longer()` function of the `dplyr` package. We will also show how this would be done with the older version of this function, called `gather()`. 
 
-For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, this is the variable names of the columns that we are bringing together. This is equivalent to the `key` argument in `gather()`. The `values_to` is the name of the column that will contain the values of the columns we are consolidating. This is equivalent to the `value` argument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
+For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, i.e., this variable contains the names of the columns that we are bringing together. This is equivalent to the `key` argument in `gather()`. The `values_to` is the name of the column that will contain the values of the columns we are consolidating. This is equivalent to the `value` argument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
 
 We would get an identical output from the methods. We can check that with `setequal()`.
 
@@ -1531,11 +1474,13 @@ pivot_longer(cols = contains("percent"),
         values_to = "percent")
 ```
 
+We now have the main variables and data formats that we need to proceed with the next steps of our analysis, including data exploration and eventually, modeling.
+
 ## Data Exploration
  
 ### Exploring age collapsed data
 
-Let's take a look at the  percent of consumption. Again we will use the base R `summary()` function:
+Let's start by taking a look at the  percent of consumption, across all dietary factors. Again we will use the base R `summary()` function:
 
 ```{r}
 diet_and_guidelines %>%
@@ -1574,7 +1519,7 @@ diet_and_guidelines %>%
      location_name == "Global")
 ```
 
-For those who are less familiar with the metric system where grams are equivalent to milliliters, it may be useful to realize how many fluid ounces the max amount of consumption per day (~248) grams actually is. 
+For those who are less familiar with the metric system where grams are equivalent to milliliters, it may be useful to realize how many fluid ounces the max amount of consumption per day (~248g for the `upper` value for Costa Rica) actually is. 
 
 There are 0.35247 ounces in one gram.
 
@@ -1583,7 +1528,7 @@ There are 0.35247 ounces in one gram.
 0.35247*247.9342 
 ```
 
-OK, so the top consumers are drinking about 87 fluid ounces per day. Since there are 12 ounces in a single can of soda, this is about `r 87/12` sodas per day. Globally on average, males are drinking `r (65.5*0.35247)/12` about sodas worth of sweetened beverages, while females are drinking about `r (47.7*0.35247)/12`.
+OK, so the top consumers are drinking about 87 fluid ounces per day. Since there are 12 ounces in a single can of soda, this is about `r 87/12` sodas per day. Globally on average, males are drinking around `r round((65.5*0.35247)/12, 3)` sodas worth of sweetened beverages, while females are drinking about `r round((47.7*0.35247)/12, 3)`.
 
 
 Let's take a look at what is under-consumed:
@@ -1606,9 +1551,9 @@ diet_and_guidelines %>%
   count(opt_achieved)
 ```
 
-Looks like overall, only `r 1520/4360*100`  of dietary factors for all tested populations were at optimal levels.
+Looks like overall, only `r round(1520/4360*100, 2)`%  of dietary factors for all tested populations were at optimal levels.
 
-Let's get an idea about how countries compare.
+Let's get an idea about how countries compare on this metric.
 
 #### {.scrollable }
 ```{r}
@@ -1623,7 +1568,7 @@ diet_and_guidelines %>%
 ```
 ####
 
-Looks as though on average the populations (both male and female separately) in Qatar, Rwanda, and Turkey consumed the optimal level of intake for the largest number of dietary factors (13 out of 30 (for the 15 dietary factors for males and females)).
+It looks as though on average the populations (both male and female separately) in Qatar, Rwanda, and Turkey consumed the optimal level of intake for the largest number of dietary factors (13 out of 30 (for the 15 dietary factors for males and females)).
 
 In contrast, the Czech Republic, Greenland, Hungary, Slovakia, Slovenia, and the United States had the poorest consumption rates (27 out of 30 were not at optimal levels).
 
@@ -1648,18 +1593,17 @@ diet_and_guidelines %>%
 
 ```
 
-Let's see how males and females compare for achieving the optimal intake:
+Let's see how males and females compare for achieving the optimal intake, across all countries:
 
 ```{r}
 count(diet_and_guidelines, sex, opt_achieved)
 ```
-Looks pretty similar, but it may be a bit better for females. We will evaluate this further.
+Looks pretty similar, but it may be a bit better for females. We will evaluate this further below.
 
-Here is a way we can visualize this with the `ggplot2` package.
-The [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"} package creates plots by using layers.
-Notice in the following code how there is a plus sign between the `ggplot()` function and the `geom_bar()` function. 
+In order to assess what we have observed so far in a graphical way, we will make some data visualizations. One way we can do this is with the `ggplot2` package.
+The [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"} package creates plots by building the plot components piece by piece, using `"layers"`.
 
-With `ggplot2` we select what data we would like to plot using the first function (`ggplot()`) and then we add on additional layers of complexity (these layers can even involve different data). The `aes()` argument specifies what aspects of the data will be plotted where. The `geom_*` function specifies what type of plot to create (e.g. `geom_histogram()` creates a histogram). 
+With `ggplot2` we select what data we would like to plot using the first function (`ggplot()`) and then we add on additional layers of complexity (these layers can even involve different data). The `aes()` argument specifies what aspects of the data will be plotted where. The `geom_*` function specifies what type of plot to create (e.g. `geom_histogram()` creates a histogram). Notice in the following code how there is a plus sign between the `ggplot()` function and the `geom_bar()` function; this is how we combine different plot layers. 
 
 We will see later how we can add many layers to plots with `ggplot2`. For additional information on using `ggplot2`, see this [case study](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}.
 
@@ -1669,7 +1613,7 @@ diet_and_guidelines %>%
   geom_bar(position = "dodge")
 ```
 
-Continuing with `ggplot2` we will now create a different plot. This time we will create a series of boxplots. We will use the `facet_wrap()` function of ggplot2 to allow us to create many different plots simultaneously. In this case we can look at boxplots for the different dietary factors colored by sex. The `scales` argument when set to `"free"` means that each of the sequential plot created by the facet can have a different scale for the y axis, otherwise, by default they are constrained to the same scale.
+Continuing with `ggplot2` we will now create a different type of plot. This time we will create a series of boxplots. We will use the `facet_wrap()` function of ggplot2 to allow us to create many different plots simultaneously. In this case we can look at boxplots for the different dietary factors colored by sex. The `scales` argument when set to `"free"` means that each of the sequential plot created by the facet can have a different scale for the y axis, otherwise, by default they are constrained to the same scale. Since our dietary factors are measured on very different scales, we do not want this constraint here.
 
 
 ```{r}
@@ -1721,12 +1665,12 @@ sep_age_diet_data %>%
   theme(axis.text.x = element_text(angle = 70, hjust = 1))
 ```
 
-We can see from these plots that there appears to be age differences and gender differences for some of the different dietary factors. We will work to create clearer figures later on. However these figures have given us a better sense of the data that we are working with.
+We can see from these plots that there appear to be age differences and gender differences for some of the different dietary factors. We will work to create clearer figures later on. However these initial figures have given us a better sense of the data that we are working with.
 
 
 ## Data Analysis
 
-Recall what our main question were:
+Recall what our main questions were:
 
 #### {.main_question_block}
 <b><u> Our main questions are: </u></b>
@@ -1740,31 +1684,31 @@ Recall what our main question were:
 
 We have some general sense about global trends for the risk-associated dietary factors, however we want to know more.
 
-We are interested in how much the 2 genders differ, how much the 15 different age groups differ, and how the 195 countries compare. 
+We are interested in how much the genders differ, how much the 15 different age groups differ, and how the 195 countries compare. 
 
-In order to make [inference](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between sex, age group, and country identity with relative consumption of the dietary factors of interest. One way to look at the strength of association is to use a statistical method called regression.
+In order to make [inferences](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between sex, age group, and country identity with relative consumption of the dietary factors of interest. One way to look at the strength of association is to use a statistical method called linear regression.
 
-We may have learned that we can compare two groups using a $t$-test. For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
+You may have already learned that one can compare two groups using a $t$-test. For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
 
-Perhaps you have heard about the ANOVA test which can be useful for comparing more than two groups. ANOVA stands for "ANalysis Of VAriance". 
+Perhaps you have heard about the ANOVA test, which can be useful for comparing more than two groups. ANOVA stands for "ANalysis Of VAriance". 
 
-It turns out that both the $t$-test and the ANOVA, are equivalent to specialized types of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. We will use each of these tests to investigate patterns of consumption for dietary factors that contribute to health risk and we will look at how we can obtain equivalent results with regression.
+It turns out that both the $t$-test and ANOVA are equivalent to specialized types of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. We will use each of these tests to investigate patterns of consumption for dietary factors that contribute to health risk and we will look at how we can obtain equivalent results with regression.
 
 ### Regression
 
 So what is regression? How can we use regression to compare our groups of interest and look at the relationship between group identity and consumption of dietary factors associated with health risk?
 
-The statistical version of the term regression was coined in 1877 in this [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between hereditary traits and population averages. The author particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word in general means to go back to a simpler mode. It was noticed that individuals with parents who had an extreme trait, such as exceptional height, tended to have a height more similar to the average of the population rather than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in the author's words the offspring showed:
+The statistical version of the term regression was coined in 1877 in this [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between hereditary traits and population averages. The author particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word itself means `"to go back to a simpler state"`. It was noticed that individuals with parents who had an extreme trait, such as exceptional height, tended to have a height more similar to the average of the population than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in the author's words the offspring showed:
 
 > "a *regression* towards mediocrity"
 
 See [here](https://en.wikipedia.org/wiki/Regression_toward_the_mean){target="_blank"} for more information about this history.
 
-When we think about this from a statistical standpoint, regression allows us to estimate or **regress** relationships between variables to a "simple" model. We do this by **estimating the mean** of an outcome. This can be useful for **predicting future values** of the outcome based on the approximation of the real relationship between the variables within the model.
+When we think about this from a statistical standpoint, regression allows us to estimate or **regress** relationships between variables with a "simple" model. We do this by **estimating the mean** of an outcome, given a value of an input or predictor variable. This can be useful for **predicting future values** of the outcome based on the approximation of the real relationship between the variables within the model, or just for understanding how different variables are related to one another.
 
-Using the ordinary least squares method we can identify a line that best fits the data by minimizing the sum of the squared distances between each point and the line. 
+We will start by considering **simple linear regression**, where we have one predictor variable and one outcome variable. Using the ordinary least squares method we can identify a line that best fits the data by minimizing the sum of the squared vertical distances between each point and the line. 
 
-Fitting a line to the data like this allows us to create a formula for the line using an **intercept** and a **slope**, so that we can then estimate **mean** values of $Y$ (dependent/outcome variable) given known values of $X$ (independent/predictor/covariate/explanatory variable(s)). People will also say that we are "regressing $Y$ on $X$.
+Fitting a line to the data like this allows us to create a formula for the line using an **intercept** and a **slope**, so that we can then estimate **mean** values of $Y$ (dependent/outcome variable) given known values of $X$ (independent/predictor/covariate/explanatory variable(s)). People will also say that we are "regressing $Y$ on $X$".
  
 You may have seen the formula for a line written like this:
 
@@ -1773,23 +1717,17 @@ $$Y = mX + b$$
 <center> or </center>
 $$Y = aX + b$$
 
-In this case $m$ or $a$ is the slope of the line and $b$ is a constant and represents the intercept or the point where the y axis is crossed by the line, when $x = 0$.
+In this case $m$ or $a$ is the slope of the line and $b$ is a constant and represents the y-intercept or the point where the y axis is crossed by the line, when $x = 0$.
 
 We can also write this model like this:
 
 
 $$Y = \beta_{1}X +\beta_{0}$$
 
-Now $\beta_{1}$ called Beta one is our slope notation and $B0$ Beta zero (also called Beta not) is our intercept notation.
+Now $\beta_{1}$, called Beta one, is our slope notation and $\beta_{0}$, Beta zero (also called Beta naught), is our intercept notation.
 
-Importantly the slope ($m$ or $a$ or $\beta_{1}$) gives us a measure of the strength of the influence of the independent variable(s)($X_{i}$) on the dependent variable ($Y$).
+Importantly the slope ($m$ or $a$ or $\beta_{1}$) gives us a measure of the strength of the influence of the independent variable ($X$) on the dependent variable ($Y$).
 
-Check out this [interactive explanation](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank"} of how the ordinary least squares method works.
-
-Here is an image of what we are saying about the ordinary least squares regression to fit a line to data:
-<center>![](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)</center>
-
-###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
 
 
 In some cases we can fit a line perfectly and all points will lie on the line with no distance to the line:
@@ -1811,9 +1749,7 @@ ggplot(data = thedata, aes(x = x, y = y)) +
         axis.text.x = element_text(size = 15))
 ```
 
-In this case, the slope or $\beta_{1}$ is 1 and the intercept is $\beta_{0}$ 10. We can see that if $X$ were 50, $Y$ would be approximately 60. This is very unusual in statistical analysis however, as often the relationship between variables is more complicated and there is more noise in our data.
-
-In these other cases there will be greater distances between the line and the points. 
+In this case, the slope or $\beta_{1}$ is 1 and the intercept $\beta_{0}$ is 10 and every observed data point lies exactly on the line, e.g., we can see that when $X$ is 50, $Y$ is exactly 60. This is very unusual in statistical analysis however, as often the relationship between variables is more complicated and there is more noise in our data. In these other cases there will be greater distances between the line and the points. 
 
 Like this regression:
 ```{r, echo = FALSE, out.width="400ptx"}
@@ -1832,9 +1768,19 @@ stat_regline_equation(size = 6) +
 
 ```
 
-In this case, because there is some vertical distance between the line and the data points, there is a bit of what is called error in the model. The formula for the relationship between $X$ and $Y$ does not perfectly describe the data. The distance between the line and each data point is what we call a [residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}. Our least squares method finds the line with the minimized value of the sum of the residual values.
+In this case, because there is some vertical distance between the line and the data points, there is a bit of what is called "error" in the model. The formula for the relationship between $X$ and $Y$ does not perfectly describe the data. The vertical distance between the line and each data point is what we call a [residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}. Our least squares method finds the line with the minimized value of the sum of the squared residual values.
 
-This concept has been extended to allow for comparisons of **different types of outcomes (the ys)**, to involve **various numbers of covariates (independent variables - the xs)**, and to allow for **different shapes of lines**. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
+Check out this [interactive explanation](http://setosa.io/ev/ordinary-least-squares-regression/){target="_blank"} of how the ordinary least squares method works.
+
+Here is an image of what we are saying about the ordinary least squares regression to fit a line to data:
+<center>![](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)</center>
+
+###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
+
+
+This concept has been extended to allow for comparisons of **different types of outcomes (the y's)**, to involve **various numbers of covariates (independent variables - the x's)**, and to allow for **different shapes of lines**. Of course in these more complex situations, we can't visualize these relationships easily with a line on a two-dimensional page, but the mathematical concept remains in some sense the same.
+
+R has it's own way of representing the regression equation in code. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
 
 In R we indicate a linear model like this:
 ```{r, eval = FALSE}
@@ -1846,11 +1792,11 @@ So let's get back to our data...What types of outcomes do we have?
 
 <b><u>Our outcomes ($Y$): </u></b>
 
-We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** because our values can take on any numeric value within the range of possible values. Binary outcomes, in contrast, have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
+We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** variables because our values can take on any numeric value within the range of possible values. Binary outcomes, in contrast, have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
 
 Continuous outcomes can be evaluated with various types of linear regressions, while binary outcomes can be evaluated with what is called **logistic** regression. See [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
 
-We have both continuous outcomes of raw consumption rates or percentages of consumption relative to the optimal guideline amounts as well as binary outcomes of "yes" or "no" about if a population achieved the optimal amount of consumption.
+We have both continuous outcomes of raw consumption rates or percentages of consumption relative to the optimal guideline amounts as well as binary outcomes of "yes" or "no" about whether a population achieved the optimal amount of consumption.
 
 <b><u>Our covariates ($X_{i}$): </u></b>
 
@@ -1871,27 +1817,27 @@ all_age_diet_and_guidelines %<>%
 
 ### $t$-test and linear regression
 
-Let's focus on the dietary factors that appeared to potentially have a difference between genders based on our figure in our exploratory analysis.
+Since we will be covering a lot of different statistical concepts here, we will want to focus are analysis on a single dietary factor. Let's choose one of the dietary factors that appeared to potentially have a difference between genders based on our figure in our exploratory analysis.
 
 > "If we just look at differences by sex for the specific dietary factors,  males appear to potentially consume more of many of the factors, including possibly more sodium, fiber, calcium, red meat, and sugar-sweetened beverages than females. Females may consume more fruit."
 
 Let's take a look at red meat.
 
-We can compare the red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
+We can compare the red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R by default) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
 
 Before we get started, let's think about the assumptions of both tests.
 
 
 #### $t$-test assumptions:
 
-1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large total n > 30 - which is indeed the case for us!)
-2) Equal variance between the two groups (make sure you do the correct test if the data is not normal)
+1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large, i.e., total n > 30 - which is indeed the case for us!)
+2) Equal variance between the two groups (make sure you do the correct test if the data are not normal)
 3) Balanced sample sizes of the two groups (got that!)
 4) Independent observations (or independent paired observations - got that too!)
 
-We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating [Q-Q plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}. 
+We can evaluate if our data are [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating [Q-Q plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}. 
 
-<u>If our data is not normally distributed, we can consider these options:</u>
+<u>If our data are not normally distributed, we can consider these options:</u>
 
 1) We can still perform a $t$-test if our n is large
 2) We can transform the data before performing a $t$-test
@@ -1909,7 +1855,7 @@ N (normal) - The residuals are normally distributed. Note that the variables the
 
 E (equal variances) - The variance of the residuals for the groups is similar. This is called [homoscedasticity](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. In other words the residuals are of similar size along the line.
 
-It's also important that if there are more than one predictor variables, that these are not correlated.
+It's also important that if there are multiple predictor variables, that these are not correlated.
 
 See [here](https://www.jmp.com/en_us/statistics-knowledge-portal/what-is-regression/simple-linear-regression-assumptions.html){target="_blank"} for additional information about the assumptions of linear regressions.
 
@@ -2092,7 +2038,7 @@ diet_and_guidelines %>%
 
 We can see that the slope of the linear model is equivalent to the difference between the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
 
-Also, since we have female and male values each from the same countries, our data is what we called paired. Thus the values from the same country could be related to one another because of cultural difference in diet, thus the assumption of the unpaired $t$-test that the samples are independent is violated.  Therefore, we need to model our data in a way that accounts for this. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
+Also, since we have female and male values each from the same countries, our data is what we call "paired". The values from the same country could be related to one another because of cultural difference in diet, thus the assumption of the unpaired $t$-test that the samples are independent is violated.  Therefore, we need to model our data in a way that accounts for this. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
 ```{r}
 
@@ -3572,22 +3518,22 @@ collapsed%>% filter(location_name == "Malaysia")
 
 ## Summary
 
-We have evaluated average consumption estimates of 15 dietary factors with probably non-communicable disease (NCD) risk from 195 different countries around the world. To do so we imported data from a PDF using the `pdftools` package, as well as data from two CSV files using readr. We used `tidyverse` packages such as `dplyr`, `stringr`, and `tidy` to clean and join the data from the PDF with the CSV files. 
+We have evaluated average consumption estimates of 15 dietary factors with probably non-communicable disease (NCD) risk from 195 different countries around the world. To do so we imported data from a PDF using the `pdftools` package, as well as data from two CSV files using `readr`. We used `tidyverse` packages such as `dplyr`, `stringr`, and `tidy` to clean and join the data from the PDF with the CSV files. 
 
-We learned that Regression is a powerful and flexible statistical tool that simplifies or estimates the relationships between variables using a mathematical model. We learned about the utility of the regression to compare groups, look for associations between variables, and to predict outcomes based on multiple predictor or explanatory variables. We then compared this to other popular tests like the $t$-test and the ANOVA. We learned that these tests are actually equivalent to specialized types of regressions.
+We learned that regression is a powerful and flexible statistical tool that simplifies or estimates the relationships between variables using a mathematical model. We learned about the utility of regression techniques to compare groups, look for associations between variables, and predict outcomes based on multiple predictor or explanatory variables. We then compared this to other popular tests like the $t$-test and the ANOVA. We learned that these tests are actually equivalent to specialized types of regressions.
 
-Our statistical analysis focused on evaluating differences in the consumption of red meat around the world between females and males and across different age groups. First we looked at the assumptions of [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20$t$-test){target="_blank"} and regressions, and determined that the relative percentage data of red meat consumption to the optimal guideline suggested amount was right skewed. We learned that we could transform the data by taking the log of these values to achieve more normally distributed data. To compare males and females we used a $t$-test and learned that a $t$-test is a specialized form of a linear regression. To compare the 15 different age groups we used an ANOVA and learned that the ANOVA is also a specialized form of linear regression. We examined how we obtained the same results using either statistical test. This was also the case if we looked at the effect of gender and controlled for the paired country structure in the data by either including `location_name` in the model as another term or by using a mixed effects model to control for this structure as a random effect but not specifically test for the influence of `location_name` on red meat consumption estimates. We learned that fixed effects are those that we wish to evaluate, while random effects are those that may influence the relationships of our variables of interest but that we do not wish to actively evaluate. Using these tests and models, we determined that males consume more red meat than women on average around the world. 
+Our statistical analysis focused on evaluating differences in the consumption of red meat around the world between females and males and across different age groups. First we looked at the assumptions of [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20$t$-test){target="_blank"} and regressions, and determined that the rate of red meat consumption relative to the optimal guideline-suggested amount was right skewed. We learned that we could transform the data by taking the log of these values to achieve more normally distributed data. To compare males and females we used a $t$-test and learned that a $t$-test is a specialized form of a linear regression. To compare the 15 different age groups we used an ANOVA and learned that ANOVA is also a specialized form of linear regression. We examined how we obtained the same results using either statistical test. This was also the case if we looked at the effect of gender and controlled for the paired country structure in the data by either including `location_name` in the model as another term or by using a mixed effects model to control for this structure as a random effect but not specifically test for the influence of `location_name` on red meat consumption estimates. We learned that fixed effects are those that we wish to evaluate, while random effects are those that may influence the relationships of our variables of interest but that we do not wish to actively evaluate. Using these tests and models, we determined that males consume more red meat than females on average around the world. 
 
-Our ANOVA analysis of age determined that indeed there at least one age group consumed a significantly different amount of red meat compared to the other age groups, and this was still the case when we controlled `location_name`. However, we learned that we could that the ANOVA does not provide information about which age groups are different. We learned how the regression however could provide some comparisons of different age groups relative to the reference age group. Furthermore, our data visualizations allowed us to determine that in general red met consumption appears to be higher in the younger age groups relative to the older age groups. 
+Our ANOVA analysis of age determined that indeed there is at least one age group that consumed a significantly different amount of red meat compared to the other age groups, and this was still the case when we controlled for `location_name`. However, we learned that the ANOVA does not provide information about which age groups are different. We learned how the regression could provide some quantification of the effect of specific age groups relative to the reference age group. Furthermore, our data visualizations allowed us to determine that in general red meat consumption appears to be higher in the younger age groups relative to the older age groups. 
 
 Finally, we also looked at differences in red meat consumption between the different countries and saw in our ANOVA analysis and our regression analysis that there were significant differences. We were able to use a regression that included `sex`, `age_group_name`, and `location_name` to evaluate the influence of each of the three demographic factors on consumption while controlling or accounting for the other two. Our results demonstrated that all three influenced or were associated with red meat consumption.
 
-In preforming our statistical analyses we learned about the assumptions of the $t$-test, the regression, and the ANOVA. We also learned about important methods to tests these assumptions.
+In preforming our statistical analyses we learned about the assumptions of the $t$-test, regression, and the ANOVA. We also learned about important methods to tests these assumptions.
 
 #### $t$-test assumptions:
 
-1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large total n > 30 - can evaluate by plotting the distribution and by creating [Q-Q plots]([Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}))
-2) Equal variance between the two groups (make sure you do the correct test if the data is not normal)
+1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large, i.e., total n > 30. We can evaluate this assumption by plotting the distribution and by creating [Q-Q plots]([Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}))
+2) Equal variance between the two groups (make sure you do the correct test to assess this if the data are not normal)
 3) Balanced sample sizes of the two groups
 4) Independent observations (or independent paired observations)
 
@@ -3604,7 +3550,7 @@ See this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-o
 
 We learned that we can test if 2 groups have equal variance using:  
 1) the F test with `var.test()`  
-2) Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data is not normally distributed)  
+2) Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data are not normally distributed)  
 
 #### Linear regression assumptions:
 
@@ -3616,19 +3562,19 @@ It is also important that predictor variables are not correlated with one anothe
 
 #### ANOVA assumptions:
 
-1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large total n > 30) 
-2) Equal variance between the groups - aka the [Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"} (make sure you do the correct test if the data is not normal) 
+1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large, i.e., total n > 30) 
+2) Equal variance between the groups - aka the [Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"} (make sure you do the correct test if the data are not normal) 
 3) Balanced sample sizes of the groups 
 4) Independent observations (or independent paired observations) 
 
 We learned about three tests for examining the equality of variance of 3 or more groups:
 1) [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} (works well if the data appears to be normally distributed) 
 2) [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality 
-3) [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner- Killeen test 
+3) [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner-Killeen test 
 
 
 Using the `ggplot2` package we were able to visualize trends in the data and to compare consumption of these dietary factors in the US with that of the other countries.
-We see that the populations in many countries are over-consuming foods that are associated with health risk when over-consumed. In particular processed meat and sugar-sweetened beverages appear to be the most over consumed. Importantly both of these appear to be consumed at higher quantities by males and younger adults. People in the US  appear to consume less sugar-sweetened beverages than other countries, however, people are still over-consuming. Processed meat however appears to be especially bad in the US. In terms of food that need to be consumed in adequate amounts to overcome health risk, nearly all countries for all factors are not reaching guideline levels. However, there are some countries consuming more than adequate amounts of legumes, vegetables, fruits and fiber. People in the US appear to eat more milk products and consume more omega-3 fatty acid and calcium rich foods than other countries. All countries including the US consume very low levels of polyunsaturated fatty acids. These [polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat) are abundant in seeds, nuts, avocados, as well as fish. Likely the low level of consumption of nuts and seeds contributes to these low polyunsaturated fatty acid estimates. The supplementary table included in the article suggests that poor consumption of polyunsaturated fatty acids is associated with ischemic heart disease. The article takes this data further to evaluate the association of consumption levels of these foods with mortality.
+We see that the populations in many countries are over-consuming foods that are associated with health risk when over-consumed. In particular processed meat and sugar-sweetened beverages appear to be the most over consumed. Importantly both of these appear to be consumed at higher quantities by males and younger adults. People in the US  appear to consume fewer sugar-sweetened beverages than other countries, however, people are still over-consuming. Processed meat however appears to be especially bad in the US. In terms of food that need to be consumed in adequate amounts to overcome health risk, nearly all countries for all factors are not reaching guideline levels. However, there are some countries consuming more than adequate amounts of legumes, vegetables, fruits and fiber. People in the US appear to eat more milk products and consume more omega-3 fatty acids and calcium rich foods than other countries. All countries including the US consume very low levels of polyunsaturated fatty acids. These [polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat) are abundant in seeds, nuts and avocados, as well as fish. Likely the low level of consumption of nuts and seeds contributes to these low polyunsaturated fatty acid estimates. The supplementary table included in the article suggests that poor consumption of polyunsaturated fatty acids is associated with ischemic heart disease. The article takes this data further to evaluate the association of consumption levels of these foods with mortality.
 
 Analyses like the one in our case study are important for defining which groups could benefit the most from interventions, education, and policy changes when attempting to mitigate public health challenges. You can see in the [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} however that many additional considerations would be involved to perform a more thorough analysis to adequately understand the data enough to recommend policy changes.
 
@@ -3653,7 +3599,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20$t$-test){target="_blank"}  
 [ANOVA](http://onlinestatbook.com/2/analysis_of_variance/intro.html){target="_blank"}  
 [$t$-tests and ANOVA are equivalent to regression](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} also see [here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} about how many commonly known statistical tests are specialized forms of regression  
-[Normally Distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"}  
+[Normal Distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"}  
 [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}  
 [Guide to residual diagnostic plots](https://data.library.virginia.edu/diagnostic-plots/) and [Examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"}  
 [Residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"}  
@@ -3693,7 +3639,8 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [Independent Observations](https://www.stat.cmu.edu/~cshalizi/36-220/lecture-5.pdf){target="_blank"}  
 [Transformation](https://www.statisticshowto.datasciencecentral.com/transformation-statistics/){target="_blank"}  
 [Permutation/Resampling Methods](https://jhu-advdatasci.github.io/2019/lectures/21-resampling-techniques.html){target="_blank"}   
-[Central Limit Theorem](https://www.analyticsvidhya.com/blog/2019/05/statistics-101-introduction-central-limit-theorem/){target="_blank"} [Wilcoxon Signed Rank Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)   
+[Central Limit Theorem](https://www.analyticsvidhya.com/blog/2019/05/statistics-101-introduction-central-limit-theorem/){target="_blank"} 
+[Wilcoxon Signed Rank Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)   
 [Wilcoxon Rank Sum Test](http://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_nonparametric/BS704_Nonparametric4.html){target="_blank"}  
 [Two-sample Kolmogorov-Smirnov Test](https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/ks2samp.htm){target="_blank"}  
 [Type 1 Error](https://web.ma.utexas.edu/users/mks/statmistakes/errortypes.html){target="_blank"}  
@@ -3712,7 +3659,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style   
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R   
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data   
-[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator  
+[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` piping operator  
 [purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble   
 [tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with  dplyr/stringr/tidyr/purrr  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns 

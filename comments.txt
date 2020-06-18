@@ -1,0 +1,132 @@
+
+
+Should there be a README.md file included with an overview of the case study and info about necessary packages, etc?
+
+dplyr::glimpse vs just glimpse (lines 222 - 226) -- never mind, I read your explanation in the text -- nice idea!
+
+Philosophy about code chunk names? I don't use them, but would it be better practice to do so?
+
+For code chunk with (around line 250)
+dfSummary(diet_data, plain.ascii = FALSE, style = "grid", 
+         graph.magnif = 0.75,  tmp.img.dir = "tmp")
+why is eval = FALSE? This causes problems with knitting the first time around (i.e., if you have not run that line of code to create the files).
+And I actually had to remove this table since the code was not creating the ds010*.png files, even after setting eval = TRUE in the code chunk above. Not sure what happened here, but my guess is that you ran the code interactively at some point and created these images, which are not produced upon knitting.
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| No | Variable        | Stats / Values                  | Freqs (% of Valid)   | Graph               | Missing |
++====+=================+=================================+======================+=====================+=========+
+| 1  | year_id\        | 1 distinct value                | 2017 : 5880 (100.0%) | ![](tmp/ds0100.png) | 0\      |
+|    | [numeric]       |                                 |                      |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 2  | location_name\  | 1\. Afghanistan\                | 30 ( 0.5%)\          | ![](tmp/ds0101.png) | 0\      |
+|    | [character]     | 2\. Albania\                    | 30 ( 0.5%)\          |                     | (0%)    |
+|    |                 | 3\. Algeria\                    | 30 ( 0.5%)\          |                     |         |
+|    |                 | 4\. American Samoa\             | 30 ( 0.5%)\          |                     |         |
+|    |                 | 5\. Andorra\                    | 30 ( 0.5%)\          |                     |         |
+|    |                 | 6\. Angola\                     | 30 ( 0.5%)\          |                     |         |
+|    |                 | 7\. Antigua and Barbuda\        | 30 ( 0.5%)\          |                     |         |
+|    |                 | 8\. Argentina\                  | 30 ( 0.5%)\          |                     |         |
+|    |                 | 9\. Armenia\                    | 30 ( 0.5%)\          |                     |         |
+|    |                 | 10\. Australia\                 | 30 ( 0.5%)\          |                     |         |
+|    |                 | [ 186 others ]                  | 5580 (94.9%)         |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 3  | rei_id\         | Mean (sd) : 133.7 (53.9)\       | 15 distinct values   | ![](tmp/ds0102.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 111 < 118 < 333\                |                      |                     |         |
+|    |                 | IQR (CV) : 9 (0.4)              |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 4  | food\           | 1\. calcium\                    | 392 ( 6.7%)\         | ![](tmp/ds0103.png) | 0\      |
+|    | [character]     | 2\. fiber\                      | 392 ( 6.7%)\         |                     | (0%)    |
+|    |                 | 3\. fruits\                     | 392 ( 6.7%)\         |                     |         |
+|    |                 | 4\. legumes\                    | 392 ( 6.7%)\         |                     |         |
+|    |                 | 5\. milk\                       | 392 ( 6.7%)\         |                     |         |
+|    |                 | 6\. nuts and seeds\             | 392 ( 6.7%)\         |                     |         |
+|    |                 | 7\. polyunsaturated fatty aci\  | 392 ( 6.7%)\         |                     |         |
+|    |                 | 8\. processed meat\             | 392 ( 6.7%)\         |                     |         |
+|    |                 | 9\. red meat\                   | 392 ( 6.7%)\         |                     |         |
+|    |                 | 10\. seafood omega-3 fatty aci\ | 392 ( 6.7%)\         |                     |         |
+|    |                 | [ 5 others ]                    | 1960 (33.3%)         |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 5  | age_group_name\ | 1\. All Available Ages          | 5880 (100.0%)        | ![](tmp/ds0104.png) | 0\      |
+|    | [character]     |                                 |                      |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 6  | sex\            | 1\. Female\                     | 2940 (50.0%)\        | ![](tmp/ds0105.png) | 0\      |
+|    | [character]     | 2\. Male                        | 2940 (50.0%)         |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 7  | parameter\      | 1\. continuous                  | 5880 (100.0%)        | ![](tmp/ds0106.png) | 0\      |
+|    | [character]     |                                 |                      |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 8  | mean\           | Mean (sd) : 34.8 (60.1)\        | 5880 distinct values | ![](tmp/ds0107.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 0 < 8.4 < 566.7\                |                      |                     |         |
+|    |                 | IQR (CV) : 42.2 (1.7)           |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 9  | upper\          | Mean (sd) : 37.9 (65.3)\        | 5880 distinct values | ![](tmp/ds0108.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 0 < 9.2 < 624.2\                |                      |                     |         |
+|    |                 | IQR (CV) : 46.1 (1.7)           |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 10 | lower\          | Mean (sd) : 31.9 (55.4)\        | 5880 distinct values | ![](tmp/ds0109.png) | 0\      |
+|    | [numeric]       | min < med < max:\               |                      |                     | (0%)    |
+|    |                 | 0 < 7.5 < 513.2\                |                      |                     |         |
+|    |                 | IQR (CV) : 38.8 (1.7)           |                      |                     |         |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+| 11 | unit\           | 1\. %energy/day\                | 784 (13.3%)\         | ![](tmp/ds0110.png) | 0\      |
+|    | [character]     | 2\. g/day                       | 5096 (86.7%)         |                     | (0%)    |
++----+-----------------+---------------------------------+----------------------+---------------------+---------+
+
+In mainplot.png, perhaps think about switching the order of the left and right upper panels, so the "explode" happens to the right instead of the left?
+
+
+Are we OK with "hard coding" things like the number of dietary factors rather than pulling the number from code? (I think I am actually OK with this, but wanted to check with you.)
+
+Possible suggestion for an exercise, from what is now kind of an aside/comment:
+Use the str_split_fixed() function to extract the information from the table on p3
+
+Is nth() just an alternative to using [] to select an element from a vector? You do use the [] to extract the correct page from the results of pdf_text.
+
+Why use 
+guidelines %>% purrr::modify_at("direction", ~ NULL)
+rather than
+guidelines %>% select(-direction)
+? The second option seems simpler. In any case, this piece of code seems to come a little out of nowhere; why would you separate the values and then drop this column?
+
+I would suggest somehow pulling the section on regular expressions or somehow putting a box around it or something. I mean the part between "Also here we have a bit of an example using the `str_count()` function of `stringr`, which ...." and "We also want to make a unit variable so that we can make sure that our units are consistent later." I think it is good to refer to resources about regular expressions, but this feels like a bit of a tangent as it is now.
+
+For replacing the % in the unit variable, I would probably just use mutate( unit = ifelse(unit == "", "%", unit)) rather than going through two steps of setting "" to NA and then replacing the NAs. But I guess the way you did it does introduce na_if and replace_na (which I did not know existed). It seems like there is a tidyverse function for everything, and I guess these are probably more intuitive than ifelse().
+
+I have started getting a warning on using the vars() function in mutate_at(); I'm not sure what the issue/alternative is, but I wanted to mention it in case this should be revamped.
+
+I'm not sure what you mean by: "However we can't start commands with select for assignments." (Same for pull() below.)
+
+One place to shorten would be to get rid of the assignment with [] and [[]] and just use the mutate_at version. I am torn about this as a base-R person, but it's at least something to consider.
+
+In the "Comparing data" section, what is your main goal of the part where you are examining the different ways of comparing two tibble columns? I don't feel like it is necessary for your overall goal of merging the data in the guidelines object with the data in the diet_data and sep_age_diet_data objects. 
+
+If you are using one of the join functions, the order of the rows matching is not relevant, right? In fact, this is one of the most powerful things about this approach to merging data (as opposed to doing something like cbind). So I'm not sure about spending time on these different methods of comparison that either do or do not take the order of the rows into account. What exactly is your goal here?
+
+For shortening, I think you could remove or make a bonus mini lecture the section between "Here is a toy example about how the three comparison functions..." and "OK, let's keep going with our data." I am not sure exactly why this example is relevant to the join you end up doing eventually, but agree that these kind of comparison functions are useful to know and understand.
+
+I hadn't realized the setdiff function (which I usually use in base) is also in dyplyr
+
+One way of simplifying would be to skip the info about gather(). I know I have more or less switched over to pivot_longer, and I wonder if it is worth presenting both?
+
+After creating the long form data, do you maybe want to display a little of the data using head() or glimpse() so people can see what it looks like?
+
+For looking at global levels of sugar sweetened beverage consumption, I'd suggest using select() to pull the percent columns, since they are not getting displayed here (the usual tibble "with 11 more variables..." thing):
+Let's take a look at global levels:
+```{r}
+diet_and_guidelines %>%
+       filter(food == "sugar-sweetened beverages" & 
+     location_name == "Global")
+```
+
+In general, is it better practice to try to use code to pull the values like the mean grams of soda consumed, e.g., pulling teh value of 65.5 used in the inline code `r round((65.5*0.35247)/12, 3)` using code rather than writing the number? It's kind of a mess to do using dplyr, but possible.
+
+
+Learning objectives should include the statistical concepts that are covered. It might also help to start the Data Analysis section with an overview of all the topics that will be covered, as there are many of them. Here is a draft of suggestions for these two pieces:
+
+I think maybe this sentence should be moved to later:
+Importantly the slope ($m$ or $a$ or $\beta_{1}$) gives us a measure of the strength of the influence of the independent variable ($X$) on the dependent variable ($Y$).
+It is not completely accurate because 
+
+
