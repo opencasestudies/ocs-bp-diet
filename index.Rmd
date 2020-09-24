@@ -49,8 +49,8 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 **Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
 
 ## Motivation
-An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} recently published in the 
-Lancet journal evaluated global dietary trends and the relationship of dietary factors with mortality and fertility.
+An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} recently published in The 
+Lancet evaluated global dietary trends and the relationship of dietary factors with mortality and fertility.
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "thepaper.png"))
@@ -61,7 +61,7 @@ GBD 2017 Diet Collaborators. Health effects of dietary risks in 195 countries, 1
 
 ####
 
-This article evaluated food consumption patterns in 195 countries for 15 different dietary risk factors that have probable associations with non-communicable disease (NCD). For example, over-consumption of sodium is associated with high blood pressure. These consumption levels were then used to estimate levels of mortality and morbidity due NCD, as well as disability-adjusted life-years (DALYs) attributable to sub-optimal consumption of foods related to these dietary risk factors. The authors found that: 
+This article evaluated food consumption patterns in 195 countries for 15 different dietary risk factors that have probable associations with non-communicable disease (NCD). For example, over-consumption of sodium is associated with high blood pressure. These consumption levels were then used to estimate levels of mortality and morbidity due to NCD, as well as disability-adjusted life-years (DALYs) attributable to sub-optimal consumption of foods related to these dietary risk factors. The authors found that: 
 
 > "High intake of sodium ..., low intake of whole grains ..., and low intake of fruits ... were the leading dietary risk factors for deaths and DALYs globally and in many countries." 
 
@@ -1686,17 +1686,19 @@ We have some general sense about global trends for the risk-associated dietary f
 
 We are interested in how much the genders differ, how much the 15 different age groups differ, and how the 195 countries compare. 
 
-In order to make [inferences](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between sex, age group, and country identity with relative consumption of the dietary factors of interest. One way to look at the strength of association is to use a statistical method called linear regression.
+In order to make [inferences](https://www.britannica.com/science/inference-statistics) about these comparisons, it is helpful to perform statistical tests. These tests can help us to determine the strength of the association between the consumption of the dietary factors (our outcome variable) and sex, age group, and country identity (our predictor variables). One way to look at the strength of association between variables is to use a statistical method called **regression**.
 
-You may have already learned that one can compare two groups using a $t$-test. For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.
+If we measure consumption using either raw consumption or the percent of optimal consumption, then our outcome variable is what we call **continuous**, because our values can take on any numeric value within the range of possible values.  To look at the strength of association with a continuous outcome, we can use **linear regression**.
 
-Perhaps you have heard about the ANOVA test, which can be useful for comparing more than two groups. ANOVA stands for "ANalysis Of VAriance". 
+If, instead, we measure consumption by whether or not the optimal level of consumption was achieved ("yes" or "no"), then our outcome would be considered **binary**, meaning it can take only two possible values.  To look at the strength of association with a binary outcome, we can use **logistic regression.**  There are other regression method for different types of outcomes as well; see [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
 
-It turns out that both the $t$-test and ANOVA are equivalent to specialized types of [regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. We will use each of these tests to investigate patterns of consumption for dietary factors that contribute to health risk and we will look at how we can obtain equivalent results with regression.
+In this case study, we will focus on the outcome of the percent of optimal consumption (`Relative_Percent`), so we will focus our analysis on linear regression.  
 
-### Regression
+You may have already learned that one can compare a continuous outcome between two groups using a $t$-test. For more information on the $t$-test see this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/){target="_blank"}.  And perhaps you have heard about ANOVA (ANalysis Of VAriance) for comparing a continuous outcome across more than two groups.  It turns out that both the $t$-test and ANOVA are specialized types of [linear regression](https://lindeloev.github.io/tests-as-linear/){target="_blank"}. We will use each of these tests to investigate patterns of consumption for dietary factors that contribute to health risk and we will look at how we can obtain equivalent results with regression.
 
-So what is regression? How can we use regression to compare our groups of interest and look at the relationship between group identity and consumption of dietary factors associated with health risk?
+### Linear Regression
+
+So what is linear regression? How can we use regression to compare our groups of interest and look at the relationship between group identity and consumption of dietary factors associated with health risk?
 
 The statistical version of the term regression was coined in 1877 in this [article](http://galton.org/essays/1870-1879/galton-1877-typical-laws-heredity.pdf ){target="_blank"} about the relationship between hereditary traits and population averages. The author particularly focused on [height](https://zenodo.org/record/1449548#.Xlf_9hNKihc){target="_blank"} and kinship or relatedness. The word itself means `"to go back to a simpler state"`. It was noticed that individuals with parents who had an extreme trait, such as exceptional height, tended to have a height more similar to the average of the population than the extreme height of their parents. For example if parents were very tall, their children were likely to be a bit shorter than their parents and therefore closer to the population average. Thus the children regressed towards the mean or in the author's words the offspring showed:
 
@@ -1706,7 +1708,36 @@ See [here](https://en.wikipedia.org/wiki/Regression_toward_the_mean){target="_bl
 
 When we think about this from a statistical standpoint, regression allows us to estimate or **regress** relationships between variables with a "simple" model. We do this by **estimating the mean** of an outcome, given a value of an input or predictor variable. This can be useful for **predicting future values** of the outcome based on the approximation of the real relationship between the variables within the model, or just for understanding how different variables are related to one another.
 
-We will start by considering **simple linear regression**, where we have one predictor variable and one outcome variable. Using the ordinary least squares method we can identify a line that best fits the data by minimizing the sum of the squared vertical distances between each point and the line. 
+We will start by considering **simple linear regression**, where we have one contunous predictor variable and one continuous outcome variable, as shown below:
+```{r, echo = FALSE, out.width = "400ptx"}
+set.seed(15)
+data_x <- sample(1:10, 10, replace = TRUE)
+data_y <- data_x + rnorm(10, 0, 10)
+thedata <- bind_cols(x = data_x, y = data_y)
+
+ggplot(data = thedata, aes(x = x, y = y)) +
+  geom_point() +
+  theme(axis.text.y = element_text(size = 15),
+        axis.text.x = element_text(size = 15))
+```
+
+We want to identify a "best fit" line that summarizes the relationship between these two variables.  We can so this using the ordinary least squares method, which chooses the line that best fits the data by minimizing the sum of the squared vertical distances between each point and the line. In the above example, this line turns out to be:
+```{r, echo = FALSE, out.width = "400ptx"}
+set.seed(15)
+data_x <- sample(1:10, 10, replace = TRUE)
+data_y <- data_x + rnorm(10, 0, 10)
+thedata <- bind_cols(x = data_x, y = data_y)
+
+ggplot(data = thedata, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", 
+                  se = FALSE, 
+               color = "black", 
+             formula = y ~ x) + 
+  stat_regline_equation(size = 6) +
+  theme(axis.text.y = element_text(size = 15),
+        axis.text.x = element_text(size = 15))
+```
 
 Fitting a line to the data like this allows us to create a formula for the line using an **intercept** and a **slope**, so that we can then estimate **mean** values of $Y$ (dependent/outcome variable) given known values of $X$ (independent/predictor/covariate/explanatory variable(s)). People will also say that we are "regressing $Y$ on $X$".
  
@@ -1719,18 +1750,15 @@ $$Y = aX + b$$
 
 In this case $m$ or $a$ is the slope of the line and $b$ is a constant and represents the y-intercept or the point where the y axis is crossed by the line, when $x = 0$.
 
-We can also write this model like this:
-
+In regression, we usually write this model like this:
 
 $$Y = \beta_{1}X +\beta_{0}$$
 
-Now $\beta_{1}$, called Beta one, is our slope notation and $\beta_{0}$, Beta zero (also called Beta naught), is our intercept notation.
+Now $\beta_{1}$, called "beta one"", is our slope and $\beta_{0}$, called "beta zero" (or "beta naught""), is our intercept.  In our example above, the slope of the regression line is $\beta_{1} = 2.3$ and the intercept is $\beta_{0} = -6.6$.
 
-Importantly the slope ($m$ or $a$ or $\beta_{1}$) gives us a measure of the strength of the influence of the independent variable ($X$) on the dependent variable ($Y$).
+Importantly the slope ($\beta_{1}$) gives us a quantitative measure of the relationship between the independent variable ($X$) on the dependent variable ($Y$).  In particular, $\beta_{1}$ tells how the expected difference in the $Y$ value for a difference of 1 unit in the $X$ value.
 
-
-
-In some cases we can fit a line perfectly and all points will lie on the line with no distance to the line:
+It's possible that the regression line will perfectly fit the data, and all points will lie on the line with no distance to the line:
 
 ```{r, echo = FALSE, out.width = "400ptx"}
 
@@ -1777,8 +1805,7 @@ Here is an image of what we are saying about the ordinary least squares regressi
 
 ###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
 
-
-This concept has been extended to allow for comparisons of **different types of outcomes (the y's)**, to involve **various numbers of covariates (independent variables - the x's)**, and to allow for **different shapes of lines**. Of course in these more complex situations, we can't visualize these relationships easily with a line on a two-dimensional page, but the mathematical concept remains in some sense the same.
+This basic concept of simple linear regression an be extended to allow for more than one covariate (the independent variables - x's); this is called **multivariable** linear regression.   With more than one independent variable, we can't visualize these relationships easily with a line on a two-dimensional page, but the mathematical concept remains in some sense the same.
 
 R has it's own way of representing the regression equation in code. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
 
@@ -1788,21 +1815,6 @@ y ~ x
 ```
 Here our response/outcome variable is on the left of the `~` while our covariates/explanatory variables are on the right of the `~`.
 
-So let's get back to our data...What types of outcomes do we have?
-
-<b><u>Our outcomes ($Y$): </u></b>
-
-We can evaluate the raw consumption or the percent of optimal consumption values that we calculated. These outcomes would all be what we call **continuous** variables because our values can take on any numeric value within the range of possible values. Binary outcomes, in contrast, have only two possible categorical values. We can also evaluate our **binary** outcome of if the optimal level of consumption was achieved or not.
-
-Continuous outcomes can be evaluated with various types of linear regressions, while binary outcomes can be evaluated with what is called **logistic** regression. See [here](https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/){target="_blank"} for a guide on different types of regression methods.
-
-We have both continuous outcomes of raw consumption rates or percentages of consumption relative to the optimal guideline amounts as well as binary outcomes of "yes" or "no" about whether a population achieved the optimal amount of consumption.
-
-<b><u>Our covariates ($X_{i}$): </u></b>
-
-We have data about age group, sex, and region information for all of our outcomes.
-
-Again we are interested in comparing the sexes, the different age groups, and the different countries for their consumption of the different dietary factors. We can apply regression to determine if there is any influence of these group identities on the dietary consumption outcomes. 
 
 Before we get started, let's remove the global values from our data and set them aside, as this is really a composite of all the country values.
 
