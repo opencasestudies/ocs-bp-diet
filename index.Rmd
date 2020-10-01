@@ -1754,7 +1754,7 @@ In regression, we usually write this model like this:
 
 $$Y = \beta_{1}X +\beta_{0}$$
 
-Now $\beta_{1}$, called "beta one"", is our slope and $\beta_{0}$, called "beta zero" (or "beta naught""), is our intercept.  In our example above, the slope of the regression line is $\beta_{1} = 2.3$ and the intercept is $\beta_{0} = -6.6$.
+Now $\beta_{1}$, called "beta one"", is our slope and $\beta_{0}$, called "beta zero" (or "beta naught"), is our intercept.  In our example above, the slope of the regression line is $\beta_{1} = 2.3$ and the intercept is $\beta_{0} = -6.6$.
 
 Importantly the slope ($\beta_{1}$) gives us a quantitative measure of the relationship between the independent variable ($X$) on the dependent variable ($Y$).  In particular, $\beta_{1}$ tells how the expected difference in the $Y$ value for a difference of 1 unit in the $X$ value.
 
@@ -1805,7 +1805,7 @@ Here is an image of what we are saying about the ordinary least squares regressi
 
 ###### [[source](https://qph.fs.quoracdn.net/main-qimg-3b0d7655ac76edf1241f97015ee755b4)]
 
-This basic concept of simple linear regression an be extended to allow for more than one covariate (the independent variables - x's); this is called **multivariable** linear regression.   With more than one independent variable, we can't visualize these relationships easily with a line on a two-dimensional page, but the mathematical concept remains in some sense the same.
+This basic concept of simple linear regression an be extended to allow for more than one covariate (the independent variables, or x's); this is called **multivariable** linear regression.   With more than one independent variable, we can't visualize these relationships easily with a line on a two-dimensional page, but the mathematical concept remains in some sense the same.
 
 R has it's own way of representing the regression equation in code. For a guide on how to perform regressions in R see [here](http://www.montefiore.ulg.ac.be/~kvansteen/GBIO0009-1/ac20092010/Class8/Using%20R%20for%20linear%20regression.pdf){target="_blank"}.
 
@@ -1835,49 +1835,36 @@ Since we will be covering a lot of different statistical concepts here, we will 
 
 Let's take a look at red meat.
 
-We can compare the red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R by default) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
+We can compare the relative percent of red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R by default) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
 
-Before we get started, let's think about the assumptions of both tests.
+Before we get started, let's think about the assumptions of both an independent samples $t$-test and linear regression.
 
 
-#### $t$-test assumptions:
+#### Independent samples $t$-test assumptions:
 
-1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large, i.e., total n > 30 - which is indeed the case for us!)
-2) Equal variance between the two groups (make sure you do the correct test if the data are not normal)
-3) Balanced sample sizes of the two groups (got that!)
-4) Independent observations (or independent paired observations - got that too!)
-
-We can evaluate if our data are [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017) by plotting the distribution and by creating [Q-Q plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}. 
-
-<u>If our data are not normally distributed, we can consider these options:</u>
-
-1) We can still perform a $t$-test if our n is large
-2) We can transform the data before performing a $t$-test
-3) We can use a nonparametric test (Wilcoxon signed rank test, the Wilcoxon rank sum test, and the Two-sample Kolmogorov-Smirnov (KS) test)
-4) We can perform a $t$-test with resampling methods (which should be especially considered when the groups are imbalanced)
-
-See this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity){target="_blank"} for more information on $t$-test assumptions.
+1) Normality of the outcome in each group (this is not as much of an issue if the number of observations is relatively large, i.e., total n > 30 - which is indeed the case for us!)
+2) Equal variance between the two groups
+3) Independent observations
 
 #### Linear regression assumptions:
-L (linear) - There is a linear relationship between the variables.
 
-I (independent) - The samples are independent from one another.
+1) **L** (linear) - There is a linear relationship between the outcome variable and each covariate.
 
-N (normal) - The residuals are normally distributed. Note that the variables themselves do not need to be normally distributed.
+2) **I** (independent) - The outcome for individual observations are independent from one another, given the covariates in the model.
 
-E (equal variances) - The variance of the residuals for the groups is similar. This is called [homoscedasticity](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. In other words the residuals are of similar size along the line.
+3) **N** (normal) - The residuals (errors) are normally distributed. Note that the variables themselves do not need to be normally distributed.
 
-It's also important that if there are multiple predictor variables, that these are not correlated.
+4) **E** (equal variances) - The variance of the residuals is constant across covariate groups.  This is called [homoscedasticity](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. In other words the residuals are of similar size along the regression line.
+
+It's also important that if there are multiple predictor variables, that these are not too highly correlated.
 
 See [here](https://www.jmp.com/en_us/statistics-knowledge-portal/what-is-regression/simple-linear-regression-assumptions.html){target="_blank"} for additional information about the assumptions of linear regressions.
 
-#### Distributions
+Notice that many of the assumptions between $t$-tests and linear regression are similar -- each has an assumption of normality, equal variance, and independence!
 
-In order to apply a statistical test to compare the means, one of the first things to do is to explore the frequency of the different observed values. 
-One way to summarize the frequency of different observed values is the <b>frequency distribution</b>, which can be shown in a table or a plot. 
-See [here](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} for more information about distributions. 
+#### Assessing normality
 
-We will use the `geom_histogram()` of the `ggplot2`package to create a histogram to evaluate the frequency distributions of our data. The `facet_wrap()` function of the `ggplot2` package allows us to look at different parts of our data in separate plots.
+First we will explore the shape of the distribution of these relative percent of red meat consumption.  We can do this by looking at a frequency distribution of the `Relative_Percent` variable for red meat consumption.  We will use the `geom_histogram()` of the `ggplot2`package to create a histogram to evaluate the frequency distributions of our data. The `facet_wrap()` function of the `ggplot2` package allows us to look at different parts of our data in separate plots.  Here we can compare the distribution for males and females.
 
 ```{r}
 diet_and_guidelines %>%
@@ -1887,101 +1874,72 @@ diet_and_guidelines %>%
   facet_wrap(~ sex) 
 ```
 
-Now we add another dimension to our facet with the plus sign. Now it becomes very useful that we reformatted our data to the long format, as it makes it easy to facet across the different percentages that we calculated. We can specify that we want to have different Y axis scales using the `scales` argument as:  `scales = "free"`.
-
-```{r}
-diet_and_guidelines_long %>%
-  filter(food == "red meat") %>%
-  ggplot(aes(x = percent)) +
-  geom_histogram() +
-  facet_wrap(~ percent_type + sex, scales = "free")
-
-diet_and_guidelines_long %>%
-  filter(food == "red meat") %>%
-  ggplot(aes(sample = percent)) +
-  facet_wrap(~ percent_type + sex) +
-  geom_qq() +
-  geom_qq_line()
-```
-
-Looks like our data is **right skewed**.
-
-We can transform our data to make it more normally distributed. When data is highly right skewed, a log transformation is often helpful.
-
-Let's take a look a the log of our percent of optimal consumption values.
-
-```{r}
-diet_and_guidelines_long %>%
-    filter(food == "red meat") %>%
-  ggplot(aes(x = log10(percent))) +
-  geom_histogram() +
-  facet_wrap(~ percent_type)
-
-diet_and_guidelines_long %>%
-    filter(food == "red meat") %>%
-  ggplot(aes(sample = log10(percent))) +
-  facet_wrap(~ percent_type) +
-  geom_qq() +
-  geom_qq_line()
-```
-
-OK, so we can get our data to look fairly normal. It isn't perfect, but we have a large number of samples, so this is good for our $t$-test assumptions. The other thing we need to check is if the variance in red meat consumption is similar between the two genders. We can use the `var.test()`  of the `stats` package using the log normalized data, as this data is fairly normally distributed. We could also use the mood.test on the raw data which is skewed.
-
-```{r}
-mood.test(pull(filter(diet_and_guidelines,
-                     food == "red meat"), Relative_Percent),
-         pull(filter(diet_and_guidelines,
-                     food == "red meat"), sex))
-
-var.test(log10(pull(filter(diet_and_guidelines,
-                     food == "red meat"), Relative_Percent)) ~
-         pull(filter(diet_and_guidelines,
-                     food == "red meat"), sex))
-```
-
-The p value > .05 for both tests, thus we can conclude that there is not enough evidence to reject the null (no difference in the spread of the distributions), thus we conclude that variance is roughly equal. Great, so we are in pretty good shape for both the $t$-test and the linear regression.
-
-So now we can compare the consumption of red meat by both genders using both a $t$-test and a linear regression. We can use the base `plot()` function to get information about our residuals. This helps us to assess if we are violating our linear regression assumptions. Typically we would first check the nontransformed data, because it is not required that the predictor variables have a normal distribution. However to allow for our comparison with the $t$-test, we will assess the log transformed `Relative_Percent` data. To do this we first need to specify our model using `lm()`. Because we are piping in our data to our model, we need to indicate that this is the data we intend to use by using `.`  for the `data` argument.
+This `Relative_Percent` variable appears to have a right skew for both male and female individuals.  We can also see this by looking at normal Quantile-Quantile (Q-Q) plots of this variable.  Remember that in a Q-Q plot, points away from the line indicate one of the distributions is more skewed than the other.  In this case, we see that the values in are sample are skewed relative to the theoretical normal distribution.
 
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  lm(log10(Relative_Percent) ~ sex, data = .) %>%
-  plot()
+  ggplot(aes(sample = Relative_Percent)) +
+  facet_wrap(~ sex) +
+  geom_qq() +
+  geom_qq_line()
 ```
 
-Our second plot shows us that our residuals are a bit negatively or [left skewed](http://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html), in this case just like the `Relative_Percent` data. However, linear regression is relatively robust to tailed distributions and again for the sake of comparison we will show the results here. It is possible that perhaps another term needs to be included in our model to improve this. We will check this in a bit.
+We can consider transforming our data to make it more normally distributed. When data is highly right skewed, a log transformation is often helpful.
 
-We can see that our residuals are similar between males and females, as the first and third plot show similar values in the two lines. This is suggestive of [homoscedasticity](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. This like our variance test gives us information about the differences in variance between the two groups. Here is what the the plots would look like if the variance were not the same:
+Let's take a look a the log (with base 10) of our `Relative_Percent` variable:
 
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  mutate(example_perc =case_when(
-# this will artifically make our female data have different 
-#  varaince from the male data
-    sex == "Female" ~  log(Relative_Percent),
-    sex == "Male" ~ Relative_Percent)) %>%
-    lm(log10(example_perc) ~ sex, data = .) %>%
-  plot()
+  ggplot(aes(x = log10(Relative_Percent))) +
+  geom_histogram() +
+  facet_wrap(~ sex) 
 
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  ggplot(aes(sample = log10(Relative_Percent))) +
+  facet_wrap(~ sex) +
+  geom_qq() +
+  geom_qq_line()
 ```
 
+OK, so now our histograms look fairly normal. It isn't perfect, but we have a large number of samples, so this is good for our $t$-test assumptions. 
 
-OK, so now we will evaluate the relationship between `sex` identity and `Relative_Percent` consumption of `red meat` using both a $t$-test and a linear regression:
+#### Assessing equal variances
 
+The next thing we need to check is if the variance in red meat consumption is similar between the two gender groups. We can use the `var.test()`  of the `stats` package using the log-normalized data, as this data is fairly normally distributed.
+
+Because we are piping in our data to this test function, we need to indicate that this is the data we intend to use by using `.` for the `data` argument.  This is a handy tip when piping into a function outside of the `tidyverse` where the first argument isn't a data set.
+
+```{r}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  var.test(log10(Relative_Percent) ~ sex, data = .)
+```
+
+The p value > .05 for this test, thus we can conclude that there is not enough evidence to reject the null hypothesis that there is no difference in the variance of the distributions, so we conclude that variance is roughly equal.
+
+#### Comparing a $t$-test to linear regression
+
+Now let's compare the consumption of red meat across genders using both a $t$-test and a linear regression. First our independent samples $t$-test:
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
   t.test(log10(Relative_Percent) ~ sex, data = ., var.equal = TRUE)
+```
 
+Notice here that sample means for the two groups are 1.80 and 1.98 for males and females, respectively.  So that means the difference in sample means is 1.80 - 1.98 = -0.18.  We also see a test statistic of $t$ = -5.32 and a very small $p$-value.  
+
+Let's examine the same relationship using linear regression:
+```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
   lm(log10(Relative_Percent) ~ sex, data = .) %>%
   summary()
 ```
 
-Notice how the $t$ value and the p-value are the same! (Well almost, the $t$ value is negative in the `t.test()` output because the female group is being used as reference group, while the male group is being used as the reference group in `lm()`). We can fix this using the `fct_inorder()` function of the `forcats` package which is all about factors. This function allows us to order the factor by what appears first. In this case "male" appears first, so now our output will match that of the `lm()` function.
+Look at the results for the slope of the regression line, indicated by the `sexMale` row in the output above.  Notice how the $t$-value and the $p$-value match our $t$-test!  (Well, the signs are switched in each case -- the $t$ value is negative in the `t.test()` output because the male group is being used as reference group, while the female group is being used as the reference group in `lm()`). We can fix this using the `fct_inorder()` function of the `forcats` package which is all about factors. This function allows us to order the factor by what appears first. In this case "male" appears first, so now our output will match that of the `lm()` function.
 
 
 ```{r}
@@ -2008,10 +1966,9 @@ Thus, the overall sample number is:  $n = 195*2 = 390$
 $$df = n - # parameters estimating$$ 
 Thus the degrees of freedom can be calculated as:  $df = 390 -2 = 388$
 
+Let's look more closely at the linear regression output from `lm()`.  Our estimated intercept ($\beta_{0}$) is 1.80, which can be interpreted as the mean value when sex is not male (so in this case when sex is female).  This matches the sample mean of the female group in the `t.test()` output. 
 
-In the `lm()` output, the Beta zero ($\beta_{0}$) which can be interpreted as the intercept or the mean value when sex is not male (so in this case when sex is female) has the same value as the calculated mean of in the `t.test()` output. The Beta one ($\beta_{1}$)  can be interpreted as the slope of the regression line or the difference between the means of the two groups. We can also think of this as ***the change in $Y$ with one unit change in $X$***.  
-
-If we subtract the means calculated in the `t.test()` output, we get the value of $\beta_{1}$ (the slope or the `sexMale estimate`) of the `lm()` output!
+Our estimated slope ($\beta_{1}$) is 0.18, which can be interpreted as the slope of the regression line or **the mean change in $Y$ associated with one-unit increase in $X$**.  Since our $X$ variable is sex, a one-unit change means moving from one group to another.  So we can think of the slope as the difference between the means of the two groups, male ($X$=1) minus female ($X$ = 0).  If we calculate this difference in means as calculated in the `t.test()` output, we get the value of $\beta_{1}$ (the slope or the `sexMale estimate`) of the `lm()` output!
 
 Mean of males - Mean of females
 $1.983259 - 1.798872 =0.184387$
@@ -2021,25 +1978,24 @@ Cool!
 For more information about the output of `lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank"}.
 
 
-Let's plot the data to see what is happening:
-
+We can see this equivalence is we make a plot.  In the plot below, the blue line shows the relationship between the means of the two groups while the red line shows the regression line.
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
   ggplot(aes(x = sex, y = log10(Relative_Percent))) + 
-  geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = .2) +
-  stat_summary(fun.y = mean, 
+  # add the mean for each group
+  stat_summary(fun = mean, 
               colour = "blue",
                 geom = "point", 
                shape = 18, 
-                size = 3) +
+                size = 10) +
   # using the slope and intercept from the lm output
   geom_abline(intercept = 1.79887, 
                   slope = 0.18439, 
                   color = "red") +
-  # to draw a line between the boxplots
-  stat_summary(fun.y = mean, 
+  # to draw a line between the means
+  stat_summary(fun = mean, 
                 geom = "line", 
                group = 1, 
                color = "blue", 
@@ -2050,10 +2006,19 @@ diet_and_guidelines %>%
 
 We can see that the slope of the linear model is equivalent to the difference between the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
 
-Also, since we have female and male values each from the same countries, our data is what we call "paired". The values from the same country could be related to one another because of cultural difference in diet, thus the assumption of the unpaired $t$-test that the samples are independent is violated.  Therefore, we need to model our data in a way that accounts for this. First we will use the `pivot_wider()` function of  the `tidyr` package to get our data in a format that is easier to use for this purpose. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
+#### Assessing independence
+
+We never considered the assumption of independent required by both a $t$-test and linear regression.  Do we truly have independent samples in this case?  No!  Since we have female and male values from the same countries, our data is really what we would call "paired". The male and female diet values from the same country are most likele related to each another because of cultural effects on diet.  This means the assumption of independence for the independent samples $t$-test is violated, as is the independence assumption for linear regression.  
+
+We can address this by doing a *paired* $t$-test instead of an independent $t$-test and by accounting for country in our linear model by adding it to our model as what we call a *fixed effect*.   
+
+### Paired $t$-test and linear model with fixed effects
+
+Now will perform the paired versions of our analysis. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
+
+However, our data needs to be in a slightly different form to do the paired test, since we have to tell `R` which values need to be paired together.  Instead of one long dataset with different rows for males and females, we will need separate columns for the male and female values.  So we need to make our dataset *wider*.  We can do that using the `pivot_wider()` function of  the `tidyr` package. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
 ```{r}
-
 wide_diet <- diet_and_guidelines %>%
   pivot_wider(values_from = c(contains("percent"),
                                        mean, 
@@ -2067,65 +2032,41 @@ glimpse(wide_diet)
 #The older function tidyr::spread() would not allow for multiple columns/variables 
 ```
 
-### Paired $t$-test and linear model with two fixed effects
-Now will perform the paired versions of our tests. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
+You can see we now have a `Relative_Percent_Male` variable and a `Relative_Percent_Female` variable.  We can use these two variables in our paired $t$-test.  Since the paired version of the $t$-test doesn't take a `data=` argument, we will pull the appropriate variables from our data a little bit differently, using the `pull()` function.
+```{r}
+t.test(log10(pull(filter(wide_diet, food == "red meat"),
+                  Relative_Percent_Male)), 
+       log10(pull(filter(wide_diet, food == "red meat"),
+                  Relative_Percent_Female)),
+       var.equal = TRUE, paired = TRUE)
+```
 
-The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `Relative_Percent` consumption while keeping the country identity fixed or constant, or in other words controlling/adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate/explanatory variable terms, we would call this a **multiple linear regression**.
+Here an estimated mean difference (Males - Females) of 0.18, and that this is considered significantly different than 0 due to a very small $p$-value.
+
+The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `Relative_Percent` consumption while keeping the country identity fixed or constant, or in other words controlling/adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate/explanatory variable terms, we would call this a **multivariable linear regression**.
 
 So now our model in words will be: 
 
-Mean relative consumption of red meat is dependent on sex and country. Or in other words, sex and location infleunce the consumption of red meat of different populations around the world.
+Mean relative consumption of red meat is dependent on sex and country. Or in other words, sex and location influence the consumption of red meat around the world.
 
-Then the coefficient for `sex` will be different from what we had in our previous `lm()` model, as it will be calculated while keeping `location_name` or the country where the consumption value was obtained fixed, or in other words "controlling for `location_name`." This will also result in output for each of the countries. The [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} here represent the average consumption value for each country while accounting for sex.
+Then the coefficient for `sex` will be different from what we had in our previous `lm()` model, as it will be calculated while keeping `location_name` or the country where the consumption value was obtained fixed, or in other words "controlling for `location_name`." This will also result in output for each of the countries. The [coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/){target="_blank"} here represent the average difference in consumption value for each country compared to the reference country of Afghanistan, while accounting for sex.
 
-First let's take a look at our plots for this new model:
+This now should meet the assumption of independence for a linear regression model, since observations will be independent conditional an the covariates of sex and country.
 
-```{r}
-
-diet_and_guidelines %<>%
-  mutate_at(vars(location_name), factor)
-
-
-plot(lm(
-  log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  Relative_Percent)) ~
-  pull(filter(diet_and_guidelines, food == "red meat"),
-                  sex) +
-  pull(filter(diet_and_guidelines, food == "red meat"),
-            location_name)))
-```
-
-This looks much better than our previous plots.
-
-This [guide](https://data.library.virginia.edu/diagnostic-plots/) provides more information on how to interpret these residual diagnostic plots.
-
-Based on our [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}, we appear to have some outliers perhaps at the extreme ends of our tails but overall the residuals look fairly normal. The [residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"} shows us if the relationship between our outcome variable and our predictors looks linear, if there is unequal error variance between groups, and if there are possible outliers. Ideally this should look like a band of points equally centered around zero. Here are [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} of these plots that might show issues of concern. 
-
-Overall our plot looks fairly good. The shape of our data looks fairly linear (the residuals don't appear to have a shape other than a band or line), there does not appear to be any extreme outliers (no data points are especially far away) and the points have the same general range around the line for the various fitted values. There are a few points with wider residuals at the higher fitted values, but overall this looks quite reasonable. 
-
-Our [scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"} also shows us that our variance looks fairly equal across groups as our values show a relatively even spread. A larger  bend in the line would indicate more variation in the variance across our independent variable groups also known as [heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"}. There is only a slight bend in the line for our data suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. So our assumptions look pretty good:
-
-1) Linear - the relationship appears to be fairly linear 
-2) Independence - now that we have taken care of the location structure in our data, our samples are independent
-3) Normality - the residuals appear to be fairly normally distributed and we have a large number of samples to help account for minor violations
-4) Equal variance - the variance in the residuals appear to be fairly equal across the groups of the independent/predictor variables
-
-So now we will get the sumary for our model:
+Let's fit this model and look at the results.
 
 #### {.scrollable }
 ```{r}
-
-summary(lm(
-  log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  Relative_Percent)) ~
-  pull(filter(diet_and_guidelines, food == "red meat"),
-                  sex) +
-  pull(filter(diet_and_guidelines, food == "red meat"),
-            location_name)))
-
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lm(log10(Relative_Percent) ~ sex + location_name, data = .) %>%
+  summary()
 ```
 ####
 
+First let's look at the estimated coefficient for the `sexMale` variable, which is 0.18.  This can be interpreted as the difference in mean consumption between males and females, holding country constant.  So comparing males to females within the same country.  Notice this is the same estimated difference we found from our paired $t$-test!  The $p$-value for this coefficient also matches the $p$-value from the paired $t$-test.
+
+You can also see from this output that we have a coefficient for every country except Afghanistan, which is our reference country.  These coefficients compare the country to that reference.  So the estimated coefficient for `location_nameAlbania`, 0.44, can be interpreted as the difference in mean relative percent consumption between Albania and Afghanistan, holding sex constant.  So comparing Albania to Afghanistan within males or comparing Albania to Afghanistan within females.
 
 ### Paired $t$-test and linear model with mixed effects 
 
