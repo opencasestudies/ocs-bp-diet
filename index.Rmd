@@ -2622,163 +2622,54 @@ ggplot(aes(y = Relative_Percent,
                 alpha = 3/10)
 ```
 
-With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's add gender to this plot as well.  We will also use the `viridis` package to change the colors.
+OK! It looks like age really influences the consumption of these dietary factors. With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's also use the `viridis` package to change the colors.
 
 ```{r}
 
-pd <- position_dodge(0.5)
-
 all_age_diet_and_guidelines %>%
-  filter(location_name == "United States",
-             direction == "high") %>%
-  ggplot(aes(y = Relative_Percent, 
-             x = sex)) +
-  facet_wrap_paginate(facets = .~food, 
-                        nrow = 3, 
-                      scales = "free", 
-              strip.position = "right") +
-  geom_point(position = pd,  
-             aes(fill = age_group_name), 
-                alpha = 6/10,
-                  col = "black", 
-#only shape 21-24 allow for fill and outline colors
-                shape = 23,
-                 size = 3) +
+filter(location_name == "United States", 
+           direction == "high") %>%
+ggplot(aes(y = Relative_Percent, 
+           x = food, 
+        fill = age_group_name)) +
+  facet_wrap(~food, scales = "free") +
+  geom_boxplot() +
+  geom_point(position = position_jitterdodge(), 
+                alpha = 3/10)+
 #change the colors from rainbow to purple/green/yellow
   scale_fill_viridis(discrete = TRUE) +
-  expand_limits(y=100) +
-  theme_linedraw()
+  theme_linedraw() + 
+  theme(strip.text = element_text(size =7, face = "bold"),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank())
 ```
 
-We see similar patterns for males and females.  Now let's take the same look at the foods that were under-consumed:
+Nice!
 
-```{r, fig.height=9}
-pd <- position_dodge(0.4)
 
+Now let's look at the dietary factors that when consumed at low levels increase health risk:
+
+```{r}
 all_age_diet_and_guidelines %>%
-  filter(location_name == "United States",
-             direction == "low", 
-          opt_achieved == "No") %>%
-  ggplot(aes(y = Relative_Percent, 
-             x = sex)) +
-    facet_wrap_paginate(facets = .~food, 
-                          ncol = 3,
-                strip.position = "right") +
-
-  geom_point(position = pd,  
-             aes(fill = age_group_name), 
-                alpha = 6/10,
-                  col = "black", 
-#only shape 21-24 allow for fill and outline colors
-                shape = 23, size = 3) +
-#this changes the colors from rainbow to pupule/yellow/green
+filter(location_name == "United States", 
+           direction == "low") %>%
+ggplot(aes(y = Relative_Percent, 
+           x = food, 
+        fill = age_group_name)) +
+  facet_wrap(~food, scales = "free") +
+  geom_boxplot() +
+  geom_point(position = position_jitterdodge(), 
+                alpha = 3/10)+
+#change the colors from rainbow to purple/green/yellow
   scale_fill_viridis(discrete = TRUE) +
-  ylim(c(0,100)) +
-  theme_linedraw()
+  theme_linedraw() + 
+  theme(strip.text = element_text(size =7, face = "bold"),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank())
 ```
 
-It's hard to see the patterns across age in this plot!  Let's change by putting the dietary factors on the x-axis (instead of sex) and facet by sex (instead of dietary factor).
 
-```{r, fig.height=6}
-
-pd <- position_dodge(0.5)
-
-all_age_diet_and_guidelines %>%
-  filter(location_name == "United States",
-             direction == "low", 
-          opt_achieved == "No") %>%
-  ggplot(aes(y = Relative_Percent, 
-             x = food)) +
-facet_wrap(~ sex, nrow = 2) +
-  geom_point(position = pd,  
-             aes(fill = age_group_name), 
-                alpha = 6/10,
-                  col = "black", 
-#only shape 21-24 allow for fill and outline colors
-                shape = 23, 
-                 size = 3) +
-#this changes the colors from rainbow to pupule/yellow/green
-  scale_fill_viridis(discrete = TRUE) +
-  ylim(c(0,100)) +
-  theme_linedraw() +
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1))
-
-```
-
-Interesting, it looks like like both the younger adults and the elderly are generally doing worse than middle aged individuals in getting adequate intakes of these dietary factors.
-
-We could also display the data differently by putting age group on the x axis and letting color designate sex.  This allows us to more clearly see the pattern across age and clearly shows which dietary factors have differences by sex.
-
-```{r,fig.height=8}
-
-all_age_diet_and_guidelines %>%
-  filter(location_name == "United States", 
-             direction == "low",
-          opt_achieved == "No") %>%
-  ggplot(aes(y = Relative_Percent , 
-             x = age_group_name,
-          fill = sex)) +
-
-  geom_point( data = all_age_diet_and_guidelines %>%
-  filter(location_name == "United States", 
-             direction == "low",
-          opt_achieved == "No"),
-             alpha = 3/10, 
-              size = 3,
-             aes(y = Relative_Percent , 
-                 x = age_group_name,
-              fill = sex),
-               col = "black", 
-             shape = 23) +
-  ylim(c(0,100)) +
-  
-  facet_wrap_paginate(facets = .~food, 
-                        ncol = 2, 
-                      scales = "free") +
-  theme_linedraw() +
-  scale_fill_viridis(discrete = TRUE) +
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1))
-```
-
-Finally, let's look on the really problematic foods -- those with relative percent above 100% or below 25%.
-
-```{r, fig.height=9}
-
-#get list of foods with issues
-trouble_foods <- all_age_diet_and_guidelines %>%
-  filter(location_name == "United States", 
-          opt_achieved == "No",
-         Relative_Percent > 100 | Relative_Percent <= 25) %>%
-  select(food) %>%
-  distinct()
-
-all_age_diet_and_guidelines %>%
-  filter(location_name == "United States",
-         food  %in% pull(trouble_foods, food)) %>%
-  ggplot(aes(y = Relative_Percent , 
-             x = age_group_name,
-          fill = sex)) +
-  geom_point(alpha = 3/10, 
-              size = 3,
-             aes(y = Relative_Percent , 
-                 x = age_group_name,
-              fill = sex),
-               col = "black",
-             shape = 23) +
-  expand_limits(y=0) +
-  facet_wrap_paginate(facets = .~food,
-                        nrow = 3, 
-                      scales = "free") +
-  scale_fill_viridis(discrete = TRUE) +
-  theme_linedraw() +
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1))
-
-```
-
-We see that for the foods that are over consumed (processed meat, red meat, sodium, and sugar-sweetened beverages), consumption appears to decrease with age.  For the two foods that are under consumed, consumption of nuts and seeds seems to rise and then fall with age, whereas consumption of polyunsaturated fatty acids is consistently very low across all age groups.
+Interesting, we see that for the foods that are over consumed (processed meat, red meat, sodium, and sugar-sweetened beverages), consumption appears to decrease with age. For the foods that are under consumed, many appear to rise and fall with age.
 
 ### Overall trends
 
@@ -3018,8 +2909,12 @@ Let's put the plots together:
 cowplot::plot_grid(Over, Under, ncol = 1)
 
 ```
+Nice!
 
-#### Over-consumed by Age
+
+#### Over-consumed by Age Global trends
+
+Now we will look at Global trends with age. 
 
 To make this plot we will use the `facet_wrap_paginate()` function of the `ggforce` package which allows you to specify the number of columns or rows for the facets.
 
@@ -3067,7 +2962,7 @@ Over_age
 ```
 
 
-hmmm these look a bit funny because the outliers in the boxplots for the foods besides sugar-sweetened beverages are making the range much larger than the boxplot themselves. We can calculate the values for the boxplots our selves to deal with this:
+Hmmm these look a bit funny because the outliers in the boxplots for the foods besides sugar-sweetened beverages are making the range much larger than the boxplot themselves. We can calculate the values for the boxplots our selves to deal with this:
 
 ```{r}
 calc_stat <- function(x) {
@@ -3137,7 +3032,7 @@ labs(title = " Global consumption across age\n  of foods associated\n with healt
 Over_age
 ```
 
-#### Under-consumed by Age
+#### Under-consumed by Age Global Trends
 
 ```{r, fig.width=16, fig.height=18}
 Under_age <- all_age_diet_and_guidelines %>%
@@ -3187,18 +3082,20 @@ Under_age
 
 
 ```{r, eval =FALSE, echo = FALSE}
-collapsed <- diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-notcollapsed <- all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-range(collapsed$mean)
-range(notcollapsed$mean)
-notcollapsed %>% arrange(desc(mean))
-collapsed %>% arrange(desc(mean))
-#hmmm the lowest value for malaysia is 106...
-notcollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
-# but the collapsed value is much much lower...
-collapsed%>% filter(location_name == "Malaysia")
+# for instructors, fyi there may be something wrong with the data regarding trans fatty acids - as the data for malaysia in the age separated document appears to be different from that in the age collapsed data:
 
-#this is also fishy:
+agecollapsed <- diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+notagecollapsed <- all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+range(agecollapsed$mean)
+range(notagecollapsed$mean)
+notagecollapsed %>% arrange(desc(mean))
+agecollapsed %>% arrange(desc(mean))
+#hmmm the lowest value for malaysia is 106...
+notagecollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
+# but the collapsed value is much much lower...
+agecollapsed%>% filter(location_name == "Malaysia")
+
+# this also looks problematic:
 sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
 diet_and_guidelines%>%filter(food == "sodium", location_name== "Malaysia") %>% glimpse()
 sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%glimpse()
@@ -3227,6 +3124,7 @@ collapsed %>% arrange(desc(mean))
 notcollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
 # but the collapsed value is much much lower...
 collapsed%>% filter(location_name == "Malaysia")
+# we contacted GBS about this but did not hear back
 ```
 
 
