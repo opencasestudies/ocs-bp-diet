@@ -113,6 +113,7 @@ library(tidyr)
 library(ggplot2)
 library(ggpubr)
 library(forcats)
+library(lme4)
 library(lmerTest)
 library(car)
 library(ggiraph)
@@ -138,6 +139,7 @@ library(cowplot)
 [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    | to make visualizations with multiple layers
 [ggpubr](https://cran.r-project.org/web/packages/ggpubr/index.html){target="_blank"}    | to easily add regression line equations to plots
 [forcats](https://forcats.tidyverse.org/){target="_blank"}    | to change details about factors (categorical variables)
+[lme4](https://cran.r-project.org/web/packages/lme4/lme4.pdf)| to fit a linear mixed effects model
 [lmerTest](https://cran.r-project.org/web/packages/lmerTest/lmerTest.pdf)| to perform linear mixed model testing
 [car](https://cran.r-project.org/web/packages/car/car.pdf)| to perform Levene's Test of Homogeneity of Variances
 [ggiraph](https://cran.r-project.org/web/packages/ggiraph/index.html)| to make plots interactive
@@ -2041,7 +2043,7 @@ t.test(log10(pull(filter(wide_diet, food == "red meat"),
        var.equal = TRUE, paired = TRUE)
 ```
 
-Here an estimated mean difference (Males - Females) of 0.18, and that this is considered significantly different than 0 due to a very small $p$-value.
+Here an estimated mean difference (Males - Females) of 0.18, and that this is considered significantly different than 0 due to a very small $p$-value.  You can also see that now our degrees of freedom are 194, which makes sense because with paired samples we are only estimating one parameter (the mean difference) based on data on 195 differences for each country. So $df = n - \# \ parameters = 195 -1 = 194$.
 
 The paired version of the linear model is a bit more complex. In this case we will add another term in our model to evaluate the influence of `sex` on `Relative_Percent` consumption while keeping the country identity fixed or constant, or in other words controlling/adjusting for country. We can use the  `+` to add this additional term. Now that we have multiple covariate/explanatory variable terms, we would call this a **multivariable linear regression**.
 
@@ -2054,7 +2056,6 @@ Then the coefficient for `sex` will be different from what we had in our previou
 This now should meet the assumption of independence for a linear regression model, since observations will be independent conditional an the covariates of sex and country.
 
 Let's fit this model and look at the results.
-
 #### {.scrollable }
 ```{r}
 diet_and_guidelines %>%
@@ -2064,53 +2065,37 @@ diet_and_guidelines %>%
 ```
 ####
 
-First let's look at the estimated coefficient for the `sexMale` variable, which is 0.18.  This can be interpreted as the difference in mean consumption between males and females, holding country constant.  So comparing males to females within the same country.  Notice this is the same estimated difference we found from our paired $t$-test!  The $p$-value for this coefficient also matches the $p$-value from the paired $t$-test.
+First let's look at the estimated coefficient for the `sexMale` variable, which is 0.18.  This can be interpreted as the difference in mean log relative percent consumption between males and females, holding country constant.  So comparing males to females within the same country.  Notice this is the same estimated difference we found from our paired $t$-test!  The $p$-value for this coefficient also matches the $p$-value from the paired $t$-test.
 
-You can also see from this output that we have a coefficient for every country except Afghanistan, which is our reference country.  These coefficients compare the country to that reference.  So the estimated coefficient for `location_nameAlbania`, 0.44, can be interpreted as the difference in mean relative percent consumption between Albania and Afghanistan, holding sex constant.  So comparing Albania to Afghanistan within males or comparing Albania to Afghanistan within females.
+You can also see from this output that we have a coefficient for every country except Afghanistan, which is our reference country.  These coefficients compare the country to that reference.  So the estimated coefficient for `location_nameAlbania`, 0.44, can be interpreted as the difference in mean log relative percent consumption between Albania and Afghanistan, holding sex constant.  So comparing Albania to Afghanistan within males or comparing Albania to Afghanistan within females.
+
+Finally, you might notice that the number of residual degrees of freedom for this regression is 194, just as in the paired $t$-test.  This makes sense since we have to estimate a coefficient for 194 countries (all except Afghanistan) as well as a coefficient for sex and an intercept.  So we have
+
+$$df = n - # parameters estimating = 390 - 194 - 2 = 194$$ 
 
 ### Paired $t$-test and linear model with mixed effects 
 
-Alternatively, we can perform a slightly different regression.
+To "pair" our data using fixed effects cost us an additional 194 variables in our regression model, one for each country except Afghanistan.  Alternatively, we can perform a slightly different type of regression that still accounts for the paired structure in the data.
 
-In this case we will use the `lmer()` function of the `lmerTest` package. This function allows us to perform what is called a [linear mixed effects regression](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank"}. This type of regression is called **mixed** because it contains both **fixed** and **random** effects.
+In this case we will use the `lmer()` function of the `lme4` package.  This function allows us to fit what is called a [linear mixed effects regression model](https://ourcodingclub.github.io/tutorials/mixed-models/){target="_blank"}. We will also use the `lmerTest` package, since this adds test statistics and $p$-values to the linear mixed effects model output.  
 
-There are many different definitions for **fixed** and **random** effects and the difference is conceptually complex and context specific. 
+This type of regression is called **mixed** because it contains both **fixed** and **random** effects.  There are many different definitions for **fixed** and **random** effects and the difference is conceptually complex and context specific. 
 
 However in simplistic terms, **fixed effects** are generally speaking the variables of interest that we have reason to believe explain or predict the outcome or response variable, while random effects are those that may introduce additional variance in the influence of those predictor variables on the outcome variable. For example, they may provide information about **group or batch structures** within the data.  
 
-In our case, we are interested in the influence of `sex` on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. We don't want to model for `location_name` itself, but just model it's influence on the relationship of `sex` on consumption of red meat. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in other words we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept (Relative_Percent consumption when sex is assigned to the zero value - not male) may be different for each country.
+In our case, we are interested in the influence of `sex` on the consumption of red meat, however the identity of the country where the male and female consumption values were obtained may influence this relationship and we would like to control for that. We don't want to model for `location_name` itself, but just model it's influence on the relationship of `sex` on consumption of red meat. In other words, we are interested in getting a sense of how sex influences consumption rates in general and we want to account for the paired structure within our data, the fact that we have corresponding consumption values for the two sexes from different countries. The notation for including a random effect like this is  `1 | variable_name`. The one indicates a varying-intercept group effect, in other words we expect that the intercept may vary for each value of the variable indicated to the right of the `|`. So in our case, the intercept  (log relative percent consumption when sex is assigned to the zero value - female) may be different for each country.
 
-Again lets see what our plots look like first:
+Let's fit a mixed effects model that includes a fixed effect for sex and a random intercept for country:
 
 ```{r}
-
-lmer_sex_loc <- lmerTest::lmer(
-  log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  Relative_Percent)) ~
-  pull(filter(diet_and_guidelines, food == "red meat"),
-                  sex) +
-  (1| pull(filter(diet_and_guidelines, food == "red meat"),
-            location_name)))
-plot(lmer_sex_loc)
-
-qqnorm(resid(lmer_sex_loc))
-qqline(resid(lmer_sex_loc))
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lmer(log10(Relative_Percent) ~ sex + (1 | location_name), data = .) %>%
+  summary()
 ```
 
-Notice that the plots look the same as with the fixed effect model. 
-
-Let's take a look at the results:
-
+How would we interpret the results of this model? Again, let's look at the estimated coefficient for the `sexMale` variable, which is 0.18.  This can be interpreted the same way as in the simple linear regression, as the difference in mean log relative percent consumption between males and females.  However, here we haven't violated the independence assumption becayse we are accounting for the paired nature of the data through the random effect for country.  The $t$-statistic and $p$-value for this coefficient also match those from the paired $t$-test we did before:
 ```{r}
-
-summary(lmerTest::lmer(
-  log10(pull(filter(diet_and_guidelines, food == "red meat"),
-                  Relative_Percent)) ~
-  pull(filter(diet_and_guidelines, food == "red meat"),
-                  sex) +
-  (1| pull(filter(diet_and_guidelines, food == "red meat"),
-            location_name))))
-
 t.test(log10(pull(filter(wide_diet, food == "red meat"),
                   Relative_Percent_Male)), 
        log10(pull(filter(wide_diet, food == "red meat"),
@@ -2118,58 +2103,26 @@ t.test(log10(pull(filter(wide_diet, food == "red meat"),
        var.equal = TRUE, paired = TRUE)
 ```
 
-You can see that now our degrees of freedom are 194, which makes sense because now we have matched or paired values for the 195 different regions and so $df = n-1 parameter = 195 -1 = 194$. In this case we aren't calculating two different means in our $t$-test, but instead this is a one sample $t$-test of the differences between males and females across all the country pairs, so thus only one parameter. It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} and results in the same degrees of freedom.
+Notice that in the output for the mixed effects model, there are **not** coefficients for each country, like there were in the fixed effects model.  This is because we are not explicitly estimating individual country effects in this model.  Instead, the country effect is captured through the intercept in this model.  Our estimated intercept is 1.80 and the standard deviation of this intercept is 0.34 (shown in the `Random effects` table in the output.)  We can interpret this as saying that each country has an intercept that comes from a normal distribution with mean of 1.80 and a standard deviation of 0.34.  Since the intercept in this model represent the log relative percent consumption for females, this give us an idea of how female consumption varies across countries -- average log consumption across countries is 1.80, but there is variability from one country to another.  And then the male log consumption is, on average, 0.18 higher than for females.
 
-Most importantly, again we get the **same** $t$-value and p-value with the two tests!
+It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} and results in the same degrees of freedom.
 
+We see that the paired $t$-test, the fixed effects model adjusting for country, and the mixed effects model with a random intercept for country all give the same results in this case.  So which test should we use?  The decision of which test to perform depends on your question of interest. In this case we were particularly interested in the influence of `sex`, so setting `location_name` to a random effect provides the same level of detail about sex without as much information about `location_name`, so that might be ideal. As we can see, the results, in this case, are the same.  The benefit of using regression over a simple paired $t$-test would be the ability to add other covariates to our model if we wanted to adjust for other country characteristics.
 
-You can see that yet again our degrees of freedom are 194, and again we get the same $t$-value and p-value with all tests. In this case we also have information about how each of the countries might influence mean consumption. So the decision of which test to perform depends on your question of interest. In this case we were particularly interested in the influence of `sex`, so setting `location_name` to a random effect provides the same level of detail about sex without as much information about `location_name`, so that might be ideal. As we can see, the results, in this case, are the same.
+Overall, though, we can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the mean consumption of males and females ( or that `sex` has no association or influence on red meat consumption.) **Therefore, it appears that men consume significantly more red meat than females globally.** 
 
-We can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the means or that `sex` has no association or influence on red meat consumption. Therefore, it appears that men consume significantly more red meat than females globally. 
-
-Let's choose another dietary factor to compare between males and females. 
-
+Let's choose another dietary factor to compare between males a females -- relative percent consumption of fruit.  Again, we'll consider the log-transformed version of this variable, since it appears to be more normally distributed.
 ```{r}
-
-diet_and_guidelines_long %>%
+diet_and_guidelines %>%
   filter(food == "fruits") %>%
-  ggplot(aes(x = log10(percent))) +
+  ggplot(aes(x = log10(Relative_Percent))) +
   geom_histogram() +
-  facet_wrap(~ percent_type)
+  facet_wrap(~ sex) 
+```
 
-
-diet_and_guidelines_long %>%
-  filter(food == "fruits") %>%
-  ggplot(aes(sample = log10(percent))) +
-  facet_wrap(~ percent_type) +
-  geom_qq() +
-  geom_qq_line()
-
-mood.test(pull(filter(diet_and_guidelines,
-              food == "fruits"), 
-              Relative_Percent),
-          pull(filter(diet_and_guidelines,
-              food == "fruits"), 
-              sex))
-
-var.test(log10(pull(filter(diet_and_guidelines,
-               food == "fruits"), 
-               Relative_Percent))~
-         pull(filter(diet_and_guidelines,
-               food == "fruits"), 
-               sex))
-
-summary(lmer(
-  log10(pull(filter(diet_and_guidelines, 
-                  food == "fruits"),
-                  Relative_Percent)) ~ 
-        pull(filter(diet_and_guidelines, 
-                  food == "fruits"),
-                  sex) + 
-    (1 | pull(filter(diet_and_guidelines, 
-                  food == "fruits"), 
-                  location_name))))
-
+Let's compared the paired $t$-test and the mixed effects model again:
+```{r}
+# paired t-test
 t.test(log10(pull(filter(wide_diet, 
                   food == "fruits"),
                   Relative_Percent_Female)), 
@@ -2178,7 +2131,13 @@ t.test(log10(pull(filter(wide_diet,
                   Relative_Percent_Male)),
        var.equal = TRUE, paired = TRUE)
 
+# mixed effects model
+diet_and_guidelines %>%
+  filter(food == "fruits") %>%
+  lmer(log10(Relative_Percent) ~ sex + (1 | location_name), data = .) %>%
+  summary()
 
+# means by sex
 means <- wide_diet %>% 
    filter(food == "fruits") %>% 
    summarise(female = mean(log10(Relative_Percent_Female)),
@@ -2187,7 +2146,7 @@ means <- wide_diet %>%
 means
 ```
 
-Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-value and the p-value match. The $\beta_{1}$ coefficient value (slope) matches the difference between the means value calculated in $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. Ideally you would want to check the residual plots of the model, but we will skip this for the sake of space. 
+Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-values and the $p$-values match. The $\beta_{1}$ coefficient value (slope) matches the mean difference calculated in the paired $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. Ideally you would want to check the residual plots of the model, but we will skip this for the sake of space. 
 
 ### ANalysis Of VAriance (ANOVA) test
 
