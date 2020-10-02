@@ -1876,7 +1876,7 @@ diet_and_guidelines %>%
   facet_wrap(~ sex) 
 ```
 
-This `Relative_Percent` variable appears to have a right skew for both male and female individuals.  We can also see this by looking at normal Quantile-Quantile (Q-Q) plots of this variable.  Remember that in a Q-Q plot, points away from the line indicate one of the distributions is more skewed than the other.  In this case, we see that the values in are sample are skewed relative to the theoretical normal distribution.
+This `Relative_Percent` variable appears to have a right skew for both male and female individuals.  We can also see this by looking at normal Quantile-Quantile (Q-Q) plots of this variable.  Remember that in a Q-Q plot, points away from the line indicate one of the distributions is more skewed than the other.  In this case, we see that the values in are sample are skewed relative to the theoretical normal distribution. [Here](http://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html) is a great reference for interpreting Q-Q plots.
 
 ```{r}
 diet_and_guidelines %>%
@@ -1975,38 +1975,33 @@ Our estimated slope ($\beta_{1}$) is 0.18, which can be interpreted as the slope
 Mean of males - Mean of females
 $1.983259 - 1.798872 =0.184387$
 
-Cool!
+Cool!  For more information about the output of `lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank"}.
 
-For more information about the output of `lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank"}.
+After fitting our linear regression model, we can use the base `plot()` function to get information about our the model residuals to help us assess whether any of the assumptions of linear regression are violated. Here we choose to view the first three of these plots with `which = 1:3`.
 
-
-We can see this equivalence is we make a plot.  In the plot below, the blue line shows the relationship between the means of the two groups while the red line shows the regression line.
 ```{r}
 diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  ggplot(aes(x = sex, y = log10(Relative_Percent))) + 
-  geom_jitter(width = .2) +
-  # add the mean for each group
-  stat_summary(fun = mean, 
-              colour = "blue",
-                geom = "point", 
-               shape = 18, 
-                size = 10) +
-  # using the slope and intercept from the lm output
-  geom_abline(intercept = 1.79887, 
-                  slope = 0.18439, 
-                  color = "red") +
-  # to draw a line between the means
-  stat_summary(fun = mean, 
-                geom = "line", 
-               group = 1, 
-               color = "blue", 
-                size = 1.5)
+  lm(log10(Relative_Percent) ~ sex, data = .) %>%
+  plot(which = 1:3)
+```
 
+The second plot shows us that our residuals are slightly negatively (or left) skewed.  We can see also see the spread of the residuals is similar between males and females, as the first and third plot show similar spreads of values in the two lines. This suggests that the assumption of homoscedasticity is met.  Here is what these plots would look like if the variance were not the same between the groups:
+
+```{r}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  mutate(example_perc = case_when(
+# this will artifically make our female data have different 
+#  varaince from the male data
+    sex == "Female" ~  log(Relative_Percent),
+    sex == "Male" ~ Relative_Percent)) %>%
+    lm(log10(example_perc) ~ sex, data = .) %>%
+  plot(which = 1:3)
 
 ```
 
-We can see that the slope of the linear model is equivalent to the difference between the mean of the two groups, as the linear model line is parallel to the line drawn between the two means.
+In this case the spread of the points is clearly less for one group compared to the other.  If we saw plots like these, we would be concerned the assumption of homoscedasticity was violated.
 
 #### Assessing independence
 
@@ -2056,6 +2051,7 @@ Then the coefficient for `sex` will be different from what we had in our previou
 This now should meet the assumption of independence for a linear regression model, since observations will be independent conditional an the covariates of sex and country.
 
 Let's fit this model and look at the results.
+
 #### {.scrollable }
 ```{r}
 diet_and_guidelines %>%
@@ -2069,9 +2065,32 @@ First let's look at the estimated coefficient for the `sexMale` variable, which 
 
 You can also see from this output that we have a coefficient for every country except Afghanistan, which is our reference country.  These coefficients compare the country to that reference.  So the estimated coefficient for `location_nameAlbania`, 0.44, can be interpreted as the difference in mean log relative percent consumption between Albania and Afghanistan, holding sex constant.  So comparing Albania to Afghanistan within males or comparing Albania to Afghanistan within females.
 
-Finally, you might notice that the number of residual degrees of freedom for this regression is 194, just as in the paired $t$-test.  This makes sense since we have to estimate a coefficient for 194 countries (all except Afghanistan) as well as a coefficient for sex and an intercept.  So we have
+Finally, you might notice that the number of residual degrees of freedom for this regression is 194, just as in the paired $t$-test.  This makes sense since we have to estimate a coefficient for 194 countries (all except Afghanistan) as well as a coefficient for sex and an intercept.  So we have:
 
 $$df = n - # parameters estimating = 390 - 194 - 2 = 194$$ 
+
+We should also check the residual plots for this fixed effects regression model.
+
+```{r}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lm(log10(Relative_Percent) ~ sex + location_name, data = .) %>%
+  plot(which = 1:3)
+```
+
+These residual plots look much better than our previous plots.  This [guide](https://data.library.virginia.edu/diagnostic-plots/) provides more information on how to interpret these residual diagnostic plots.
+
+Based on our [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}, we appear to have some outliers perhaps at the extreme ends of our tails but overall the residuals look fairly normal. The [residual vs fitted plot](https://online.stat.psu.edu/stat462/node/118/){target="_blank"} shows us if the relationship between our outcome variable and our predictors looks linear, if there is unequal error variance between groups, and if there are possible outliers. Ideally this should look like a band of points equally centered around zero. Here are [examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"} of these plots that might show issues of concern. 
+
+Overall our plot looks fairly good. The shape of our data looks fairly linear (the residuals don't appear to have a shape other than a band or line), there does not appear to be any extreme outliers (no data points are especially far away) and the points have the same general range around the line for the various fitted values. There are a few points with wider residuals at the higher fitted values, but overall this looks quite reasonable. 
+
+Our [scale-location plot](https://boostedml.com/2019/03/linear-regression-plots-scale-location-plot.html){target="_blank"} also shows us that our variance looks fairly equal across groups as our values show a relatively even spread. A larger  bend in the line would indicate more variation in the variance across our independent variable groups also known as [heteroscedasticity](https://statisticsbyjim.com/regression/heteroscedasticity-regression/){target="_blank"}. There is only a slight bend in the line for our data suggestive of [homoscedasticity ](https://www.statisticssolutions.com/homoscedasticity/){target="_blank"}. So our assumptions look pretty good:
+
+1) Linear - the relationship appears to be fairly linear 
+2) Independence - now that we have taken care of the location structure in our data, our samples are independent
+3) Normality - the residuals appear to be fairly normally distributed and we have a large number of samples to help account for minor violations
+4) Equal variance - the variance in the residuals appear to be fairly equal across the groups of the independent/predictor variables
+
 
 ### Paired $t$-test and linear model with mixed effects 
 
@@ -2107,46 +2126,32 @@ Notice that in the output for the mixed effects model, there are **not** coeffic
 
 It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} and results in the same degrees of freedom.
 
+Finally, lets see what our residual plots look like for this mixed effects model.  We can't use the `plot()` function with a `lmer()` model to get all of the plots at once, but we can construct a residual vs. fitted value plot and a Q-Q plot ourselves:
+
+```{r}
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lmer(log10(Relative_Percent) ~ sex + (1 | location_name), data = .) %>%
+  plot()
+
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lmer(log10(Relative_Percent) ~ sex + (1 | location_name), data = .) %>%
+  resid() %>%
+  qqnorm()
+
+diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lmer(log10(Relative_Percent) ~ sex + (1 | location_name), data = .) %>%
+  resid() %>%
+  qqline()
+```
+
+Notice that the plots look very similar to what we saw with the fixed effects model.
+
 We see that the paired $t$-test, the fixed effects model adjusting for country, and the mixed effects model with a random intercept for country all give the same results in this case.  So which test should we use?  The decision of which test to perform depends on your question of interest. In this case we were particularly interested in the influence of `sex`, so setting `location_name` to a random effect provides the same level of detail about sex without as much information about `location_name`, so that might be ideal. As we can see, the results, in this case, are the same.  The benefit of using regression over a simple paired $t$-test would be the ability to add other covariates to our model if we wanted to adjust for other country characteristics.
 
 Overall, though, we can conclude from these tests that we have enough evidence to reject the null hypothesis that there is no difference between the mean consumption of males and females ( or that `sex` has no association or influence on red meat consumption.) **Therefore, it appears that males consume significantly more red meat than females globally.** 
-
-Let's choose another dietary factor to compare between males a females -- relative percent consumption of fruit.  Again, we'll consider the log-transformed version of this variable, since it appears to be more normally distributed.
-```{r}
-diet_and_guidelines %>%
-  filter(food == "fruits") %>%
-  ggplot(aes(x = log10(Relative_Percent))) +
-  geom_histogram() +
-  facet_wrap(~ sex) 
-```
-
-Let's compared the paired $t$-test and the mixed effects model again:
-```{r}
-# paired t-test
-t.test(log10(pull(filter(wide_diet, 
-                  food == "fruits"),
-                  Relative_Percent_Female)), 
-       log10(pull(filter(wide_diet, 
-                  food == "fruits"),
-                  Relative_Percent_Male)),
-       var.equal = TRUE, paired = TRUE)
-
-# mixed effects model
-diet_and_guidelines %>%
-  filter(food == "fruits") %>%
-  lmer(log10(Relative_Percent) ~ sex + (1 | location_name), data = .) %>%
-  summary()
-
-# means by sex
-means <- wide_diet %>% 
-   filter(food == "fruits") %>% 
-   summarise(female = mean(log10(Relative_Percent_Female)),
-             male = mean(log10(Relative_Percent_Male)))
-
-means
-```
-
-Notice here that the mean of the differences value is indeed the same as the coefficient and the $t$-values and the $p$-values match. The $\beta_{1}$ coefficient value (slope) matches the mean difference calculated in the paired $t$-test. The intercept coefficient $\beta_{0}$ value of 1.56 (when sex is zero or female) also matches the mean value for the female group when calculated separately. Ideally you would want to check the residual plots of the model, but we will skip this for the sake of space.  **Here we see that males consume significantly less fruit than females globally.**
 
 
 ### ANalysis Of VAriance (ANOVA) test
@@ -2358,27 +2363,25 @@ all_age_diet_and_guidelines %>%
 
 ### Modeling all groups of interest
 
-Now that we know that linear regressions allow us to perform group comparisons like $t$-tests and ANOVAs, and can also provide is with additional information, we can extend our analysis a bit further. We could  include `sex`, `location_name`, and `age_group_name` in the same linear model and get information about how each of these factors influences dietary consumption, while accounting for the other factors. 
+Now we can extend out model to include include `sex`, `age_group_name` and `location_name` all in the same linear model and get information about how each of these factors influences dietary consumption, while accounting for the other factors. Since we are primarily interested in the effects of sex and age, but want to account for the dependence in the data due to repeated measurements by country, we will include `sex` and `age_group_name` as fixed effects and incorporate a random intercept for `location_name`.  
 
 ```{r}
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lmer(
+    log10(Relative_Percent) ~ sex +age_group_name + (1 | location_name), 
+    data = .) %>%
+  anova()
 
-anova(lm(
-  log10(pull(filter(all_age_diet_and_guidelines, 
-            food == "red meat"),
-            mean)) ~
-        pull(filter(all_age_diet_and_guidelines, 
-            food == "red meat"),
-            age_group_name) +
-        pull(filter(all_age_diet_and_guidelines, 
-            food == "red meat"),
-            location_name) + 
-        pull(filter(all_age_diet_and_guidelines, 
-            food == "red meat"),
-            sex)))
-
+all_age_diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  lmer(
+    log10(Relative_Percent) ~ sex +age_group_name + (1 | location_name), 
+    data = .) %>%
+  summary()
 ```
 
-We can see that `sex`, `location_name`, and `age_group_name` all individually significantly influence the consumption of red meat, even when controlling for the other two predictor variables.
+Looking at the `anova()` output, we can see that sex and age group both have significant associations with the consumption of red meat, when controlling for the other variable.  Additionally, by looking at the individual coefficient estimates in the `summary()` output, we see that males tend to have higher red meat consumption compared to females (positive coefficient for `sexMale`) and that consumption seems to decrease with increasing age (negative coefficients for all the age group categories that appear to become larger in magnitude with increasing age).
 
 ## Data Visualization
 
@@ -2556,21 +2559,6 @@ girafe(code = print(g))
 
 ```
 
-How do different age groups look:
-
-```{r}
-
-all_age_diet_and_guidelines %>%
-  filter(food == "red meat") %>%
-  ggplot(aes(y = Relative_Percent , 
-             x = sex, 
-          fill = age_group_name)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1))
-
-```
-
 ### United Sates Data
 
 Now let's take a look at the US data specifically.
@@ -2584,15 +2572,7 @@ diet_and_guidelines %>%
 
 OK, it looks like optimal consumption levels were achieved for only 10% of the dietary factors.
 
-Let's visualize this with a plot:
-```{r}
-diet_and_guidelines %>%
-  filter(location_name == "United States") %>%
-  ggplot(aes(opt_achieved )) +
-  geom_bar(position = "dodge")
-```
-
-Let's look at Females and Males separately:
+Let's look at males and females separately:
 ```{r}
 diet_and_guidelines %>%
     filter(sex == "Female", 
@@ -2606,22 +2586,9 @@ count(opt_achieved, food)
 
 ```
 
-OK, so females are a bit better about not over-consuming sodium in the United States relative to males.
-
-Both groups are doing well with avoiding trans fatty acids.
-
-Let's visualize this:
+So females are a bit better about not over-consuming sodium in the United States relative to males.  Both groups are doing well with avoiding trans fatty acids. Let's look more closely at which dietary components have high and low consumption in the United States:
 
 ```{r}
-diet_and_guidelines %>%
-  filter(location_name == "United States") %>%
-  ggplot(aes(opt_achieved , fill = sex)) +
-      geom_bar(position = "dodge")
-```
-  
-
-```{r}
-
 
 all_age_diet_and_guidelines %>%
 filter(location_name == "United States") %>%
@@ -2639,50 +2606,7 @@ ggplot(aes(y = Relative_Percent ,
 OK, so we can  indeed see that overall consumption of sodium and trans fatty acids is pretty close to optimal. So that's great. However, Both males and females are over-consuming processed meat, red meat, and sugar-sweetened beverages. On the other hand both genders are not getting adequate intake of all the other dietary factors for optimal health. The population in the United states has especially poor intake of polyunsaturated fats. it also looks like in most cases females are getting less of the dietary factors that pose health risks when under-consumed, with the exception of fruits.
 
 
-How about if we look at age groups. First let's see how often the optimal amount was achieved:
-
-```{r}
-all_age_diet_and_guidelines %>%
- filter(location_name == "United States", 
-            direction == "high") %>%
-  count(opt_achieved)
-
-all_age_diet_and_guidelines%>%
-     filter(sex == "Male", 
-  location_name == "United States") %>%
-count(opt_achieved, food)
-
-all_age_diet_and_guidelines%>%
-    filter(sex == "Female", 
- location_name == "United States") %>%
-count(opt_achieved, food)
-```
-
-```{r}
-
-all_age_diet_and_guidelines %>%
-  filter(location_name == "United States") %>%
-  ggplot() +
-  geom_bar( postion = "dodge", 
-              aes(x = food,
-               fill = opt_achieved)) +
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1))
-
-
-count(all_age_diet_and_guidelines %>%
-  filter(location_name == "United States"), 
-      food, 
-      opt_achieved) %>% 
-  ggplot(aes(x = food, 
-          fill = opt_achieved, 
-             y = n )) + 
-  geom_bar(position = "dodge", 
-               stat = "identity") +
-  theme(axis.text.x = element_text(angle = 70, 
-                                   hjust = 1))
-
-```
+How about if we look at age groups. First let's look at the dietary components with that were over-consumed in the United States:
 
 ```{r}
 
@@ -2698,7 +2622,7 @@ ggplot(aes(y = Relative_Percent,
                 alpha = 3/10)
 ```
 
-Let's add gender to this. We will aslo use the `viridis` package to change the colors.
+With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's add gender to this plot as well.  We will also use the `viridis` package to change the colors.
 
 ```{r}
 
@@ -2726,42 +2650,7 @@ all_age_diet_and_guidelines %>%
   theme_linedraw()
 ```
 
-Now let's select only the foods that the optimum intake was not achieved:
-
-```{r, eval = FALSE}
-
-pd <- position_dodge(0.5)
-
-all_age_diet_and_guidelines %>%
-  filter(location_name == "United States",
-             direction == "high",
-            food %in% c(pull(filter(
-              all_age_diet_and_guidelines, 
-              opt_achieved == "No"),food))) %>%
-  ggplot(aes(y = Relative_Percent, 
-             x = sex)) +
-  facet_wrap_paginate(facets = .~food, 
-                        ncol = 2, 
-                      scales = "free", 
-              strip.position = "right") +
-  geom_point(position = pd,  
-             aes(fill = age_group_name), 
-                alpha = 6/10,
-                  col = "black", 
-#only shape 21-24 allow for fill and outline colors
-                shape = 23,
-                 size = 3) +
-#change the colors from rainbow to purple/green/yellow
-  scale_fill_viridis(discrete = TRUE) +
-  expand_limits(y=100) +
-  theme_linedraw()
-```
-
-
-
-
-Now let's take a look at the foods that were under-consumed:
-
+We see similar patterns for males and females.  Now let's take the same look at the foods that were under-consumed:
 
 ```{r, fig.height=9}
 pd <- position_dodge(0.4)
@@ -2788,31 +2677,7 @@ all_age_diet_and_guidelines %>%
   theme_linedraw()
 ```
 
-```{r}
-
-pd <- position_dodge(0.5)
-
-all_age_diet_and_guidelines %>%
-  filter(location_name == "United States",
-             direction == "low", 
-          opt_achieved == "No") %>%
-  ggplot(aes(y = Relative_Percent, 
-             x = food)) +
-  geom_point(position = pd,  
-             aes(fill = age_group_name), 
-                alpha = 6/10,
-                  col = "black", 
-#only shape 21-24 allow for fill and outline colors
-                shape = 23, size = 3) +
-#this changes the colors from rainbow to pupule/yellow/green
-  scale_fill_viridis(discrete = TRUE) +
-  ylim(c(0,100)) +
-  theme_linedraw() +
-  theme(axis.text.x = element_text(angle = 70,
-                                   hjust = 1))
-
-```
-
+It's hard to see the patterns across age in this plot!  Let's change by putting the dietary factors on the x-axis (instead of sex) and facet by sex (instead of dietary factor).
 
 ```{r, fig.height=6}
 
@@ -2841,12 +2706,9 @@ facet_wrap(~ sex, nrow = 2) +
 
 ```
 
-
-
 Interesting, it looks like like both the younger adults and the elderly are generally doing worse than middle aged individuals in getting adequate intakes of these dietary factors.
 
-
-We could also display the data differently with the x axis as `age_group_name` and the color as `sex`:
+We could also display the data differently by putting age group on the x axis and letting color designate sex.  This allows us to more clearly see the pattern across age and clearly shows which dietary factors have differences by sex.
 
 ```{r,fig.height=8}
 
@@ -2880,10 +2742,7 @@ all_age_diet_and_guidelines %>%
                                    hjust = 1))
 ```
 
-
-
-
-Now let's focus on the really problematic foods:
+Finally, let's look on the really problematic foods -- those with relative percent above 100% or below 25%.
 
 ```{r, fig.height=9}
 
@@ -2919,14 +2778,13 @@ all_age_diet_and_guidelines %>%
 
 ```
 
-
-
+We see that for the foods that are over consumed (processed meat, red meat, sodium, and sugar-sweetened beverages), consumption appears to decrease with age.  For the two foods that are under consumed, consumption of nuts and seeds seems to rise and then fall with age, whereas consumption of polyunsaturated fatty acids is consistently very low across all age groups.
 
 ### Overall trends
 
-We would like to get a general sense of how consumption of these dietary factors differs around the world and we would like to know how the US compares to other countries. 
+Finally, we would like to get a general sense of how consumption of these dietary factors differs around the world and we would like to know how the US compares to other countries. 
 
-Before we do this let's change the labels of the foods by adding new line breaks so that they will fit more easily.
+Before we do this let's change the labels of the foods by adding new line breaks so that they will fit more easily on our graphs.
 
 ```{r}
 diet_and_guidelines[["food"]] <- str_replace_all(
@@ -3386,50 +3244,8 @@ Finally, we also looked at differences in red meat consumption between the diffe
 
 In preforming our statistical analyses we learned about the assumptions of the $t$-test, regression, and the ANOVA. We also learned about important methods to tests these assumptions.
 
-#### $t$-test assumptions:
-
-1) Normality of the data for both groups (this is not as much of an issue if the number of observations is relatively large, i.e., total n > 30. We can evaluate this assumption by plotting the distribution and by creating [Q-Q plots]([Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}))
-2) Equal variance between the two groups (make sure you do the correct test to assess this if the data are not normal)
-3) Balanced sample sizes of the two groups
-4) Independent observations (or independent paired observations)
-
-We can evaluate if our data is [normally distributed](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"} by plotting the distribution and by creating [Q-Q plots]([Q-Q Plots](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"} to compare the distribution of our data to the theoretical [normal distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"}.
-
-<u>If our data is not normally distributed, we can consider these options:</u>
-
-1) We can still perform a $t$-test if our n is large
-2) We can transform the data before performing a $t$-test
-3) We can use a nonparametric test (Wilcoxon signed rank test, the Wilcoxon rank sum test, and the Two-sample Kolmogorov-Smirnov (KS) test)
-4) We can perform a $t$-test with resampling methods (which should be especially considered when the groups are imbalanced)
-
-See this [case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity){target="_blank"} for more information on $t$-test assumptions.
-
-We learned that we can test if 2 groups have equal variance using:  
-1) the F test with `var.test()`  
-2) Mood's test using [`mood.test()`](https://files.eric.ed.gov/fulltext/ED065559.pdf) (use if the data are not normally distributed)  
-
-#### Linear regression assumptions:
-
-L (linear) - There is a linear relationship between the variables.  
-I (independent) - The samples are independent from one another.  
-N (normal) - The residuals are normally distributed.  
-E (equal variances) - The variance of the residuals of the groups is similar.   
-It is also important that predictor variables are not correlated with one another.  
-
-#### ANOVA assumptions:
-
-1) Normality of the data for all tested groups (less of an issue if the number of observations is relatively large, i.e., total n > 30) 
-2) Equal variance between the groups - aka the [Homogeneity of Variances assumption](https://uc-r.github.io/assumptions_homogeneity){target="_blank"} (make sure you do the correct test if the data are not normal) 
-3) Balanced sample sizes of the groups 
-4) Independent observations (or independent paired observations) 
-
-We learned about three tests for examining the equality of variance of 3 or more groups:
-1) [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} (works well if the data appears to be normally distributed) 
-2) [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality 
-3) [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner-Killeen test 
-
-
 Using the `ggplot2` package we were able to visualize trends in the data and to compare consumption of these dietary factors in the US with that of the other countries.
+
 We see that the populations in many countries are over-consuming foods that are associated with health risk when over-consumed. In particular processed meat and sugar-sweetened beverages appear to be the most over consumed. Importantly both of these appear to be consumed at higher quantities by males and younger adults. People in the US  appear to consume fewer sugar-sweetened beverages than other countries, however, people are still over-consuming. Processed meat however appears to be especially bad in the US. In terms of food that need to be consumed in adequate amounts to overcome health risk, nearly all countries for all factors are not reaching guideline levels. However, there are some countries consuming more than adequate amounts of legumes, vegetables, fruits and fiber. People in the US appear to eat more milk products and consume more omega-3 fatty acids and calcium rich foods than other countries. All countries including the US consume very low levels of polyunsaturated fatty acids. These [polyunsaturated fatty acids](https://en.wikipedia.org/wiki/Polyunsaturated_fat) are abundant in seeds, nuts and avocados, as well as fish. Likely the low level of consumption of nuts and seeds contributes to these low polyunsaturated fatty acid estimates. The supplementary table included in the article suggests that poor consumption of polyunsaturated fatty acids is associated with ischemic heart disease. The article takes this data further to evaluate the association of consumption levels of these foods with mortality.
 
 Analyses like the one in our case study are important for defining which groups could benefit the most from interventions, education, and policy changes when attempting to mitigate public health challenges. You can see in the [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} however that many additional considerations would be involved to perform a more thorough analysis to adequately understand the data enough to recommend policy changes.
