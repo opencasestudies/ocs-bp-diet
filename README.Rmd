@@ -11,7 +11,7 @@ output: md_document
 ### Disclaimer 
 
 The purpose of the [Open Case
-Studies](https://opencasestudies.github.io) project is **to demonstrate
+Studies](https://www.opencasestudies.org) project is **to demonstrate
 the use of various data science methods, tools, and software in the
 context of messy, real-world data**. A given case study does not cover
 all aspects of the research process, is not claiming to be the most
@@ -21,14 +21,14 @@ from scientific experts.
 
 ### License 
 
-This case study is part of the [OpenCaseStudies](https://opencasestudies.github.io) project. 
-This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 ([CC BY-NC 3.0](https://opencasestudies.github.io/ocs-bp-diet/)) United States License.
+This case study is part of the [OpenCaseStudies](https://www.opencasestudies.org) project. 
+This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 ([CC BY-NC 3.0](https://www.opencasestudies.org/ocs-bp-diet/)) United States License.
 
 ### Citation 
 
 To cite this case study:
 
-Wright, Carrie, and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://opencasestudies.github.io/ocs-bp-diet/. Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
+Wright, Carrie, and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://www.opencasestudies.org/ocs-bp-diet/. Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
 
 ### Acknowledgements
 

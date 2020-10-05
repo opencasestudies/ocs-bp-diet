@@ -44,11 +44,29 @@ knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
 
-## {.disclaimer_block}
+#### {.disclaimer_block}
 
-**Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
+**Disclaimer**: The purpose of the [Open Case Studies](https://www.opencasestudies.org){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
 
-## Motivation
+####
+
+#### {.license_block}
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"}  United States License.
+
+####
+
+#### {.reference_block}
+
+To cite this case study please use:
+
+Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://www.opencasestudies.org/ocs-bp-diet/. Mental Health of American Youth (Version v1.0.0).
+
+####
+
+## **Motivation**
+***
+
 An [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} recently published in The 
 Lancet evaluated global dietary trends and the relationship of dietary factors with mortality and fertility.
 
@@ -73,7 +91,8 @@ knitr::include_graphics(here("img", "deaths.png"))
 
 This case study will evaluate the data reported in this article to explore regional, age, and gender specific differences in dietary consumption patterns around the world in 2017. 
 
-### Main Questions
+## **Main Questions**
+***
 
 #### {.main_question_block}
 <b><u> Our main questions are: </u></b>
@@ -85,16 +104,45 @@ This case study will evaluate the data reported in this article to explore regio
 
 ####
 
-### Learning Objectives 
+## **Learning Objectives**
+***
 
-In this case study, we will walk you through importing data from PDF files and CSV files, cleaning data, wrangling data, comparing data, joining data, visualizing data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially efficient.
+In this case study, we will walk you through importing data from PDF files and CSV files, cleaning data, wrangling data, comparing data, joining data, visualizing data, and <b> comparing two or more groups </b> using well-established and commonly used packages, including `stringr`, `tidyr`, `dplyr`, `purrr`, and `ggplot2`. We will especially focus on using packages and functions from the [Tidyverse](https://www.tidyverse.org/){target="_blank"}. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R especially legible and intuitive.
+
+The skills, methods, and concepts that students will be familiar with by the end of this case study are:
+
+<u>**Data Science Learning Objectives:**</u>
+
+1.  Importing/extracting data from PDF (`dplyr`, `stringr`)  
+2.  Combining data from two sources (`dplyr`)
+3.  How to reshape data by pivoting between “long” and “wide” formats
+    (`tidyr`)  
+4.  Peform functions on all columns of a tibble (`purrr`)
+5.  Separate data within a column into multiple colums (`tidyr`)
+6.  Make interactive plots (`ggiraph`)
+7.  Make a zoom facet for plot (`ggforce`)
+8.  Combine plots together (`cowplot`)
+
+<u>**Statistical Learning Objectives:**</u> 
+
+1.  Understanding of how the *t*-test and the ANOVA are specialized
+    regressions
+2.  Basic understanding of the utility of a regression analysis
+3.  How to implement a linear regression analysis in R
+4.  How to intepret regression coefficients
+5.  Awareness of *t*-test assumptions
+6.  Awareness of linear regression assumptions
+7.  How to use Q-Q plots to check for normality
+8.  Difference between fixed effects and random effects
+9.  How to perform paired *t*-test
+10. How to perform a linear mixed effects regression
 
 
 ```{r, out.width = "20%", echo = FALSE, fig.align = "center"}
 include_graphics("https://tidyverse.tidyverse.org/logo.png")
 ```
 
-
+***
 
 We will begin by loading the packages that we will need:
 
@@ -123,7 +171,7 @@ library(cowplot)
 ```
 
 
- Package   | Use                                                                         
+ Package   | Use in this case study                                                                        
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data
@@ -153,7 +201,8 @@ ___
 The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
 
 
-### Context
+## **Context**
+***
 
 Here is an excerpt from the article itself about the context of the work:
 ```{r, echo = FALSE}
@@ -176,7 +225,8 @@ In the article the authors found that most of the mortality associated with each
 knitr::include_graphics(here("img", "cardiorisk.png"))
 ```
 
-### Limitations
+## **Limitations**
+***
 
 There are some important limitations regarding the data from this article to keep in mind. The definition of certain dietary factors varied across some of the collection sources. Intakes of certain healthy foods like vegetables and fruits are likely positively correlated with each other and likely negatively correlated with intakes of unhealthy foods. Much of the data was collected with 24 hour recall surveys which are prone to issues due to inaccuracy of memory recall or other biases such as a tendency for some people to report healthier behaviors. The guidelines in the PDF are not specified by gender even though it is known that there are different dietary requirements for optimal health for certain nutrients by gender. The article discusses some limitations about accounting for overall food consumption when calculating consumption of particular foods:
 
@@ -184,7 +234,8 @@ There are some important limitations regarding the data from this article to kee
 
 There are also important nuances to keep in mind regarding some of the dietary factors. For example calcium consumption was calculated based on consumption of dairy products, while calcium can be acquired from other sources including plant-based sources. However in these data, the influence of plant-based consumption of calcium was not accounted for, nor was supplementation through vitamin sources. 
 
-## What are the data?
+## **What are the data?**
+***
 
 We will be using data that we requested from the [GBD](http://www.healthdata.org/gbd){target="_blank"} about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files, dietary_risk_exposure_all_ages_2017.csv and dietary_risk_exposure_sep_ages_2017.csv. The first one includes consumption levels at the global level and for different countries for all ages combined.
 
@@ -207,7 +258,8 @@ The authors of this article obtained the data from a variety of sources includin
 
 <u>Note:</u> While [gender](https://www.genderspectrum.org/quick-links/understanding-gender/){target="_blank"} and [sex](https://www.who.int/genomics/gender/en/index1.html){target="_blank"} are not actually binary, the data  used in this analysis only contains information for groups of individuals described as male or female. 
 
-## Data Import
+## **Data Import**
+***
 
 Let's import our data into R now so that we can explore the data further.
 
@@ -256,7 +308,7 @@ dfSummary(diet_data, plain.ascii = FALSE, style = "grid",
 
 Let's take a look at `sep_age_diet_data`.
 
-```{R}
+```{r}
 skim(sep_age_diet_data)
 ```
 
@@ -353,7 +405,8 @@ This confirms that for each of the 15 dietary factors, our unit of observation i
 
 
 
-## Data Wrangling
+## **Data Wrangling**
+***
 
 While all of the mean consumption values are reported in grams, each dietary factor has a different amount that is considered optimal for consuming. To make the consumption values more comparable across factors, let's also get some data from the PDF of the paper so that we can calculate consumption of these dietary factors as percentages of the daily optimum.
 
@@ -1478,7 +1531,8 @@ pivot_longer(cols = contains("percent"),
 
 We now have the main variables and data formats that we need to proceed with the next steps of our analysis, including data exploration and eventually, modeling.
 
-## Data Exploration
+## **Data Exploration**
+***
  
 ### Exploring age collapsed data
 
@@ -1670,7 +1724,8 @@ sep_age_diet_data %>%
 We can see from these plots that there appear to be age differences and gender differences for some of the different dietary factors. We will work to create clearer figures later on. However these initial figures have given us a better sense of the data that we are working with.
 
 
-## Data Analysis
+## **Data Analysis**
+***
 
 Recall what our main questions were:
 
@@ -2383,7 +2438,8 @@ all_age_diet_and_guidelines %>%
 
 Looking at the `anova()` output, we can see that sex and age group both have significant associations with the consumption of red meat, when controlling for the other variable.  Additionally, by looking at the individual coefficient estimates in the `summary()` output, we see that males tend to have higher red meat consumption compared to females (positive coefficient for `sexMale`) and that consumption seems to decrease with increasing age (negative coefficients for all the age group categories that appear to become larger in magnitude with increasing age).
 
-## Data Visualization
+## **Data Visualization**
+***
 
 Now that we have statistically analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
 
@@ -3109,9 +3165,20 @@ cowplot::plot_grid(Over,
                    Under, 
                    Under_age, 
                    ncol = 2, 
-                   rel_widths = c(2.5, 1))
+                   rel_widths = c(2.5, 1)) 
 ```
 
+```{r, echo = FALSE}
+png(filename = here::here("img", "mainplot.png"),
+    res = 300, width = 34, height = 30, units = "in")
+cowplot::plot_grid(Over, 
+                   Over_age, 
+                   Under, 
+                   Under_age, 
+                   ncol = 2, 
+                   rel_widths = c(2.5, 1)) +theme(plot.margin = unit(c(1, 1, 1, 1), "cm"))
+dev.off()
+```
 
 ```{r, eval = FALSE, echo = FALSE}
 collapsed <-diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
@@ -3128,7 +3195,10 @@ collapsed%>% filter(location_name == "Malaysia")
 ```
 
 
-## Summary
+## **Summary**
+***
+
+### Synopsis
 
 We have evaluated average consumption estimates of 15 dietary factors with probably non-communicable disease (NCD) risk from 195 different countries around the world. To do so we imported data from a PDF using the `pdftools` package, as well as data from two CSV files using `readr`. We used `tidyverse` packages such as `dplyr`, `stringr`, and `tidy` to clean and join the data from the PDF with the CSV files. 
 
@@ -3149,9 +3219,14 @@ We see that the populations in many countries are over-consuming foods that are 
 Analyses like the one in our case study are important for defining which groups could benefit the most from interventions, education, and policy changes when attempting to mitigate public health challenges. You can see in the [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8){target="_blank"} however that many additional considerations would be involved to perform a more thorough analysis to adequately understand the data enough to recommend policy changes.
 
 
-### Suggested Homework
+## **Suggested Homework**
+***
 
 Students can evaluate consumption estimates of another dietary factor besides red meat.
+
+
+## **Additional Information**
+*** 
 
 ### Helpful Links
 
@@ -3220,7 +3295,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 
 <u>Packages used in this case study: </u>
 
- Package   | Use                                                                         
+ Package   | Use in this case study                                                                        
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data  
@@ -3243,5 +3318,19 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in color palette    
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined   
 
+### Session Info
+
+```{r}
+sessionInfo()
+```
+
+### Acknowledgements
+
+We would like to acknowledge [Jessica
+Fanzo](https://bioethics.jhu.edu/people/profile/jessica-fanzo/) for
+assisting in framing the major direction of the case study.
+
+We would also like to acknowledge the [Bloomberg American Health
+Initiative](https://americanhealth.jhu.edu/) for funding this work.
 
 
