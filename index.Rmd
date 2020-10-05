@@ -39,7 +39,7 @@ library(knitr)
 
 
 #### {.outline }
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width="800 ptx"}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
