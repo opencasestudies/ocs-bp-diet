@@ -2671,7 +2671,18 @@ diet_and_guidelines %>%
 OK, it looks like optimal consumption levels were achieved for only 10% of the dietary factors.
 
 Let's look at males and females separately:
-```{r}
+
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
+Can you come up with the code for how you would do this?
+
+####
+
+***
+<details> <summary> Click here to reveal the code. </summary>
+
+```{r, eval = FALSE}
 diet_and_guidelines %>%
     filter(sex == "Female", 
  location_name == "United States") %>%
@@ -2683,6 +2694,21 @@ diet_and_guidelines %>%
 count(opt_achieved, food)
 
 ```
+</details>
+***
+
+```{r, echo = FALSE}
+diet_and_guidelines %>%
+    filter(sex == "Female", 
+ location_name == "United States") %>%
+count(opt_achieved, food)
+
+diet_and_guidelines %>%
+    filter(sex == "Male", 
+ location_name == "United States") %>%
+count(opt_achieved, food)
+```
+
 
 So females are a bit better about not over-consuming sodium in the United States relative to males.  Both groups are doing well with avoiding trans fatty acids. Let's look more closely at which dietary components have high and low consumption in the United States:
 
@@ -2705,11 +2731,21 @@ ggplot(aes(y = Relative_Percent ,
 OK, so we can  indeed see that overall consumption of sodium and trans fatty acids is pretty close to optimal. So that's great. However, Both males and females are over-consuming processed meat, red meat, and sugar-sweetened beverages. On the other hand both genders are not getting adequate intake of all the other dietary factors for optimal health. The population in the United states has especially poor intake of polyunsaturated fats. it also looks like in most cases females are getting less of the dietary factors that pose health risks when under-consumed, with the exception of fruits.
 
 
-How about if we look at age groups. First let's look at the dietary components with that were over-consumed in the United States:
+How about if we look at age groups. First let's look at the dietary components with that were over-consumed in the United States.
+
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
+Can you come up with the code for this on your own?
+
+####
+
+***
+<details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
 
-all_age_diet_and_guidelines %>%
+plot_age_groups <-all_age_diet_and_guidelines %>%
 filter(location_name == "United States", 
            direction == "high") %>%
 ggplot(aes(y = Relative_Percent, 
@@ -2719,6 +2755,15 @@ ggplot(aes(y = Relative_Percent,
   geom_boxplot() +
   geom_point(position = position_jitterdodge(), 
                 alpha = 3/10)
+
+
+```
+</details>
+
+***
+
+```{r}
+plot_age_groups 
 ```
 
 OK! It looks like age really influences the consumption of these dietary factors. With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's also use the`scale_fill_viridis()` function of the `viridis` package to change the colors of our plot. This package uses palettes of colors that are discernible for individuals who are colorblind. 
@@ -2748,8 +2793,19 @@ Nice!
 
 Now let's look at the dietary factors that when consumed at low levels increase health risk:
 
+
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
+Again, see if you come up with the code for this on your own?
+
+####
+
+***
+<details> <summary> Click here to reveal the code. </summary>
+
 ```{r}
-all_age_diet_and_guidelines %>%
+low_foods_plot <-all_age_diet_and_guidelines %>%
 filter(location_name == "United States", 
            direction == "low") %>%
 ggplot(aes(y = Relative_Percent, 
@@ -2767,6 +2823,15 @@ ggplot(aes(y = Relative_Percent,
         axis.title.x = element_blank())
 ```
 
+</details> 
+***
+
+
+```{r}
+low_foods_plot
+```
+
+
 
 Interesting, we see that for the foods that are over consumed (processed meat, red meat, sodium, and sugar-sweetened beverages), consumption appears to decrease with age. For the foods that are under consumed, many appear to rise and fall with age.
 
@@ -2774,7 +2839,17 @@ Interesting, we see that for the foods that are over consumed (processed meat, r
 
 Finally, we would like to get a general sense of how consumption of these dietary factors differs around the world and we would like to know how the US compares to other countries. 
 
-Before we do this let's change the labels of the foods by adding new line breaks so that they will fit more easily on our graphs.
+Before we do this let's change the labels of the foods by adding new line breaks (`"\n"`) so that they will fit more easily on our graphs.
+
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
+See if you come up with the code for this on your own?
+
+####
+
+***
+<details> <summary> Click here to reveal the code for the `diet_and_guidelines` and the `all_age_diet_and_guidelines` data. </summary>
 
 ```{r}
 diet_and_guidelines[["food"]] <- str_replace_all(
@@ -2789,10 +2864,6 @@ diet_and_guidelines[["food"]] <- str_replace_all(
   diet_and_guidelines[["food"]], 
   "polyunsaturated fatty acids", 
   "polyunsaturated\nfatty acids")
-
-diet_and_guidelines %>%
-  select(food) %>% 
-  distinct()
 
 all_age_diet_and_guidelines[["food"]] <- str_replace_all(
 all_age_diet_and_guidelines[["food"]], 
@@ -2809,10 +2880,26 @@ all_age_diet_and_guidelines[["food"]] <- str_replace_all(
   "polyunsaturated fatty acids", 
   "polyunsaturated\nfatty acids")
 
+```
+
+</details>
+***
+
+```{r}
+diet_and_guidelines %>%
+  select(food) %>% 
+  distinct()
+```
+
+```{r}
+
+
 all_age_diet_and_guidelines %>%
   select(food) %>% 
   distinct()
 ```
+
+Nice!
 
 #### Under-consumed foods
 
