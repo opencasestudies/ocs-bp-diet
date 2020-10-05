@@ -115,10 +115,10 @@ The skills, methods, and concepts that students will be familiar with by the end
 
 1. Importing/extracting data from PDF (`dplyr`, `stringr`)  
 2. How to reshape data by pivoting between "long" and "wide" formats (`tidyr`)    
-3. Peform functions on all columns of a tibble (`purrr`)  
+3. Perform functions on all columns of a tibble (`purrr`)  
 4. Data cleaning with regular expressions (`stringr`)  
-5. Specific data value reassigment  
-6. Separate data within a column into multiple colums (`tidyr`) 
+5. Specific data value reassignment  
+6. Separate data within a column into multiple columns (`tidyr`) 
 7. Methods to Compare data (`dplyr`)  
 8. Combining data from two sources (`dplyr`)  
 9. Make interactive plots (`ggiraph`)  
@@ -131,7 +131,7 @@ The skills, methods, and concepts that students will be familiar with by the end
     regressions
 2.  Basic understanding of the utility of a regression analysis
 3.  How to implement a linear regression analysis in R
-4.  How to intepret regression coefficients
+4.  How to interpret regression coefficients
 5.  Awareness of *t*-test assumptions
 6.  Awareness of linear regression assumptions
 7.  How to use Q-Q plots to check for normality
@@ -153,7 +153,6 @@ library(here)
 library(readr)
 library(dplyr)
 library(skimr)
-library(summarytools)
 library(pdftools)
 library(stringr)
 library(magrittr)
@@ -179,7 +178,6 @@ library(cowplot)
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data 
 [skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
-[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R 
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data
 [magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` piping operator
@@ -299,13 +297,6 @@ We also get a sense about the size of our data.
 
 The `n_unqiue` column shows us the number of unique values for each of our columns.
 
-Here is another method using the package `summarytools`:
-
-```{r, eval=TRUE}
-
-dfSummary(diet_data, plain.ascii = FALSE, style = "grid", 
-         graph.magnif = 0.75,  tmp.img.dir = "tmp")
-```
 
 Let's take a look at `sep_age_diet_data`.
 
@@ -1135,7 +1126,7 @@ class(Y)
 ```
 
 Since we are using tibbles, which are of class `tbl_df` we can use either `all_equal` or `all.equal()`.
-Notice that it doesn't report rows being a different order becuase it first tells what rows have unique values or rows with a value that has a different number of frequency.
+Notice that it doesn't report rows being a different order because it first tells what rows have unique values or rows with a value that has a different number of frequency.
 
 ```{r}
 all_equal(X, Y, ignore_row_order = TRUE)
@@ -1206,7 +1197,7 @@ all_equal(X, Y, ignore_row_order = FALSE)
 setequal(X, Y)
 ```
 
-`setdiff()` requires that columnames be the same so this will cause an error:
+`setdiff()` requires that column names be the same so this will cause an error:
 
 ```{r, eval = FALSE}
 setdiff(X, Y) # This will not work
@@ -1292,17 +1283,22 @@ Now we can put our guideline data together with the `diet_data` and the `sep_age
 
 Remember that the `food` data in our `guidelines` tibble is not necessarily in the same order as that of the consumption data tibbles. Thus this could be a problem if we decided to expand the `guidelines` rows (to repeat for the number of fruit observations etc.) and add them to our observed consumption tibbles by binding them together by column. 
 
-```{r, echo = FALSE, out.with = "300 px", fig.align= "center"}
+```{r, echo = FALSE, outwidth = "50%", fig.align= "center"}
 knitr::include_graphics(here("img","bind.png"))
 ```
+
+#### [[source]](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
 In that case we could use the `arrange()` function of `dplyr` to sort the data alphabetically.
 
 However, we will instead use a joining function of `dplyr`. These functions combine the data together based on **common values** and don't require the rows to be in the same order. There are a variety of options.
 
-```{r, echo = FALSE, out.with = "150 px", fig.align= "center"}
+```{r, echo = FALSE, outwidth = "50%", fig.align= "center"}
 knitr::include_graphics(here("img","join.png"))
 ```
+
+#### [[source]](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
 
 In our case we would like to retain all of the values of `diet_data` and `sep_age_diet_data`. We would like to add new columns of values to these tibbles that correspond to the guideline information about amounts of consumption for each food type in the `guidelines` tibble. We shouldn't have any values of `food` in `guidelines` that don't match, so we will not get any `NA` values. Therefore, in our case any of the mutating join functions should result in the same output.
 
@@ -1705,7 +1701,7 @@ diet_and_guidelines %>%
   geom_bar(position = "dodge")
 ```
 
-Continuing with `ggplot2` we will now create a different type of plot. This time we will create a series of boxplots. We will use the `facet_wrap()` function of ggplot2 to allow us to create many different plots simultaneously. In this case we can look at boxplots for the different dietary factors colored by sex. The `scales` argument when set to `"free"` means that each of the sequential plot created by the facet can have a different scale for the y axis, otherwise, by default they are constrained to the same scale. Since our dietary factors are measured on very different scales, we do not want this constraint here.
+Continuing with `ggplot2` we will now create a different type of plot. This time we will create a series of box plots. We will use the `facet_wrap()` function of ggplot2 to allow us to create many different plots simultaneously. In this case we can look at box plots for the different dietary factors colored by sex. The `scales` argument when set to `"free"` means that each of the sequential plot created by the facet can have a different scale for the y axis, otherwise, by default they are constrained to the same scale. Since our dietary factors are measured on very different scales, we do not want this constraint here.
 
 
 ```{r}
@@ -1806,7 +1802,7 @@ See [here](https://en.wikipedia.org/wiki/Regression_toward_the_mean){target="_bl
 
 When we think about this from a statistical standpoint, regression allows us to estimate or **regress** relationships between variables with a "simple" model. We do this by **estimating the mean** of an outcome, given a value of an input or predictor variable. This can be useful for **predicting future values** of the outcome based on the approximation of the real relationship between the variables within the model, or just for understanding how different variables are related to one another.
 
-We will start by considering **simple linear regression**, where we have one contunous predictor variable and one continuous outcome variable, as shown below:
+We will start by considering **simple linear regression**, where we have one continuous predictor variable and one continuous outcome variable, as shown below:
 ```{r, echo = FALSE, out.width = "400ptx"}
 set.seed(15)
 data_x <- sample(1:10, 10, replace = TRUE)
@@ -2101,7 +2097,7 @@ In this case the spread of the points is clearly less for one group compared to 
 
 #### Assessing independence
 
-We never considered the assumption of independent required by both a $t$-test and linear regression.  Do we truly have independent samples in this case?  No!  Since we have female and male values from the same countries, our data is really what we would call "paired". The male and female diet values from the same country are most likele related to each another because of cultural effects on diet.  This means the assumption of independence for the independent samples $t$-test is violated, as is the independence assumption for linear regression.  
+We never considered the assumption of independent required by both a $t$-test and linear regression.  Do we truly have independent samples in this case?  No!  Since we have female and male values from the same countries, our data is really what we would call "paired". The male and female diet values from the same country are most likely related to each another because of cultural effects on diet.  This means the assumption of independence for the independent samples $t$-test is violated, as is the independence assumption for linear regression.  
 
 We can address this by doing a *paired* $t$-test instead of an independent $t$-test and by accounting for country in our linear model by adding it to our model as what we call a *fixed effect*.   
 
@@ -2209,7 +2205,7 @@ diet_and_guidelines %>%
   summary()
 ```
 
-How would we interpret the results of this model? Again, let's look at the estimated coefficient for the `sexMale` variable, which is 0.18.  This can be interpreted the same way as in the simple linear regression, as the difference in mean log relative percent consumption between males and females.  However, here we haven't violated the independence assumption becayse we are accounting for the paired nature of the data through the random effect for country.  The $t$-statistic and $p$-value for this coefficient also match those from the paired $t$-test we did before:
+How would we interpret the results of this model? Again, let's look at the estimated coefficient for the `sexMale` variable, which is 0.18.  This can be interpreted the same way as in the simple linear regression, as the difference in mean log relative percent consumption between males and females.  However, here we haven't violated the independence assumption because we are accounting for the paired nature of the data through the random effect for country.  The $t$-statistic and $p$-value for this coefficient also match those from the paired $t$-test we did before:
 ```{r}
 t.test(log10(pull(filter(wide_diet, food == "red meat"),
                   Relative_Percent_Male)), 
@@ -2317,7 +2313,7 @@ After transformation, these Q-Q plots look pretty good.
 
 Now let's look at the assumption of constant variance. There are different ways to assess this assumption across more than two groups.  [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} works well if the data appears to be quite normally distributed, while the [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality of the data.
 
-We will use another popular test, [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, which is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner-Killeen test.  The null hypthesis of this test, as for the other two tests, is that the variances are equal across all of the groups.  The alternative hypothesis is that at least one pair of groups has different variances.  In symbols we would write this as
+We will use another popular test, [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, which is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner-Killeen test.  The null hypothesis of this test, as for the other two tests, is that the variances are equal across all of the groups.  The alternative hypothesis is that at least one pair of groups has different variances.  In symbols we would write this as
 
 $$ H_0: \sigma_1^2 = \sigma_2^2 = \sigma_3^2 ... = \sigma_n^2 $$
 
@@ -2493,7 +2489,7 @@ Now that we have statistically analyzed the consumption of red meat based on the
 
 Let's try to make a plot that shows the relationship of age group, sex, and location on consumption of red meat.
 
-First we will filter our data for only the data associated with red meat, and then we will create a boxplot graph with age group as the x axis, but include box plots for each sex for each age group. We can include an additional subplot to just look at the relationship of sex and consumption. Recall that the `ggplot2` package is very useful for making figures and uses a layering structure to make plots using the `+` between layers.
+First we will filter our data for only the data associated with red meat, and then we will create a box plot graph with age group as the x axis, but include box plots for each sex for each age group. We can include an additional subplot to just look at the relationship of sex and consumption. Recall that the `ggplot2` package is very useful for making figures and uses a layering structure to make plots using the `+` between layers.
 
 ```{r}
 
@@ -2518,7 +2514,7 @@ all_age_diet_and_guidelines %>%
 
 OK, this is pretty good, but we can do better.
 
-Let's try specifically looking at the countries that over-consumed red meat. We can look at these countries by filtering our data where `Relative_Percent` was greater than 100%. Now we will overlap the jitter points and the boxplot using the `position_jitterdoge()` as the position in `geom_pont()`. In order to not obscure our boxplots, we can use the argument `alpha` to make our jitter points more transparent.
+Let's try specifically looking at the countries that over-consumed red meat. We can look at these countries by filtering our data where `Relative_Percent` was greater than 100%. Now we will overlap the jitter points and the box plot using the `position_jitterdoge()` as the position in `geom_pont()`. In order to not obscure our box plots, we can use the argument `alpha` to make our jitter points more transparent.
 
 ```{r}
 
@@ -3065,7 +3061,7 @@ Over_age
 ```
 
 
-Hmmm these look a bit funny because the outliers in the boxplots for the foods besides sugar-sweetened beverages are making the range much larger than the boxplot themselves. We can calculate the values for the boxplots our selves to deal with this:
+Hmmm these look a bit funny because the outliers in the box plots for the foods besides sugar-sweetened beverages are making the range much larger than the box plot themselves. We can calculate the values for the box plots our selves to deal with this:
 
 ```{r}
 calc_stat <- function(x) {
@@ -3361,8 +3357,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
-[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data   
-[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style   
+[skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data    
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R   
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data   
 [magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` piping operator  

@@ -76,32 +76,33 @@ Previously according to their website:
 The skills, methods, and concepts that students will be familiar with by the end of this case study are:
 
 
-Data science skills:  
-  
+<u>**Data Science Learning Objectives:**</u>
+
 1. Importing/extracting data from PDF (`dplyr`, `stringr`)  
-2. How to reshape data by pivoting between "long" and "wide" formats (`tidyr`)  
-3. Peform functions on all columns of a tibble (`purrr`)  
+2. How to reshape data by pivoting between "long" and "wide" formats (`tidyr`)    
+3. Perform functions on all columns of a tibble (`purrr`)  
 4. Data cleaning with regular expressions (`stringr`)  
-5. Specific data value reassigment  
-6. Separate data within a column into multiple colums (`tidyr`) 
+5. Specific data value reassignment  
+6. Separate data within a column into multiple columns (`tidyr`) 
 7. Methods to Compare data (`dplyr`)  
 8. Combining data from two sources (`dplyr`)  
 9. Make interactive plots (`ggiraph`)  
 10. Make a zoom facet for plot (`ggforce`) 
-11. Combine plots together (`cowplot`)  
+11. Combine plots together (`cowplot`)
 
-Statistical concepts and methods:  
-  
-1. Understanding of how the $t$-test and the ANOVA are specialized regressions
-2. Basic understanding of the utility of a regression analysis
-3. How to implement a linear regression analysis in R
-4. How to intepret regression coefficients
-3. Awareness of $t$-test assumptions
-4. Awareness of linear regression assumptions
-5. How to use Q-Q plots to check for normality
-6. Difference between fixed effects and random effects
-7. How to perform paired $t$-test
-8. How to perform a linear mixed effects regression
+<u>**Statistical Learning Objectives:**</u> 
+
+1.  Understanding of how the *t*-test and the ANOVA are specialized
+    regressions
+2.  Basic understanding of the utility of a regression analysis
+3.  How to implement a linear regression analysis in R
+4.  How to interpret regression coefficients
+5.  Awareness of *t*-test assumptions
+6.  Awareness of linear regression assumptions
+7.  How to use Q-Q plots to check for normality
+8.  Difference between fixed effects and random effects
+9.  How to perform paired *t*-test
+10. How to perform a linear mixed effects regression
 
 
 #### Data import 
@@ -215,13 +216,12 @@ See [this other case study](https://opencasestudies.github.io/ocs-bp-rural-and-u
 
 <u>Packages used in this case study: </u>
 
- Package   | Use                                                                         
+ Package   | Use in this case study                                                                       
 ---------- |-------------
 [here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
 [readr](https://readr.tidyverse.org/){target="_blank"}      | to import the CSV file data  
 [dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to arrange/filter/select/compare specific subsets of the data  
 [skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data   
-[summarytools](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data in a different style   
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R   
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data   
 [magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` pipping operator  

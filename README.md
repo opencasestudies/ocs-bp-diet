@@ -97,28 +97,28 @@ reporting… and may include reporting errors.**”*
 The skills, methods, and concepts that students will be familiar with by
 the end of this case study are:
 
-Data science skills:
+<u>**Data Science Learning Objectives:**</u>
 
 1.  Importing/extracting data from PDF (`dplyr`, `stringr`)  
 2.  How to reshape data by pivoting between “long” and “wide” formats
     (`tidyr`)  
-3.  Peform functions on all columns of a tibble (`purrr`)  
+3.  Perform functions on all columns of a tibble (`purrr`)  
 4.  Data cleaning with regular expressions (`stringr`)  
-5.  Specific data value reassigment  
-6.  Separate data within a column into multiple colums (`tidyr`)
+5.  Specific data value reassignment  
+6.  Separate data within a column into multiple columns (`tidyr`)
 7.  Methods to Compare data (`dplyr`)  
 8.  Combining data from two sources (`dplyr`)  
 9.  Make interactive plots (`ggiraph`)  
 10. Make a zoom facet for plot (`ggforce`)
 11. Combine plots together (`cowplot`)
 
-Statistical concepts and methods:
+<u>**Statistical Learning Objectives:**</u>
 
 1.  Understanding of how the *t*-test and the ANOVA are specialized
     regressions
 2.  Basic understanding of the utility of a regression analysis
 3.  How to implement a linear regression analysis in R
-4.  How to intepret regression coefficients
+4.  How to interpret regression coefficients
 5.  Awareness of *t*-test assumptions
 6.  Awareness of linear regression assumptions
 7.  How to use Q-Q plots to check for normality
@@ -286,7 +286,7 @@ Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)
 <thead>
 <tr class="header">
 <th>Package</th>
-<th>Use</th>
+<th>Use in this case study</th>
 </tr>
 </thead>
 <tbody>
@@ -307,66 +307,62 @@ Test](http://www.biostathandbook.com/wilcoxonsignedrank.html)
 <td>to get an overview of data</td>
 </tr>
 <tr class="odd">
-<td><a href="https://cran.r-project.org/web/packages/skimr/index.html" target="_blank">summarytools</a></td>
-<td>to get an overview of data in a different style</td>
-</tr>
-<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/pdftools/pdftools.pdf" target="_blank">pdftools</a></td>
 <td>to read a PDF into R</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://stringr.tidyverse.org/articles/stringr.html" target="_blank">stringr</a></td>
 <td>to manipulate the text within the PDF of the data</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://magrittr.tidyverse.org/articles/magrittr.html" target="_blank">magrittr</a></td>
 <td>to use the <code>%&lt;&gt;%</code> pipping operator</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://purrr.tidyverse.org/" target="_blank">purrr</a></td>
 <td>to perform functions on all columns of a tibble</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://tibble.tidyverse.org/" target="_blank">tibble</a></td>
 <td>to create data objects that we can manipulate with dplyr/stringr/tidyr/purrr</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://tidyr.tidyverse.org/" target="_blank">tidyr</a></td>
 <td>to separate data within a column into multiple columns</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a></td>
 <td>to make visualizations with multiple layers</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/ggpubr/index.html" target="_blank">ggpubr</a></td>
 <td>to easily add regression line equations to plots</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://forcats.tidyverse.org/" target="_blank">forcats</a></td>
 <td>to change details about factors (categorical variables)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/lmerTest/lmerTest.pdf">lmerTest</a></td>
 <td>to perform linear mixed model testing</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/car/car.pdf">car</a></td>
 <td>to perform Levene’s Test of Homogeneity of Variances</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/ggiraph/index.html">ggiraph</a></td>
 <td>to make plots interactive</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/ggforce/ggforce.pdf">ggforce</a></td>
 <td>to modify facets in plots</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">viridis</a></td>
 <td>to plot in color palette</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html" target="_blank">cowplot</a></td>
 <td>to allow plots to be combined</td>
 </tr>
