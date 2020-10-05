@@ -39,7 +39,7 @@ library(knitr)
 
 
 #### {.outline }
-```{r, echo = FALSE, out.width = "800 px"}
+```{r, echo = FALSE}
 knitr::include_graphics(here::here("img", "mainplot.png"))
 ```
 
@@ -236,6 +236,8 @@ There are some important limitations regarding the data from this article to kee
 
 There are also important nuances to keep in mind regarding some of the dietary factors. For example calcium consumption was calculated based on consumption of dairy products, while calcium can be acquired from other sources including plant-based sources. However in these data, the influence of plant-based consumption of calcium was not accounted for, nor was supplementation through vitamin sources. 
 
+Also, while [gender](https://www.genderspectrum.org/quick-links/understanding-gender/){target="_blank"} and [sex](https://www.who.int/genomics/gender/en/index1.html){target="_blank"} are not actually binary, the data used in this analysis only contains information for groups of individuals described as male or female. 
+
 ## **What are the data?**
 ***
 
@@ -256,9 +258,6 @@ knitr::include_graphics(here::here("img", "age_sep3.png"))
 ```
 
 The authors of this article obtained the data from a variety of sources including household budget surveys and nutritional surveys regarding 24 hour recall of food consumption and 24 hour urinary sodium analysis. The data was derived from sales data from Euromonitor, data from the United Nations Food and Agriculture Organization (FAO), estimates about national availability of specific nutrients, from the Supply Utilization Accounts(SUA), and the United States Department of Agriculture's National Nutrition Database.
-
-
-<u>Note:</u> While [gender](https://www.genderspectrum.org/quick-links/understanding-gender/){target="_blank"} and [sex](https://www.who.int/genomics/gender/en/index1.html){target="_blank"} are not actually binary, the data  used in this analysis only contains information for groups of individuals described as male or female. 
 
 ## **Data Import**
 ***
@@ -553,7 +552,7 @@ str_subset(pattern = "Mean daily consumption|Mean daily intake|24 h")
 
 Notice that we separate the different patterns to look for using vertical bar character `"|"` and that all of the patterns are within quotation marks together.
 
-#### {.question_block}
+#### {.think_question_block}
 <u>Question opportunity:</u> 
 
 1) What other string patterns could you use to subset the rows of the table that we want?
@@ -797,7 +796,11 @@ Now we need the `"\\"` to indicate that we want these characters to be matched e
 
 See [here](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html){target="_blank"} for more info about regular expressions in R. 
 
-Also here we have a bit of an example using the `str_count()` function of `stringr`, which counts the number of instances of a character string. In this case we will look for individual characters but you could also search for words or phrases.
+***
+
+<details> <summary> Click here for a simple example of regular expressions using the `str_count()` function of the `stringr` package </summary>
+
+The `str_count()` function counts the number of instances of a character string. In this case we will look for individual characters but you could also search for words or phrases.
 
 ```{r}
 regextest <- readr::read_file(here("docs", "regEx.txt"))
@@ -838,6 +841,10 @@ str_count(regextest, "\\*") # this works!
 str_count(regextest, "[*]") # this works!
 
 ```
+
+</details>
+
+***
 
 We also want to make a unit variable so that we can make sure that our units are consistent later. 
 
@@ -990,7 +997,7 @@ guidelines %>%
 
 ```
 
-#### {.question_block}
+#### {.think_question_block}
 
 <u>Question opportunity:</u> 
 
@@ -1110,7 +1117,9 @@ Looks like they are also in the same order.
 
 Note that if any of the values are different, `all_equal()` will first report this and will not report that the rows are in a different order.
 
-Here is a toy example about how the three comparison functions(`setequal()`, `all_equal()` (also `all.equal()` for `tbl_df`), and `setdiff()`) work in `dplyr`. 
+***
+
+<details> <summary> Click here to see a toy example about how the three comparison functions (`setequal()`, `all_equal()` (also `all.equal()` for `tbl_df`), and `setdiff()`) work in `dplyr`. </summary> 
 
 It's important to realize that row order is ignored by both`setequal()` and `setdiff()`. 
 
@@ -1197,11 +1206,15 @@ all_equal(X, Y, ignore_row_order = FALSE)
 setequal(X, Y)
 ```
 
-`setdiff()` requires that columnames be the same so this will cause an error
+`setdiff()` requires that columnames be the same so this will cause an error:
 
 ```{r, eval = FALSE}
 setdiff(X, Y) # This will not work
 ```
+
+</details> 
+
+***
 
 OK, let's keep going with our data.
 
@@ -1287,7 +1300,7 @@ In that case we could use the `arrange()` function of `dplyr` to sort the data a
 
 However, we will instead use a joining function of `dplyr`. These functions combine the data together based on **common values** and don't require the rows to be in the same order. There are a variety of options.
 
-```{r, echo = FALSE, out.with = "300 px", fig.align= "center"}
+```{r, echo = FALSE, out.with = "150 px", fig.align= "center"}
 knitr::include_graphics(here("img","join.png"))
 ```
 
@@ -1332,13 +1345,9 @@ To do this we will use the `if_else()` function in the `dplyr` package. This all
 
 In the following we mutate the values in each of the guideline numeric columns (`lower`, `optimal` and `upper`) one at a time. When we refer to `lower` for example we refer to the values in the column/variable. So if the condition is not met, then the original value is retained. We will also replace `"mg"` with `"g"` after everything is converted to grams.
 
-```{r}
 
-# Another possible way with dplyr::case_when():
-# guidelines %<>%
-#   mutate(lower_optimal =case_when(
-#   unit_optimal == "mg" ~ lower_optimal/1000,
-#   unit_optimal != "mg" ~ lower_optimal))
+
+```{r}
 
 guidelines %<>% mutate(lower_optimal = dplyr::if_else(
   condition = unit_optimal == "mg", 
@@ -1361,20 +1370,36 @@ guidelines %<>% mutate(unit_optimal = if_else(
   true = "g", 
   false = unit_optimal))
 
-
-#Or could use this:
-# guidelines %<>%
-#   mutate_at(vars(unit_optimal),
-#   ~str_replace( 
-#   string = ., 
-#   pattern = "mg", 
-#   replacement = "g"))
-
-
 guidelines
 
 
 ```
+
+
+***
+<details> <summary> Click here to see a couple of other ways to do this: </summary>
+
+```{r, eval = FALSE}
+# Another possible way with dplyr::case_when():
+ guidelines %<>%
+   mutate(lower_optimal = case_when(
+   unit_optimal == "mg" ~ lower_optimal/1000,
+   unit_optimal != "mg" ~ lower_optimal))
+
+# Or could use this:
+guidelines %<>%
+  mutate_at(vars(unit_optimal),
+   ~str_replace( 
+   string = ., 
+   pattern = "mg", 
+   replacement = "g"))
+
+```
+
+</details>
+
+***
+
 
 
 In contrast we could have changed or mutated the values for `lower_optimal`, `optimal`, `upper_optimal` all at once like this using the `funs()` argument in `mutate_at()` of `dplyr`.
