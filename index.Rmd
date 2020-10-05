@@ -1531,10 +1531,19 @@ pivot_longer(cols = contains("percent"),
 
 We now have the main variables and data formats that we need to proceed with the next steps of our analysis, including data exploration and eventually, modeling.
 
+```{r, echo = FALSE}
+save(all_age_diet_and_guidelines, all_age_diet_and_guidelines_long, diet_and_guidelines, sep_age_diet_data, file = here::here("data", "wrangled_data.rda"))
+```
+
 ## **Data Exploration**
 ***
  
 ### Exploring age collapsed data
+
+```{r, echo = FALSE}
+# For instructors who wish to start at this section, we will load the data
+load(here::here("data", "wrangled_data.rda"))
+```
 
 Let's start by taking a look at the  percent of consumption, across all dietary factors. Again we will use the base R `summary()` function:
 
@@ -1726,6 +1735,11 @@ We can see from these plots that there appear to be age differences and gender d
 
 ## **Data Analysis**
 ***
+
+```{r, echo = FALSE}
+# For instructors who wish to start at this section, we will load the data
+load(here::here("data", "wrangled_data.rda"))
+```
 
 Recall what our main questions were:
 
@@ -2441,6 +2455,11 @@ Looking at the `anova()` output, we can see that sex and age group both have sig
 ## **Data Visualization**
 ***
 
+```{r, echo = FALSE}
+# For instructors who wish to start at this section, we will load the data
+load(here::here("data", "wrangled_data.rda"))
+```
+
 Now that we have statistically analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
 
 ### Red Meat
@@ -2659,6 +2678,7 @@ ggplot(aes(y = Relative_Percent ,
                 alpha = 3/10)
 
 ```
+
 OK, so we can  indeed see that overall consumption of sodium and trans fatty acids is pretty close to optimal. So that's great. However, Both males and females are over-consuming processed meat, red meat, and sugar-sweetened beverages. On the other hand both genders are not getting adequate intake of all the other dietary factors for optimal health. The population in the United states has especially poor intake of polyunsaturated fats. it also looks like in most cases females are getting less of the dietary factors that pose health risks when under-consumed, with the exception of fruits.
 
 
@@ -2678,7 +2698,7 @@ ggplot(aes(y = Relative_Percent,
                 alpha = 3/10)
 ```
 
-OK! It looks like age really influences the consumption of these dietary factors. With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's also use the `viridis` package to change the colors.
+OK! It looks like age really influences the consumption of these dietary factors. With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's also use the`scale_fill_viridis()` function of the `viridis` package to change the colors of our plot. This package uses palettes of colors that are discernible for individuals who are colorblind. 
 
 ```{r}
 

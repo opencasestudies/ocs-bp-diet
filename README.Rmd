@@ -243,9 +243,7 @@ Users can skip the Data Import and Data Wrangling sections to start with the Dat
 
 #### For instructors
 
-Instructors who only wish to demonstrate the basics of how to create a dashboard with `flexdashboard` can simply use the `Dashboard Basics` section, this would likely only take one or two class sessions to cover.
-
-Instructors can skip the Data Import and Data Wrangling sections to start with the Data Analysis section if they wish. 
+Instructors can skip the Data Import and Data Wrangling sections and start with either the Data Exploration, Data Analysis, or Data Visualization sections if they wish. 
 
 
 #### Target audience 
