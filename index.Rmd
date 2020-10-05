@@ -113,15 +113,17 @@ The skills, methods, and concepts that students will be familiar with by the end
 
 <u>**Data Science Learning Objectives:**</u>
 
-1.  Importing/extracting data from PDF (`dplyr`, `stringr`)  
-2.  Combining data from two sources (`dplyr`)
-3.  How to reshape data by pivoting between “long” and “wide” formats
-    (`tidyr`)  
-4.  Peform functions on all columns of a tibble (`purrr`)
-5.  Separate data within a column into multiple colums (`tidyr`)
-6.  Make interactive plots (`ggiraph`)
-7.  Make a zoom facet for plot (`ggforce`)
-8.  Combine plots together (`cowplot`)
+1. Importing/extracting data from PDF (`dplyr`, `stringr`)  
+2. How to reshape data by pivoting between "long" and "wide" formats (`tidyr`)    
+3. Peform functions on all columns of a tibble (`purrr`)  
+4. Data cleaning with regular expressions (`stringr`)  
+5. Specific data value reassigment  
+6. Separate data within a column into multiple colums (`tidyr`) 
+7. Methods to Compare data (`dplyr`)  
+8. Combining data from two sources (`dplyr`)  
+9. Make interactive plots (`ggiraph`)  
+10. Make a zoom facet for plot (`ggforce`) 
+11. Combine plots together (`cowplot`)
 
 <u>**Statistical Learning Objectives:**</u> 
 
@@ -1500,7 +1502,7 @@ To coerce an object into long format, we create **more rows and fewer columns**.
 
 We would like to put together the different types of percentages of the optimal intake that we just calculated.
 
-To get our data in long format we can use the `pivot_longer()` function of the `dplyr` package. We will also show how this would be done with the older version of this function, called `gather()`. 
+To get our data in long format we can use the `pivot_longer()` function of the `tidyr` package. We will also show how this would be done with the older version of this function, called `gather()`. 
 
 For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, i.e., this variable contains the names of the columns that we are bringing together. This is equivalent to the `key` argument in `gather()`. The `values_to` is the name of the column that will contain the values of the columns we are consolidating. This is equivalent to the `value` argument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
 
@@ -3157,25 +3159,7 @@ Under_age
 ```
 
 
-```{r, eval =FALSE, echo = FALSE}
-# for instructors, fyi there may be something wrong with the data regarding trans fatty acids - as the data for malaysia in the age separated document appears to be different from that in the age collapsed data:
 
-agecollapsed <- diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-notagecollapsed <- all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-range(agecollapsed$mean)
-range(notagecollapsed$mean)
-notagecollapsed %>% arrange(desc(mean))
-agecollapsed %>% arrange(desc(mean))
-#hmmm the lowest value for malaysia is 106...
-notagecollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
-# but the collapsed value is much much lower...
-agecollapsed%>% filter(location_name == "Malaysia")
-
-# this also looks problematic:
-sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
-diet_and_guidelines%>%filter(food == "sodium", location_name== "Malaysia") %>% glimpse()
-sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%glimpse()
-```
 
 Now let's put all the plots together:
 
@@ -3200,18 +3184,50 @@ cowplot::plot_grid(Over,
 dev.off()
 ```
 
-```{r, eval = FALSE, echo = FALSE}
-collapsed <-diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-notcollapsed <-all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-range(collapsed$mean)
-range(notcollapsed$mean)
-notcollapsed %>% arrange(desc(mean))
-collapsed %>% arrange(desc(mean))
+
+```{r, eval =FALSE, echo = FALSE}
+
+# we are working with the GBD about this... hope to fix this issue and then we will not need to include a note about this:
+# For instructors, there may be something wrong with the data regarding trans fatty acids - as the data for Malaysia in the age separated document appears to be different from that in the age collapsed data:
+
+agecollapsed <- diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+notagecollapsed <- all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
+range(agecollapsed$mean)
+range(notagecollapsed$mean)
+notagecollapsed %>% arrange(desc(mean))
+agecollapsed %>% arrange(desc(mean))
 #hmmm the lowest value for malaysia is 106...
-notcollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
+notagecollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
 # but the collapsed value is much much lower...
-collapsed%>% filter(location_name == "Malaysia")
-# we contacted GBS about this but did not hear back
+agecollapsed%>% filter(location_name == "Malaysia")
+
+# this also looks problematic:
+#not age collapsed:
+sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
+#age collapsed:
+diet_and_guidelines %>%filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
+
+
+sep_age_diet_data %>% filter(location_name == "Malaysia", food == "trans fatty acids") %>% pull(lower)
+diet_and_guidelines %>% filter(location_name == "Malaysia", food == "trans fatty acids") %>% pull(lower)
+
+### confirming with raw data:
+
+diet_data <- readr::read_csv(here("docs", 
+                       "dietary_risk_exposure_all_ages_2017.csv"))
+sep_age_diet_data <- read_csv(here("docs", 
+                       "dietary_risk_exposure_sep_ages_2017.csv"))
+sep_age_diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in trans fatty acids") %>% pull(lower)
+diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in trans fatty acids") %>% pull(lower)
+sep_age_diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in sodium") %>% pull(lower)
+diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in sodium") %>% pull(lower)
+sep_age_diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
+diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
+
+
+sep_age_diet_data %>% filter(location_name == "China", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
+diet_data %>% filter(location_name == "China", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
+
 ```
 
 

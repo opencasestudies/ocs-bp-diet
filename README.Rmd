@@ -79,13 +79,16 @@ The skills, methods, and concepts that students will be familiar with by the end
 Data science skills:  
   
 1. Importing/extracting data from PDF (`dplyr`, `stringr`)  
-2. Combining data from two sources (`dplyr`)
-4. How to reshape data by pivoting between "long" and "wide" formats (`tidyr`)  
-5. Peform functions on all columns of a tibble (`purrr`)
+2. How to reshape data by pivoting between "long" and "wide" formats (`tidyr`)  
+3. Peform functions on all columns of a tibble (`purrr`)  
+4. Data cleaning with regular expressions (`stringr`)  
+5. Specific data value reassigment  
 6. Separate data within a column into multiple colums (`tidyr`) 
-7. Make interactive plots (`ggiraph`)
-8. Make a zoom facet for plot (`ggforce`) 
-9. Combine plots together (`cowplot`)
+7. Methods to Compare data (`dplyr`)  
+8. Combining data from two sources (`dplyr`)  
+9. Make interactive plots (`ggiraph`)  
+10. Make a zoom facet for plot (`ggforce`) 
+11. Combine plots together (`cowplot`)  
 
 Statistical concepts and methods:  
   

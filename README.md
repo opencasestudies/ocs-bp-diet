@@ -100,14 +100,17 @@ the end of this case study are:
 Data science skills:
 
 1.  Importing/extracting data from PDF (`dplyr`, `stringr`)  
-2.  Combining data from two sources (`dplyr`)
-3.  How to reshape data by pivoting between “long” and “wide” formats
+2.  How to reshape data by pivoting between “long” and “wide” formats
     (`tidyr`)  
-4.  Peform functions on all columns of a tibble (`purrr`)
-5.  Separate data within a column into multiple colums (`tidyr`)
-6.  Make interactive plots (`ggiraph`)
-7.  Make a zoom facet for plot (`ggforce`)
-8.  Combine plots together (`cowplot`)
+3.  Peform functions on all columns of a tibble (`purrr`)  
+4.  Data cleaning with regular expressions (`stringr`)  
+5.  Specific data value reassigment  
+6.  Separate data within a column into multiple colums (`tidyr`)
+7.  Methods to Compare data (`dplyr`)  
+8.  Combining data from two sources (`dplyr`)  
+9.  Make interactive plots (`ggiraph`)  
+10. Make a zoom facet for plot (`ggforce`)
+11. Combine plots together (`cowplot`)
 
 Statistical concepts and methods:
 
