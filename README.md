@@ -24,7 +24,7 @@ License.
 
 To cite this case study:
 
-Wright, Carrie, and Jager, Leah and Taub, Margaret and Hicks, Stephanie.
+Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie.
 (2020). <https://www.opencasestudies.org/ocs-bp-diet/>. Exploring global
 patterns of dietary behaviors associated with health risk (Version
 v1.0.0).
