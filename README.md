@@ -22,7 +22,7 @@ License.
 
 ### Citation
 
-To cite this case study:
+To cite this case study please use:
 
 Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie.
 (2020). <https://www.opencasestudies.org/ocs-bp-diet/>. Exploring global
