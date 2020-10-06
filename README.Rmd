@@ -28,7 +28,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 (
 
 To cite this case study:
 
-Wright, Carrie, and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://www.opencasestudies.org/ocs-bp-diet/. Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
+Wright, Carrie, and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://www.opencasestudies.org/ocs-bp-diet/](https://www.opencasestudies.org/ocs-bp-diet/). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
 
 ### Acknowledgements
 
@@ -43,11 +43,11 @@ Exploring global patterns of dietary behaviors associated with health risk
 
 ### Motivation 
 
-According to this [artuce](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8) that evaluated food consumtpion patterns in 185 countries for 15 dietary risk factors with probable assocations with non-communicable disease:
+According to this [article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8) that evaluated food consumption patterns in 185 countries for 15 dietary risk factors with probable associations with non-communicable disease:
 
 > High intake of sodium …, low intake of whole grains …, and low intake of fruits … were the leading dietary risk factors for deaths and DALYs globally and in many countries.”
 
-In this case study we evaluate the data used in this artcle to explore regional, age, and gender specific differences in dietary consumption patterns around the world in 2017. We particularly focus on dietary consumption patterns within the United States (US) and how these compare to other that of other countries.
+In this case study we evaluate the data used in this article to explore regional, age, and gender specific differences in dietary consumption patterns around the world in 2017. We particularly focus on dietary consumption patterns within the United States (US) and how these compare to other that of other countries.
 
 ### Motivating questions
 
@@ -113,15 +113,15 @@ In this case study we demonstrate how to import data from a csv and from a PDF.
 
 This case study also covers many of the `stringr` functions to manipulate character strings, including `str_split()`, `str_subset()`, `str_replace()`, `str_replace_all()`,  `str_which()`, `str_count()`, `str_remove_all()`, and  `str_trim()`.
 
-This case study  also cpvers how to use the `tidyr` functions such as `pivot_wider()` and `pivot_longer()` for reshaping data and the `separate()` function for creating new columns from an exisiting column. In addition, the case study covers how to replace `NA` values with  a specific value using the `replace_na()` function. 
+This case study also covers how to use the `tidyr` functions such as `pivot_wider()` and `pivot_longer()` for reshaping data and the `separate()` function for creating new columns from an existing column. In addition, the case study covers how to replace `NA` values with  a specific value using the `replace_na()` function. 
 
-This case study also goes over how to use many of the `dplyr` functions to modify, select and filter data, such as: `rename()`, `mutate()`, `arrange()`, `select()` and `filter()` as well as functions to compare data like the `setequal()`, `all_equal()`, and  `setdiff()` functions, as well as similar functions to look for overlapping similarities like the `intersect()` function. The case study describes the differences of these functions. We also introudce how to recode data using the `if_else()` and `case_when()` functions and how to join data using the `full_join()` function.
+This case study also goes over how to use many of the `dplyr` functions to modify, select and filter data, such as: `rename()`, `mutate()`, `arrange()`, `select()` and `filter()` as well as functions to compare data like the `setequal()`, `all_equal()`, and  `setdiff()` functions, as well as similar functions to look for overlapping similarities like the `intersect()` function. The case study describes the differences of these functions. We also introduce how to recode data using the `if_else()` and `case_when()` functions and how to join data using the `full_join()` function.
 
 We also cover how to use the `purrr` package `map()` function to apply the same function to multiple columns in a tibble.
 
 #### Data Visualization
 
-In this case study we show how to make faceted plots, as well as plots with a facet that is zoomed in using the `facet_zoom()` function of the `ggforce` package. We cover how to specifically higlight specific data points, as well as how to add annotations and horizontal lines to make the plot more interpretable.
+In this case study we show how to make faceted plots, as well as plots with a facet that is zoomed in using the `facet_zoom()` function of the `ggforce` package. We cover how to specifically highlight specific data points, as well as how to add annotations and horizontal lines to make the plot more interpretable.
 
 We also demonstrate how to make interactive plots where the data points link you to other websites using the `ggiraph` package. Finally, we demonstrate how to combine plots using the `cowplot` package.
 
@@ -129,11 +129,11 @@ We also cover how to use the `viridis` package to make plots that are more inter
 
 ### Analysis 
 
-This case study has a particularly thurough analysis section, which describes many ways of added complexity to examine the data. We decribe how the $t$-test and the ANOVA are actually specialized forms of the regression analysis. 
+This case study has a particularly thorough analysis section, which describes many ways of added complexity to examine the data. We describe how the $t$-test and the ANOVA are actually specialized forms of the regression analysis. 
 
 We provide an introduction to regression analysis.
 
-We also describe paired data and how to interpret this using both a paired $t$-test and a linear model with fixed effects or a linear model with mixed effets. We also describe the difference between random and fixed effects. 
+We also describe paired data and how to interpret this using both a paired $t$-test and a linear model with fixed effects or a linear model with mixed effects. We also describe the difference between random and fixed effects. 
 
 
 See [this other case study](https://opencasestudies.github.io/ocs-bp-rural-and-urban-obesity/) for more introductory material about comparing groups, hypothesis testing, probability, distributions, normality, paired data, and the paired $t$-test.
@@ -251,7 +251,7 @@ Instructors can skip the Data Import and Data Wrangling sections and start with 
 
 #### Target audience 
 
-This case study is appropriate for those new to R programming. It is also appropriate for more advanced R users who are new to the Tidyverse. This particular case study may require some introductory knowlege of R programming. 
+This case study is appropriate for those new to R programming. It is also appropriate for more advanced R users who are new to the Tidyverse. This particular case study may require some introductory knowledge of R programming. 
 
 #### Suggested homework
 

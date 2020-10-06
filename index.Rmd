@@ -60,7 +60,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://www.opencasestudies.org/ocs-bp-diet/. Mental Health of American Youth (Version v1.0.0).
+Wright, Carrie, and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://www.opencasestudies.org/ocs-bp-diet/](https://www.opencasestudies.org/ocs-bp-diet/). Mental Health of American Youth (Version v1.0.0).
 
 ####
 
@@ -239,7 +239,7 @@ Also, while [gender](https://www.genderspectrum.org/quick-links/understanding-ge
 ## **What are the data?**
 ***
 
-We will be using data that we requested from the [GBD](http://www.healthdata.org/gbd){target="_blank"} about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files, dietary_risk_exposure_all_ages_2017.csv and dietary_risk_exposure_sep_ages_2017.csv. The first one includes consumption levels at the global level and for different countries for all ages combined.
+We will be using data that we requested from the [Global Burden of Disease (GBD)](http://www.healthdata.org/gbd){target="_blank"} of the [The Institute for Health Metrics and Evaluation (IHME)](http://www.healthdata.org/about) about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files, dietary_risk_exposure_all_ages_2017.csv and dietary_risk_exposure_sep_ages_2017.csv. The first one includes consumption levels at the global level and for different countries for all ages combined.
 
 Looking at the CSV file in excel:
 

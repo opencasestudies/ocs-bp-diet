@@ -25,10 +25,9 @@ License.
 To cite this case study:
 
 Wright, Carrie, and Jager, Leah and Taub, Margaret and Hicks, Stephanie.
-(2020).
-<a href="https://www.opencasestudies.org/ocs-bp-diet/" class="uri">https://www.opencasestudies.org/ocs-bp-diet/</a>.
-Exploring global patterns of dietary behaviors associated with health
-risk (Version v1.0.0).
+(2020). <https://www.opencasestudies.org/ocs-bp-diet/>. Exploring global
+patterns of dietary behaviors associated with health risk (Version
+v1.0.0).
 
 ### Acknowledgements
 
@@ -47,15 +46,15 @@ risk
 ### Motivation
 
 According to this
-[artuce](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8)
-that evaluated food consumtpion patterns in 185 countries for 15 dietary
-risk factors with probable assocations with non-communicable disease:
+[article](https://www.thelancet.com/action/showPdf?pii=S0140-6736%2819%2930041-8)
+that evaluated food consumption patterns in 185 countries for 15 dietary
+risk factors with probable associations with non-communicable disease:
 
 > High intake of sodium …, low intake of whole grains …, and low intake
 > of fruits … were the leading dietary risk factors for deaths and DALYs
 > globally and in many countries.”
 
-In this case study we evaluate the data used in this artcle to explore
+In this case study we evaluate the data used in this article to explore
 regional, age, and gender specific differences in dietary consumption
 patterns around the world in 2017. We particularly focus on dietary
 consumption patterns within the United States (US) and how these compare
@@ -138,9 +137,9 @@ manipulate character strings, including `str_split()`, `str_subset()`,
 `str_replace()`, `str_replace_all()`, `str_which()`, `str_count()`,
 `str_remove_all()`, and `str_trim()`.
 
-This case study also cpvers how to use the `tidyr` functions such as
+This case study also covers how to use the `tidyr` functions such as
 `pivot_wider()` and `pivot_longer()` for reshaping data and the
-`separate()` function for creating new columns from an exisiting column.
+`separate()` function for creating new columns from an existing column.
 In addition, the case study covers how to replace `NA` values with a
 specific value using the `replace_na()` function.
 
@@ -150,7 +149,7 @@ to modify, select and filter data, such as: `rename()`, `mutate()`,
 data like the `setequal()`, `all_equal()`, and `setdiff()` functions, as
 well as similar functions to look for overlapping similarities like the
 `intersect()` function. The case study describes the differences of
-these functions. We also introudce how to recode data using the
+these functions. We also introduce how to recode data using the
 `if_else()` and `case_when()` functions and how to join data using the
 `full_join()` function.
 
@@ -161,7 +160,7 @@ the same function to multiple columns in a tibble.
 
 In this case study we show how to make faceted plots, as well as plots
 with a facet that is zoomed in using the `facet_zoom()` function of the
-`ggforce` package. We cover how to specifically higlight specific data
+`ggforce` package. We cover how to specifically highlight specific data
 points, as well as how to add annotations and horizontal lines to make
 the plot more interpretable.
 
@@ -174,8 +173,8 @@ more interpretable for those who are colorblind.
 
 ### Analysis
 
-This case study has a particularly thurough analysis section, which
-describes many ways of added complexity to examine the data. We decribe
+This case study has a particularly thorough analysis section, which
+describes many ways of added complexity to examine the data. We describe
 how the *t*-test and the ANOVA are actually specialized forms of the
 regression analysis.
 
@@ -183,7 +182,7 @@ We provide an introduction to regression analysis.
 
 We also describe paired data and how to interpret this using both a
 paired *t*-test and a linear model with fixed effects or a linear model
-with mixed effets. We also describe the difference between random and
+with mixed effects. We also describe the difference between random and
 fixed effects.
 
 See [this other case
@@ -389,7 +388,7 @@ Visualization sections if they wish.
 
 This case study is appropriate for those new to R programming. It is
 also appropriate for more advanced R users who are new to the Tidyverse.
-This particular case study may require some introductory knowlege of R
+This particular case study may require some introductory knowledge of R
 programming.
 
 #### Suggested homework
