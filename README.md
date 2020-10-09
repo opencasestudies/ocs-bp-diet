@@ -33,7 +33,11 @@ v1.0.0).
 
 We would like to acknowledge [Jessica
 Fanzo](https://bioethics.jhu.edu/people/profile/jessica-fanzo/) for
-assisting in framing the major direction of the case study.
+assisting in framing the major direction of the case study, as well as
+[Ashkan
+Afshin](https://globalhealth.washington.edu/faculty/ashkan-afshin) and
+[Erin Mullany](http://www.healthdata.org/about/erin-mullany) for giving
+us access to the data.
 
 We would also like to acknowledge the [Bloomberg American Health
 Initiative](https://americanhealth.jhu.edu/) for funding this work.
