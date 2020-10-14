@@ -251,7 +251,7 @@ Instructors can skip the Data Import and Data Wrangling sections and start with 
 
 #### Target audience 
 
-This case study is appropriate for those new to R programming. It is also appropriate for more advanced R users who are new to the Tidyverse. This particular case study may require some introductory knowledge of R programming. 
+This case study is appropriate for those new to R programming. It is also appropriate for more advanced R users who are new to the Tidyverse. This particular case study may require some introductory knowledge of R programming, particularly for creating visualizations. 
 
 #### Suggested homework
 

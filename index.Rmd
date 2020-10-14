@@ -1693,7 +1693,7 @@ The [ggplot2](https://ggplot2.tidyverse.org/){target="_blank"} package creates p
 
 With `ggplot2` we select what data we would like to plot using the first function (`ggplot()`) and then we add on additional layers of complexity (these layers can even involve different data). The `aes()` argument specifies what aspects of the data will be plotted where. The `geom_*` function specifies what type of plot to create (e.g. `geom_histogram()` creates a histogram). Notice in the following code how there is a plus sign between the `ggplot()` function and the `geom_bar()` function; this is how we combine different plot layers. 
 
-We will see later how we can add many layers to plots with `ggplot2`. For additional information on using `ggplot2`, see this [case study](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}.
+We will see later how we can add many layers to plots with `ggplot2`. For additional information on using `ggplot2`, see this [case study](https://opencasestudies.github.io/ocs-bp-co2-emissions/){target="_blank"}.
 
 ```{r}
 diet_and_guidelines %>%
@@ -1750,7 +1750,8 @@ sep_age_diet_data %>%
   ggplot(aes(y = mean , x= age_group_name, col = sex)) +
   geom_boxplot() +
   facet_wrap(~food, scales = "free", nrow = 6) +
-  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+  theme(axis.text.x = element_text(angle = 70, hjust = 1),
+       strip.text.x = element_text(size = 8))
 ```
 
 We can see from these plots that there appear to be age differences and gender differences for some of the different dietary factors. We will work to create clearer figures later on. However these initial figures have given us a better sense of the data that we are working with.
@@ -2683,30 +2684,39 @@ Can you come up with the code for how you would do this?
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r, eval = FALSE}
-diet_and_guidelines %>%
-    filter(sex == "Female", 
- location_name == "United States") %>%
-count(opt_achieved, food)
 
 diet_and_guidelines %>%
     filter(sex == "Male", 
- location_name == "United States") %>%
-count(opt_achieved, food)
+    location_name == "United States") %>%
+    count(opt_achieved, food) %>%
+    arrange(food)
 
+diet_and_guidelines %>%
+    filter(sex == "Female", 
+    location_name == "United States") %>%
+    count(opt_achieved, food) %>% 
+    arrange(food)
 ```
 </details>
 ***
 
+For males:
 ```{r, echo = FALSE}
-diet_and_guidelines %>%
-    filter(sex == "Female", 
- location_name == "United States") %>%
-count(opt_achieved, food)
 
 diet_and_guidelines %>%
     filter(sex == "Male", 
- location_name == "United States") %>%
-count(opt_achieved, food)
+    location_name == "United States") %>%
+    count(opt_achieved, food) %>%
+    arrange(food)
+```
+
+For females:
+```{r}
+diet_and_guidelines %>%
+    filter(sex == "Female", 
+    location_name == "United States") %>%
+    count(opt_achieved, food) %>%
+    arrange(food)
 ```
 
 
@@ -2743,6 +2753,8 @@ Can you come up with the code for this on your own?
 ***
 <details> <summary> Click here to reveal the code. </summary>
 
+ We will also move our legend to the bottom of the plot using the `theme()` function of the `ggplot2` package, like so:
+
 ```{r}
 
 plot_age_groups <-all_age_diet_and_guidelines %>%
@@ -2754,7 +2766,8 @@ ggplot(aes(y = Relative_Percent,
   facet_wrap(~food, scales = "free") +
   geom_boxplot() +
   geom_point(position = position_jitterdodge(), 
-                alpha = 3/10)
+                alpha = 3/10) +
+  theme(legend.position = "bottom")
 
 
 ```
@@ -2767,7 +2780,6 @@ plot_age_groups
 ```
 
 OK! It looks like age really influences the consumption of these dietary factors. With the exception of trans fatty acids, the consumption of all of these dietary factors seems to decrease with age.  Let's also use the`scale_fill_viridis()` function of the `viridis` package to change the colors of our plot. This package uses palettes of colors that are discernible for individuals who are colorblind. 
-
 ```{r}
 
 all_age_diet_and_guidelines %>%
@@ -2785,7 +2797,8 @@ ggplot(aes(y = Relative_Percent,
   theme_linedraw() + 
   theme(strip.text = element_text(size =7, face = "bold"),
         axis.text.x = element_blank(),
-        axis.title.x = element_blank())
+        axis.title.x = element_blank(),
+        legend.position = "bottom")
 ```
 
 Nice!
@@ -2820,7 +2833,8 @@ ggplot(aes(y = Relative_Percent,
   theme_linedraw() + 
   theme(strip.text = element_text(size =7, face = "bold"),
         axis.text.x = element_blank(),
-        axis.title.x = element_blank())
+        axis.title.x = element_blank(),
+        legend.position = "bottom")
 ```
 
 </details> 
@@ -3148,7 +3162,7 @@ Over_age
 ```
 
 
-Hmmm these look a bit funny because the outliers in the box plots for the foods besides sugar-sweetened beverages are making the range much larger than the box plot themselves. We can calculate the values for the box plots our selves to deal with this:
+Hmmm these are a bit difficult to see for some of the dietary factors like red meat because the outliers are making the range much larger than the box plot themselves. We can calculate the values for the box plots ourselves to deal with this:
 
 ```{r}
 calc_stat <- function(x) {
@@ -3290,52 +3304,6 @@ cowplot::plot_grid(Over,
                    ncol = 2, 
                    rel_widths = c(2.5, 1)) +theme(plot.margin = unit(c(1, 1, 1, 1), "cm"))
 dev.off()
-```
-
-
-```{r, eval =FALSE, echo = FALSE}
-
-# we are working with the GBD about this... hope to fix this issue and then we will not need to include a note about this:
-# For instructors, there may be something wrong with the data regarding trans fatty acids - as the data for Malaysia in the age separated document appears to be different from that in the age collapsed data:
-
-agecollapsed <- diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-notagecollapsed <- all_age_diet_and_guidelines %>% filter(food == "trans fatty acids")%>% select(mean, location_name)
-range(agecollapsed$mean)
-range(notagecollapsed$mean)
-notagecollapsed %>% arrange(desc(mean))
-agecollapsed %>% arrange(desc(mean))
-#hmmm the lowest value for malaysia is 106...
-notagecollapsed%>% filter(location_name == "Malaysia") %>% arrange(desc(-mean))
-# but the collapsed value is much much lower...
-agecollapsed%>% filter(location_name == "Malaysia")
-
-# this also looks problematic:
-#not age collapsed:
-sep_age_diet_data %>% filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
-#age collapsed:
-diet_and_guidelines %>%filter(food == "sodium", location_name== "Malaysia") %>%summarise(min = min(mean))
-
-
-sep_age_diet_data %>% filter(location_name == "Malaysia", food == "trans fatty acids") %>% pull(lower)
-diet_and_guidelines %>% filter(location_name == "Malaysia", food == "trans fatty acids") %>% pull(lower)
-
-### confirming with raw data:
-
-diet_data <- readr::read_csv(here("docs", 
-                       "dietary_risk_exposure_all_ages_2017.csv"))
-sep_age_diet_data <- read_csv(here("docs", 
-                       "dietary_risk_exposure_sep_ages_2017.csv"))
-sep_age_diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in trans fatty acids") %>% pull(lower)
-diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in trans fatty acids") %>% pull(lower)
-sep_age_diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in sodium") %>% pull(lower)
-diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet high in sodium") %>% pull(lower)
-sep_age_diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
-diet_data %>% filter(location_name == "Malaysia", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
-
-
-sep_age_diet_data %>% filter(location_name == "China", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
-diet_data %>% filter(location_name == "China", rei_name == "Diet low in polyunsaturated fatty acids") %>% pull(lower)
-
 ```
 
 

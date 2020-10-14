@@ -393,7 +393,7 @@ Visualization sections if they wish.
 This case study is appropriate for those new to R programming. It is
 also appropriate for more advanced R users who are new to the Tidyverse.
 This particular case study may require some introductory knowledge of R
-programming.
+programming, particularly for creating visualizations.
 
 #### Suggested homework
 
