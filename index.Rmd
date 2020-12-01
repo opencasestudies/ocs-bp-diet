@@ -3313,7 +3313,7 @@ cowplot::plot_grid(Over,
                    rel_widths = c(2.5, 1)) 
 ```
 
-```{r, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 png(filename = here::here("img", "mainplot.png"),
     res = 300, width = 34, height = 30, units = "in")
 cowplot::plot_grid(Over, 
