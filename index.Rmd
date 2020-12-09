@@ -64,6 +64,11 @@ Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). 
 
 ####
 
+To access the GitHub Repository for this case study see here: https://github.com/opencasestudies/ocs-bp-diet.
+
+This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
+
+
 ## **Motivation**
 ***
 
@@ -3457,7 +3462,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 sessionInfo()
 ```
 
-### **Acknowledgements**
+### **Acknowledgments**
 ***
 
 We would like to acknowledge [Jessica

@@ -2,6 +2,15 @@
 OpenCaseStudies
 ===============
 
+### Important Links
+
+-   HTML:
+    <a href="https://www.opencasestudies.org/ocs-bp-diet" class="uri">https://www.opencasestudies.org/ocs-bp-diet</a>
+-   GitHub:
+    <a href="https://github.com/opencasestudies/ocs-bp-diet" class="uri">https://github.com/opencasestudies/ocs-bp-diet</a>
+-   Bloomberg American Health Initiative:
+    <a href="https://americanhealth.jhu.edu/open-case-studies" class="uri">https://americanhealth.jhu.edu/open-case-studies</a>
+
 ### Disclaimer
 
 The purpose of the [Open Case Studies](https://www.opencasestudies.org)
@@ -29,7 +38,7 @@ Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie.
 patterns of dietary behaviors associated with health risk (Version
 v1.0.0).
 
-### Acknowledgements
+### Acknowledgments
 
 We would like to acknowledge [Jessica
 Fanzo](https://bioethics.jhu.edu/people/profile/jessica-fanzo/) for
