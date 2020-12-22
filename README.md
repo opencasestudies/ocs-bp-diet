@@ -1,4 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 OpenCaseStudies
 ===============
 
@@ -34,9 +35,9 @@ License.
 To cite this case study please use:
 
 Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie.
-(2020). <https://www.opencasestudies.org/ocs-bp-diet/>. Exploring global
-patterns of dietary behaviors associated with health risk (Version
-v1.0.0).
+(2020). <https://github.com/opencasestudies/ocs-bp-diet>. Exploring
+global patterns of dietary behaviors associated with health risk
+(Version v1.0.0).
 
 ### Acknowledgments
 

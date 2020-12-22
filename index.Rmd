@@ -1,9 +1,11 @@
 ---
-title: "Open Case Studies : Exploring global patterns of dietary behaviors associated with health risk "
+title: "Open Case Studies: Exploring global patterns of dietary behaviors associated with health risk "
 css: style.css
 output:
   html_document:
-    self_contained: yes
+    includes:
+       in_header: GA_Script.Rhtml
+    self_contained: no
     code_download: yes
     highlight: tango
     number_sections: no
@@ -60,7 +62,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://www.opencasestudies.org/ocs-bp-diet/](https://www.opencasestudies.org/ocs-bp-diet/). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
+Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
 
 ####
 
@@ -3473,3 +3475,4 @@ We would also like to acknowledge the [Bloomberg American Health
 Initiative](https://americanhealth.jhu.edu/) for funding this work.
 
 
+<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=080808&w=a&t=tt&d=sXVYGPHQ7FZq_7hyx3omGWks-akW1xn8H5J2cy5qoDI&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script>
