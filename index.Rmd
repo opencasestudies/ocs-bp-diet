@@ -88,7 +88,7 @@ This article evaluated food consumption patterns in 195 countries for 15 differe
 
 > "High intake of sodium ..., low intake of whole grains ..., and low intake of fruits ... were the leading dietary risk factors for deaths and DALYs globally and in many countries." 
 
-This figure from the paper's supplementary materials shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths and illustrates how the top 3 risk factors are often issues for many different regions of the world.
+This figure from the paper's supplementary materials shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths. Here, the numbers and colors of the little squares imply rankings of the risk factors (rows) by regions (columns). The color red indicates risk factors that are associated with larger number of attributable deaths. The column on the right is the overall global data. As you can see here, the top 3 risk factors are often issues for many different regions of the world.
 
 ```{r, echo = FALSE, out.width= "700 px"}
 knitr::include_graphics(here("img", "deaths.png"))
@@ -216,7 +216,7 @@ knitr::include_graphics(here("img", "context.png"))
 
 Many dietary factors have well-established associations with health risk. The authors that generated this data set identified 15 dietary factors that have probable health risk based on literature search.
 
-Here you can see a table of the sources for the health risks associated with the dietary factors. RCT stands for randomized control trials.
+Here you can see a table of the sources for the health risks associated with the dietary factors. The first column is the risk factors and the second column is the health outcomes. The rest of the table shows evidence supporting these relationships. RCT stands for randomized control trials. A red dot means that the corresponding piece of evidence (column name) is absent, while a green dot means that it is present.
 
 
 ```{r, echo = FALSE, out.width= "800 px"}
@@ -244,7 +244,7 @@ Also, while [gender](https://www.genderspectrum.org/quick-links/understanding-ge
 ## **What are the data?**
 ***
 
-We will be using data that we requested from the [Global Burden of Disease (GBD)](http://www.healthdata.org/gbd){target="_blank"} of the [The Institute for Health Metrics and Evaluation (IHME)](http://www.healthdata.org/about) about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files, dietary_risk_exposure_all_ages_2017.csv and dietary_risk_exposure_sep_ages_2017.csv. The first one includes consumption levels at the global level and for different countries for all ages combined.
+We will be using data that we requested from the [Global Burden of Disease (GBD)](http://www.healthdata.org/gbd){target="_blank"} of the [Institute for Health Metrics and Evaluation (IHME)](http://www.healthdata.org/about) about dietary intake, as well as the guideline data about optimal consumption amounts for different foods contained within the PDF of the article. We have two CSV files, dietary_risk_exposure_all_ages_2017.csv and dietary_risk_exposure_sep_ages_2017.csv. The first one includes consumption levels at the global level and for different countries for all ages combined.
 
 Looking at the CSV file in excel:
 
@@ -260,7 +260,7 @@ The second CSV file has similar data, but consumption levels for different age g
 knitr::include_graphics(here::here("img", "age_sep3.png"))
 ```
 
-The authors of this article obtained the data from a variety of sources including household budget surveys and nutritional surveys regarding 24 hour recall of food consumption and 24 hour urinary sodium analysis. The data was derived from sales data from Euromonitor, data from the United Nations Food and Agriculture Organization (FAO), estimates about national availability of specific nutrients, from the Supply Utilization Accounts(SUA), and the United States Department of Agriculture's National Nutrition Database.
+The authors of this article obtained the data from a variety of sources including household budget surveys and nutritional surveys regarding 24 hour recall of food consumption and 24 hour urinary sodium analysis. The data was derived from sales data from [Euromonitor](https://www.euromonitor.com/), data from the [United Nations Food and Agriculture Organization (FAO)](http://www.fao.org/home/en/), estimates about national availability of specific nutrients, from the Supply Utilization Accounts(SUA), and the [United States Department of Agriculture](https://www.usda.gov/)'s National Nutrition Database.
 
 ## **Data Import**
 ***
@@ -397,7 +397,9 @@ dplyr::filter(sex == "Female",
    location_name == "Afghanistan")
 ```
 
-This confirms that for each of the 15 dietary factors, our unit of observation is a combination of gender, age and country. However, before we proceed with our analysis, we will want to perform some additional data wrangling. To do this, we will introduce the `pdftools` package, which will allow us to pull additional data from the manuscript itself.
+This confirms that for each of the 15 dietary factors, our unit of observation is a combination of gender, age and country. 
+
+However, before we proceed with our analysis, we will want to perform some additional data wrangling. To do this, we will introduce the `pdftools` package, which will allow us to pull additional data from the manuscript itself.
 
 
 
@@ -421,8 +423,6 @@ paper <- pdftools::pdf_text(here("docs",
 
 We can use the `base` `summary()` function to get a sense of what the data looks like. By `base` we mean that these functions are part of the `base` package and are loaded automatically on startup of R. Thus, `library(base)` is not required.
 ```{r}
-# This is equivalent to the following, but this is unecessary:
-# base::summary(paper)
 summary(paper)
 ```
 
@@ -595,13 +595,10 @@ It is important to replace these for later when we want these values to be conve
 pdf_table %<>%
   stringr::str_replace_all(pattern = "·",
                            replacement = ".")
+last(pdf_table)
 ```
 
 Looks good!
-
-```{r}
-last(pdf_table)
-```
 
 Now we will try to split the strings for each row based on the presence of two spaces to create the columns of the table, as there appears to be more than one space between the columns. The resulting substrings will be separated by quotes.
 
@@ -639,12 +636,15 @@ pdf_table %>%
   str_which(pattern = "seafood|sugar")
 ```
 
-Here we can use this function with `[]` to see just the strings that match these patterns within `pdf_table`:
+Here we can use the `str_subset()` function of the `stringr` package to see just the strings that match these patterns within `pdf_table`:
 ```{r}
-# pdf_table[str_which(pdf_table, pattern = "seafood|sugar")]
-
 pdf_table %>% 
   str_subset(pattern = "seafood|sugar")
+```
+
+This is equivalent to using the `str_which()` function with `[]`:
+```{r, eval = FALSE}
+pdf_table[str_which(pdf_table, pattern = "seafood|sugar")]
 ```
 
 Now we can replace these values within the pdf_table object after adding a space in front of "Mean":
@@ -683,7 +683,7 @@ glimpse(table_split)
 
 Looks better!
 
-We want just the first (the food **category**) and third column (the optimal consumption **amount** suggested) for each row in the table. However, the table is current stored as a list of character vectors, so it is not quite so simple to extract these values.
+We want just the first (the food **category**) and third column (the optimal consumption **amount** suggested) for each row in the table. However, the table is currently stored as a list of character vectors, so it is not quite so simple to extract these values.
 
 We can use the `map` function of the `purrr` package to accomplish this.
 
@@ -907,9 +907,10 @@ To remove all of the remaining extra characters and words we will again use the 
 guidelines <- as_tibble(
   map(guidelines, str_remove_all,
       pattern = "\\) per day|\\) of total daily energy|\\*"))
+guidelines
 ```
 
-Nice! that's pretty clean but we can do a bit more.
+Nice! That's pretty clean but we can do a bit more.
 
 ### **Data type conversion**
 ***
@@ -944,7 +945,7 @@ We seem to have lost the word `"beverages"` from the `"sugar-sweetened beverages
 
 To select the `food` variable we will show you several options. Only a couple will work well with reassigning the data in that particular variable within `guidelines` without assigning an intermediate data object. We will look using `mutate_at()`, `pull()`, `select()`, and two styles of brackets `["variable name"]` and `[["variablename"]]`.
 
-The bracket `["variable name"]` option and the select() option will grab a tibble (data frame) version of the food column out of guidelines. However we can't start commands with select for assignments.
+The bracket `["variable name"]` option and the `select()` option will grab a tibble (data frame) version of the food column out of guidelines. However we can't start commands with select for assignments.
 
 ```{r}
 guidelines["food"] # same output as select
@@ -1255,7 +1256,7 @@ setdiff(distinct(diet_data, food),
 Great, now we know that the `fiber` value appears to be different between the two.
 
 
-Checking our original files we can see that the British spelling "fibre" is used in the table from the article (that we used to create `guidelines`), in contrast to the the American spelling "fiber" used in the CSV files.
+Checking our original files we can see that the British spelling "fibre" is used in the table from the article (that we used to create `guidelines`), in contrast to the American spelling "fiber" used in the CSV files.
 
 Let's stick with the American spelling, so we will replace `"fibre"` in the guideline tibble.
 
@@ -1343,29 +1344,32 @@ We can see that the only potential issue is the `seafood omega-3 fatty acids` da
 
 We can account for this by dividing the `guidelines` `seafood omega-3 fatty acids data` by 1000 to convert it to grams from milligrams.
 
-To do this we will use the `if_else()` function in the `dplyr` package. This allows us to specify a condition (in this case if the unit is `"mg"`), as well as values if this is condition is met (true), or if the condition is not met (false). 
+To do this we will use the `if_else()` function in the `dplyr` package. This allows us to specify a condition (in this case if the unit is `"mg"`), as well as values if this condition is met (true), or if the condition is not met (false). 
 
 In the following we mutate the values in each of the guideline numeric columns (`lower`, `optimal` and `upper`) one at a time. When we refer to `lower` for example we refer to the values in the column/variable. So if the condition is not met, then the original value is retained. We will also replace `"mg"` with `"g"` after everything is converted to grams.
 
 
 
 ```{r}
+# "lower_optimal" variable
 guidelines %<>% 
   mutate(lower_optimal = dplyr::if_else(condition = unit_optimal == "mg",
                                         true = lower_optimal/1000, 
                                         false = lower_optimal))
 
+# "optimal" variable
 guidelines %<>% 
   mutate(optimal = if_else(condition = unit_optimal == "mg", 
                            true = optimal/1000, 
                            false = optimal))
 
+# "upper_optimal" variable
 guidelines %<>% 
   mutate(upper_optimal = if_else(condition = unit_optimal == "mg",
                                  true = upper_optimal/1000,
                                  false = upper_optimal))
 
-
+# replace "mg" with "g" in the "unit_optimal" variable
 guidelines %<>%
   mutate(unit_optimal = if_else(condition = unit_optimal == "mg",
                                 true = "g", 
@@ -1518,18 +1522,22 @@ To coerce an object into long format, we create **more rows and fewer columns**.
 
 We would like to put together the different types of percentages of the optimal intake that we just calculated.
 
-To get our data in long format we can use the `pivot_longer()` function of the `tidyr` package. We will also show how this would be done with the older version of this function, called `gather()`. 
-
-For `pivot_longer()`, we will list the columns that we want to come together into the longer format using the `cols` argument. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, i.e., this variable contains the names of the columns that we are bringing together. This is equivalent to the `key` argument in `gather()`. The `values_to` is the name of the column that will contain the values of the columns we are consolidating. This is equivalent to the `value` argument in `gather()`. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
-
-We would get an identical output from the methods. We can check that with `setequal()`.
+To get our data in long format we can use the `pivot_longer()` function of the `tidyr` package. We will list the columns that we want to come together into the longer format using the `cols` argument. The `names_to` argument indicates the name of the variable that will include the character information about the values that we are consolidating, i.e., this variable contains the names of the columns that we are bringing together. The `values_to` is the name of the column that will contain the values of the columns we are consolidating. We can use `contains()` of the `tidyr` package to look at the variables with names that contain `"percent"` .
 
 ```{r}
 diet_and_guidelines_long <- diet_and_guidelines %>%
 pivot_longer(cols = contains("percent"), 
          names_to = "percent_type", 
         values_to = "percent")
+```
 
+***
+<details> <summary> Click here to see how this would be done with the older version of this function, called `gather()`: </summary>
+
+Recall that for `pivot_longer()`, the `cols` argument is used. For `gather()` we would simply list the variables that we wish to consolidate. The `names_to` and `values_to` arguments of `pivot_longer()` are equivalent to the `key` and `value` arguments in `gather()` respectively.
+
+We would get an identical output from the two methods. We can check that with `setequal()`.
+```{r}
 diet_and_guidelines_long2 <- diet_and_guidelines %>%
 gather(contains("percent"),
        key = percent_type, 
@@ -1537,6 +1545,10 @@ gather(contains("percent"),
 
 setequal(diet_and_guidelines_long, diet_and_guidelines_long2)
 ```
+
+</details>
+
+***
 
 Let's do the same for the age separated data.
 
@@ -2067,7 +2079,7 @@ $1.983259 - 1.798872 =0.184387$
 
 Cool!  For more information about the output of `lm()` see [here](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R){target="_blank"}.
 
-After fitting our linear regression model, we can use the base `plot()` function to get information about our the model residuals to help us assess whether any of the assumptions of linear regression are violated. Here we choose to view the first three of these plots with `which = 1:3`.
+After fitting our linear regression model, we can use the base `plot()` function to get information about our model residuals to help us assess whether any of the assumptions of linear regression are violated. Here we choose to view the first three of these plots with `which = 1:3`.
 
 ```{r}
 diet_and_guidelines %>%
@@ -2102,7 +2114,7 @@ We can address this by doing a *paired* $t$-test instead of an independent $t$-t
 ### **Paired $t$-test and linear model with fixed effects**
 ***
 
-Now will perform the paired versions of our analysis. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
+Now we will perform the paired versions of our analysis. This is very easy to do with the `t.test()` function, by simply using the `paired` argument and setting it equal to `TRUE`.
 
 However, our data needs to be in a slightly different form to do the paired test, since we have to tell `R` which values need to be paired together.  Instead of one long dataset with different rows for males and females, we will need separate columns for the male and female values.  So we need to make our dataset *wider*.  We can do that using the `pivot_wider()` function of  the `tidyr` package. To use this function we specify the values that we want to separate into more variables using the `values_from` argument and we use the `names_from` argument to specify how we want to separate these other variables. In this case we will make a male and female version of all the other variables specified.
 
@@ -2116,8 +2128,6 @@ wide_diet <- diet_and_guidelines %>%
               names_from = sex)
 
 glimpse(wide_diet)
-
-#The older function tidyr::spread() would not allow for multiple columns/variables 
 ```
 
 You can see we now have a `Relative_Percent_Male` variable and a `Relative_Percent_Female` variable.  We can use these two variables in our paired $t$-test.  Since the paired version of the $t$-test doesn't take a `data=` argument, we will pull the appropriate variables from our data a little bit differently, using the `pull()` function.
@@ -2215,7 +2225,7 @@ t.test(log10(pull(filter(wide_diet, food == "red meat"),
        var.equal = TRUE, paired = TRUE)
 ```
 
-Notice that in the output for the mixed effects model, there are **not** coefficients for each country, like there were in the fixed effects model.  This is because we are not explicitly estimating individual country effects in this model.  Instead, the country effect is captured through the intercept in this model.  Our estimated intercept is 1.80 and the standard deviation of this intercept is 0.34 (shown in the `Random effects` table in the output.)  We can interpret this as saying that each country has an intercept that comes from a normal distribution with mean of 1.80 and a standard deviation of 0.34.  Since the intercept in this model represent the log relative percent consumption for females, this give us an idea of how female consumption varies across countries -- average log consumption across countries is 1.80, but there is variability from one country to another.  And then the male log consumption is, on average, 0.18 higher than for females.
+Notice that in the output for the mixed effects model, there are **not** coefficients for each country, like there were in the fixed effects model.  This is because we are not explicitly estimating individual country effects in this model.  Instead, the country effect is captured through the intercept in this model.  Our estimated intercept is 1.80 and the standard deviation of this intercept is 0.34 (shown in the `Random effects` table in the output.)  We can interpret this as saying that each country has an intercept that comes from a normal distribution with mean of 1.80 and a standard deviation of 0.34.  Since the intercept in this model represents the log relative percent consumption for females, this give us an idea of how female consumption varies across countries -- average log consumption across countries is 1.80, but there is variability from one country to another.  And then the male log consumption is, on average, 0.18 higher than for females.
 
 It is more complicated to calculate the degrees of freedom in the mixed effect model and beyond this case study, but it is based on the [Satterthwaite formula](https://www.statisticshowto.datasciencecentral.com/satterthwaite-formula/){target="_blank"} and results in the same degrees of freedom.
 
