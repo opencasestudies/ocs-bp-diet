@@ -88,7 +88,7 @@ This article evaluated food consumption patterns in 195 countries for 15 differe
 
 > "High intake of sodium ..., low intake of whole grains ..., and low intake of fruits ... were the leading dietary risk factors for deaths and DALYs globally and in many countries." 
 
-This figure from the paper's supplementary materials shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths. Here, the numbers and colors of the little squares imply rankings of the risk factors (rows) by regions (columns). The color red indicates risk factors that are associated with larger number of attributable deaths. The column on the right is the overall global data. As you can see here, the top 3 risk factors are often issues for many different regions of the world.
+This figure from the paper's [supplementary materials](https://www.thelancet.com/cms/10.1016/S0140-6736(19)30041-8/attachment/3d4c0258-c2ea-405f-8d11-e9ae65e6f996/mmc1.pdf){target="_blank"} shows the ranking of the 15 dietary risk factors based on the estimated number of attributable deaths. Here, the numbers and colors of the little squares imply rankings of the risk factors (rows) by regions (columns). The color red indicates risk factors that are associated with larger number of attributable deaths. The column on the right is the overall global data. As you can see here, the top 3 risk factors are often issues for many different regions of the world.
 
 ```{r, echo = FALSE, out.width= "700 px"}
 knitr::include_graphics(here("img", "deaths.png"))
@@ -216,7 +216,7 @@ knitr::include_graphics(here("img", "context.png"))
 
 Many dietary factors have well-established associations with health risk. The authors that generated this data set identified 15 dietary factors that have probable health risk based on literature search.
 
-Here you can see a table of the sources for the health risks associated with the dietary factors. The first column is the risk factors and the second column is the health outcomes. The rest of the table shows evidence supporting these relationships. RCT stands for randomized control trials. A red dot means that the corresponding piece of evidence (column name) is absent, while a green dot means that it is present.
+Here you can see a table of the sources for the health risks associated with the dietary factors. The first column shows the risk factors and the second column shows the health outcomes. This table is part of "Supplemental Table 1. Epidemiological evidence supporting causality between dietary risk factors and disease endpoints" from the paper’s [supplementary materials](https://www.thelancet.com/cms/10.1016/S0140-6736(19)30041-8/attachment/3d4c0258-c2ea-405f-8d11-e9ae65e6f996/mmc1.pdf){target="_blank"}.
 
 
 ```{r, echo = FALSE, out.width= "800 px"}
@@ -260,7 +260,7 @@ The second CSV file has similar data, but consumption levels for different age g
 knitr::include_graphics(here::here("img", "age_sep3.png"))
 ```
 
-The authors of this article obtained the data from a variety of sources including household budget surveys and nutritional surveys regarding 24 hour recall of food consumption and 24 hour urinary sodium analysis. The data was derived from sales data from [Euromonitor](https://www.euromonitor.com/), data from the [United Nations Food and Agriculture Organization (FAO)](http://www.fao.org/home/en/), estimates about national availability of specific nutrients, from the Supply Utilization Accounts(SUA), and the [United States Department of Agriculture](https://www.usda.gov/)'s National Nutrition Database.
+The authors of this article obtained the data from a variety of sources including household budget surveys and nutritional surveys regarding 24 hour recall of food consumption and 24 hour urinary sodium analysis. The data was derived from sales data from [Euromonitor](https://www.euromonitor.com/){target="_blank"}, estimates about national availability of specific nutrients from the [United Nations Food and Agriculture Organization (FAO)](http://www.fao.org/home/en/){target="_blank"} and the [United States Department of Agriculture](https://www.usda.gov/){target="_blank"}'s [National Nutrition Database](https://data.nal.usda.gov/dataset/usda-national-nutrient-database-standard-reference-legacy-release){target="_blank"}.
 
 ## **Data Import**
 ***
@@ -311,25 +311,38 @@ skim(sep_age_diet_data)
 
 We can see that there are many more rows in this data set.
 
-
-Let's take a look at the different dietary risk factors considered.
-To do this we will use the `distinct()` function of the `dplyr` package.
-
-This function grabs only the distinct or unique rows from a given variable (`rei_name`, in our case) of a given data frame (`diet_data`, in our case).
+Let's change the variable name `rei_name` to `dietary_risk` so that it makes more sense. We can use the `rename()` function from the `dplyr` package.
 
 ```{r}
-dplyr::distinct(diet_data, rei_name)
+diet_data <- dplyr::rename(diet_data, dietary_risk = rei_name)
+sep_age_diet_data <- dplyr::rename(sep_age_diet_data, dietary_risk = rei_name)
+
+glimpse(diet_data)
+glimpse(sep_age_diet_data)
 ```
+
+Looks good!
+
+We will then take a look at the different dietary risk factors considered.
+To do this we will use the `distinct()` function of the `dplyr` package.
+
+This function grabs only the distinct or unique rows from a given variable (`dietary_risk`, in our case) of a given data frame (`diet_data`, in our case).
+
+```{r}
+dplyr::distinct(diet_data, dietary_risk)
+```
+
+Both over and under consumption could be a health problem!
 
 We will be using the `%>%` pipe for sequential steps in our code later on.
 This will make more sense when we have multiple sequential steps using the same data object.
 
 
-We could do the same code as above using this notation. For example we first grab the `diet_data`, then we select the distinct values of the `rei_name` variable.
+We could do the same code as above using this notation. For example we first grab the `diet_data`, then we select the distinct values of the `dietary_risk` variable.
 
 ```{r}
 diet_data %>%
-  distinct(rei_name)
+  distinct(dietary_risk)
 ```
 
 OK, so that gives us an idea of what dietary factors we can explore, and we can see that there are 15 of them. 
@@ -754,12 +767,12 @@ We can use the `tidyr::separate()` function to separate the data within the amou
 # It will contain the data after the "("
 # The 3rd column will be called upper 
 # It will contain the 2nd part of the data based on the "–"
-# The "[]" are necessary - we will explain very soon
+# The "\\" are necessary - we will explain very soon
 
 guidelines %<>% 
   tidyr::separate(amount, 
                   c("optimal", "lower", "upper"),
-                  sep = "[(|–]") 
+                  sep = "\\(|–") 
 
 guidelines
 
@@ -792,7 +805,7 @@ The `"*"` and the `")"` are what we call metacharacters or [regular expressions]
 knitr::include_graphics(here("img", "RegExCheatsheet.png"))
 ```
 
-Now we need the `"\\"` to indicate that we want these characters to be matched exactly and not interpreted as the meaning of the symbol. Previously we used `[]` around the characters when we separated the optimal amount columns. Recall that we used `"[(|–]"`. This worked because these are punctuation characters, we could have also used `"\\(|–"`.
+Now we need the `"\\"` to indicate that we want these characters to be matched exactly and not interpreted as the meaning of the symbol. Recall that we used `"\\(|–"` earlier.
 
 See [here](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html){target="_blank"} for more info about regular expressions in R. 
 
@@ -1075,7 +1088,7 @@ In order to create a tibble with our observed consumption rates with the suggest
 
 
 ```{r}
-distinct(diet_data, rei_name)
+distinct(diet_data, dietary_risk)
 select(guidelines, food)
 ```
 
@@ -1083,24 +1096,24 @@ We are actually pretty close: there are 15 dietary factors in each data set, and
 
 ```{r}
 diet_data %<>%
-  mutate_at(vars(rei_name),
+  mutate_at(vars(dietary_risk),
   ~ str_remove(string = .,
                pattern = "Diet low in |Diet high in "))
 
 sep_age_diet_data %<>%
-  mutate_at(vars(rei_name),
+  mutate_at(vars(dietary_risk),
   ~ str_remove(string = .,
                pattern = "Diet low in |Diet high in "))
 ```
 
 Also let's double check that the two observed files have the same exact values for dietary factor names. 
 
-We can use the `setequal()` function from `dplyr` to check that the unique values for `rei_name` are the same for both `diet_data` and `sep_age_diet_data`.
+We can use the `setequal()` function from `dplyr` to check that the unique values for `dietary_risk` are the same for both `diet_data` and `sep_age_diet_data`.
 
 
 ```{r}
-setequal(distinct(diet_data, rei_name), 
-         distinct(sep_age_diet_data, rei_name))
+setequal(distinct(diet_data, dietary_risk), 
+         distinct(sep_age_diet_data, dietary_risk))
 ```
 Great!
 
@@ -1109,12 +1122,12 @@ Note that the default of the set_equal function ignores the order of values in r
 We can check using the `all_equal` function of `dplyr` which reports back clues about what might be different if anything. Importantly we are including `ignore_row_order = FALSE` as the default is `TRUE`.
 
 ```{r}
-all_equal(distinct(diet_data, rei_name), 
-          distinct(sep_age_diet_data, rei_name), 
+all_equal(distinct(diet_data, dietary_risk), 
+          distinct(sep_age_diet_data, dietary_risk), 
           ignore_row_order = FALSE)
 ```
 
-Looks like they are also in the same order. 
+Looks like they are not in the same order. 
 
 Note that if any of the values are different, `all_equal()` will first report this and will not report that the rows are in a different order.
 
@@ -1222,7 +1235,7 @@ OK, let's keep going with our data.
 How similar are the guidelines tibble and the observed consumption tibbles?
 
 ```{r}
-setequal(distinct(diet_data, rei_name),
+setequal(distinct(diet_data, dietary_risk),
          select(guidelines, food))
 ```
 
@@ -1231,20 +1244,20 @@ OK, looks like we have some different values.
 Let's use the `setdiff` function to get more information about what is different between the values.
 
 ```{r, eval = FALSE}
-setdiff(distinct(diet_data, rei_name), 
+setdiff(distinct(diet_data, dietary_risk), 
         select(guidelines, food))
 ```
 
 :( That wont work. This is because `setdiff()` requires that the column names are the same in the objects that we are comparing.
 
 
-We can use the `rename()` function from `dplyr` to do this. We list the value that we want to change to first. We find "food" more intuitive so we are going to change "rei_name" to "food" for the `diet_data` and the `sep_age_diet_data`:
+We can use the `rename()` function from `dplyr` to do this. We list the value that we want to change to first. We find "food" more intuitive now so we are going to change "dietary_risk" to "food" for the `diet_data` and the `sep_age_diet_data`:
 
 ```{r}
 diet_data %<>%
-  dplyr::rename(food = rei_name)
+  dplyr::rename(food = dietary_risk)
 sep_age_diet_data %<>%
-  dplyr::rename(food = rei_name)
+  dplyr::rename(food = dietary_risk)
 ```
 
 
@@ -1356,6 +1369,9 @@ guidelines %<>%
   mutate(lower_optimal = dplyr::if_else(condition = unit_optimal == "mg",
                                         true = lower_optimal/1000, 
                                         false = lower_optimal))
+# Explanation for the use of "if_else()" here
+# If the "unit_optimal" variable is in "mg", we convert the corresponding "lower_optimal" (currently in mg) variable to grams (g) by dividing by 1,000. 
+# If not, the corresponding "lower_optimal" (already in g) is not changed
 
 # "optimal" variable
 guidelines %<>% 
@@ -1518,7 +1534,7 @@ glimpse(all_age_diet_and_guidelines)
 
 One last thing that can be useful with data wrangling is to **reshape** the data into what is called the **long** format. This is very useful for creating visualizations with a powerful and flexible package called `ggplot2`.
 
-To coerce an object into long format, we create **more rows and fewer columns**. For a more information about this, please see this [case study](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}.
+To coerce an object into long format, we create **more rows and fewer columns**. For more information about this, please see the Data Visualization section of this [case study](https://www.opencasestudies.org/ocs-bp-opioid-rural-urban/#Rural_and_Urban_areas/#:~:text=%20the%20data%20was%20presented%20in%20a%20format%20that%20is%20called%20long%20format.){target="_blank"}.
 
 We would like to put together the different types of percentages of the optimal intake that we just calculated.
 
@@ -1584,7 +1600,7 @@ diet_and_guidelines %>%
   summary()
 ```
 
-Wow! Some of the values are nearly zero, suggesting that some people are consuming basically zero percent of what is suggested for optimal health. On the other hand, for some dietary factors people are consuming over 7,000 percent what is suggested! 
+Wow! Some of the values are nearly zero, suggesting that some people are consuming basically zero percent of what is suggested for optimal health. On the other hand, for some dietary factors people are consuming over 13,000 percent what is suggested! 
 
 This is why it is important to look at the direction of consumption that could be harmful. For example if there is a population that consumes large amounts of vegetables this could be a good thing, but if there is a population consuming large amounts of sodium this would be a bad thing. 
 
@@ -1606,7 +1622,7 @@ diet_and_guidelines %>%
    select(contains("percent")) %>%
    summary()
 ```
-So some places are still consuming 4,000 percent more than the upper range of the suggested optimal intake.
+So some places are still consuming 8,000 percent more than the upper range of the suggested optimal intake.
 
 Let's take a look at global levels:
 ```{r}
@@ -1615,13 +1631,13 @@ diet_and_guidelines %>%
      location_name == "Global")
 ```
 
-For those who are less familiar with the metric system where grams are equivalent to milliliters, it may be useful to realize how many fluid ounces the max amount of consumption per day (~248g for the `upper` value for Costa Rica) actually is. 
+For those who are less familiar with the metric system where grams are equivalent to milliliters, it may be useful to realize how many fluid ounces the max amount of consumption per day (~444g for the `upper` value for Guatemala) actually is. 
 
 There are 0.35247 ounces in one gram.
 
 ```{r}
 #top amount in ounces
-0.35247*247.9342 
+0.35247*444.4002 
 ```
 
 OK, so the top consumers are drinking about 87 fluid ounces per day. Since there are 12 ounces in a single can of soda, this is about `r 87/12` sodas per day. Globally on average, males are drinking around `r round((65.5*0.35247)/12, 3)` sodas worth of sweetened beverages, while females are drinking about `r round((47.7*0.35247)/12, 3)`.
@@ -1712,6 +1728,8 @@ Continuing with `ggplot2` we will now create a different type of plot. This time
 
 ```{r}
 # we will create a new variable with food names with new lines
+# str_replace() is used here because we are only replacing the first instance of space
+# otherwise str_replace_all() should be used
 diet_and_guidelines %<>%
   mutate(food_to_plot = 
            str_replace( 
@@ -1978,7 +1996,7 @@ diet_and_guidelines %>%
   facet_wrap(~ sex) 
 ```
 
-This `Relative_Percent` variable appears to have a right skew for both male and female individuals.  We can also see this by looking at normal Quantile-Quantile (Q-Q) plots of this variable.  Remember that in a Q-Q plot, points away from the line indicate one of the distributions is more skewed than the other.  In this case, we see that the values in are sample are skewed relative to the theoretical normal distribution. [Here](http://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html) is a great reference for interpreting Q-Q plots.
+This `Relative_Percent` variable appears to have a right skew for both male and female individuals.  We can also see this by looking at normal Quantile-Quantile (Q-Q) plots of this variable.  Remember that in a Q-Q plot, points away from the line indicate one of the distributions is more skewed than the other.  In this case, we see that the values in are sample are skewed relative to the theoretical normal distribution. [Here](http://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html){target="_blank"} is a great reference for interpreting Q-Q plots.
 
 ```{r}
 diet_and_guidelines %>%
