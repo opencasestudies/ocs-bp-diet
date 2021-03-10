@@ -62,7 +62,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
+Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
 
 ####
 
@@ -221,7 +221,7 @@ Many dietary factors have well-established associations with health risk. The au
 Here you can see a table of the sources for the health risks associated with the dietary factors. The first column shows the risk factors and the second column shows the health outcomes. This table is part of "Supplemental Table 1. Epidemiological evidence supporting causality between dietary risk factors and disease endpoints" from the paper’s [supplementary materials](https://www.thelancet.com/cms/10.1016/S0140-6736(19)30041-8/attachment/3d4c0258-c2ea-405f-8d11-e9ae65e6f996/mmc1.pdf){target="_blank"}.
 
 
-```{r, echo = FALSE, out.width= "800 px"}
+```{r, echo = FALSE, out.width= "500 px"}
 knitr::include_graphics(here("img", "dietaryrisk.png"))
 ```
 
@@ -267,7 +267,33 @@ The authors of this article obtained the data from a variety of sources includin
 ## **Data Import**
 ***
 
+If you have trouble accessing the GitHub Repository, the "dietary_risk_exposure_all_ages_2017.csv" data can be downloaded from [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/docs/dietary_risk_exposure_all_ages_2017.csv) by right click on the page and select "Save as...". The "dietary_risk_exposure_sep_ages_2017.csv" data can be downloaded from [here](https://github.com/opencasestudies/ocs-bp-diet/blob/master/docs/dietary_risk_exposure_sep_ages_2017.csv).
+
 Let's import our data into R now so that we can explore the data further.
+
+In our case, we downloaded this data and put it within a "docs" directory for our project. If you use an RStudio project, then you can use the `here()` function of the `here` package to make the path for importing this data simpler. The `here` package automatically starts looking for files based on where you have a `.Rproj` file which is created when you start a new RStudio project. We can specify that we want to look for the files within the "docs" directory within a directory where our `.Rproj` file is located by separating the name of the "docs" directory and the file name using comma.
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects. 
+
+</details>
+
+***
 
 ```{r}
 diet_data <- readr::read_csv(here(
@@ -2991,7 +3017,7 @@ all_age_diet_and_guidelines %>%
   scale_fill_viridis(discrete = TRUE) +
   theme_linedraw() +
   theme(
-    strip.text = element_text(size = 7, face = "bold"),
+    strip.text = element_text(size = 8, face = "bold"),
     axis.text.x = element_blank(),
     axis.title.x = element_blank(),
     legend.position = "bottom"
