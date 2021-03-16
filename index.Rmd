@@ -275,11 +275,11 @@ The authors of this article obtained the data from a variety of sources includin
 ## **Data Import**
 ***
 
-If you have trouble accessing the GitHub Repository, the "dietary_risk_exposure_all_ages_2017.csv" data can be downloaded from [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/docs/dietary_risk_exposure_all_ages_2017.csv) by right click on the page and select "Save as...". The "dietary_risk_exposure_sep_ages_2017.csv" data can be downloaded from [here](https://github.com/opencasestudies/ocs-bp-diet/blob/master/docs/dietary_risk_exposure_sep_ages_2017.csv).
+If you have trouble accessing the [GitHub Repository](https://github.com/opencasestudies/ocs-bp-diet), the data can be downloaded from [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/raw/dietary_risk_exposure_all_ages_2017.csv) and [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/raw/dietary_risk_exposure_sep_ages_2017.csv).
 
 Let's import our data into R now so that we can explore the data further.
 
-In our case, we downloaded this data and put it within a "docs" directory for our project. If you use an RStudio project, then you can use the `here()` function of the `here` package to make the path for importing this data simpler. The `here` package automatically starts looking for files based on where you have a `.Rproj` file which is created when you start a new RStudio project. We can specify that we want to look for the files within the "docs" directory within a directory where our `.Rproj` file is located by separating the name of the "docs" directory and the file name using comma.
+In our case, we downloaded this data and put it within a "data" directory within a subdirectory called "raw" for our project. If you use an RStudio project, then you can use the `here()` function of the `here` package to make the path for importing this data simpler. The `here` package automatically starts looking for files based on where you have a `.Rproj` file which is created when you start a new RStudio project. We can specify that we want to look for the files within the "docs" directory within a directory where our `.Rproj` file is located by separating the name of the "data" directory, the "raw" subdirectory, and the file name using commas.
 
 ***
 <details> <summary> Click here to see more about creating new projects in RStudio. </summary>
@@ -309,7 +309,6 @@ diet_data <- readr::read_csv(here("data", "raw",
 sep_age_diet_data <- read_csv(here("data", "raw", 
                        "dietary_risk_exposure_sep_ages_2017.csv"))
 ```
-
 
 First let's just get a general sense of our data. We can do that using the `glimpse()` function of the `dplyr` package (it is also in the `tibble` package).
 
@@ -464,9 +463,11 @@ knitr::include_graphics(here::here("img", "Table.png"))
 
 First let's import the PDF using the `pfd_text()` function of the `pdftools` package.
 
+You can find this file [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/raw/Afshin_et_al_2019.pdf).
+
 ```{r}
 paper <- pdftools::pdf_text(here("data", "raw",
-"Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"))
+"Afshin_et_al_2019.pdf"))
 ```
 
 We can save our imported data as an rda file (stands for R data file) using the `save()` function. 
