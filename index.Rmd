@@ -1755,7 +1755,7 @@ load(here::here("data", "wrangled", "wrangled_data.rda"))
 ***
 <details> <summary> If you skipped the data wrangling section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "wrangled", "wrangled_data.rda"))
@@ -1999,7 +1999,7 @@ load(here::here("data", "wrangled", "wrangled_data.rda"))
 ***
 <details> <summary> If you skipped the data wrangling section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "wrangled", "wrangled_data.rda"))
@@ -2789,7 +2789,7 @@ load(here::here("data", "wrangled", "wrangled_data.rda"))
 ***
 <details> <summary> If you are starting the case study at this section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "wrangled", "wrangled_data.rda"))
