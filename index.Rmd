@@ -27,6 +27,9 @@ output:
 }
 </style>
 
+<!-- Open all links in new tab-->  
+<base target="_blank"/> 
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -66,9 +69,14 @@ Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). 
 
 ####
 
-To access the GitHub Repository for this case study see here: https://github.com/opencasestudies/ocs-bp-diet.
+To access the GitHub Repository with the data for this case study see here: https://github.com/opencasestudies/ocs-bp-diet.
 
 This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
+
+Please help us by filling out our survey.
+
+
+<div style="display: flex; justify-content: center;"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfpN4FN3KELqBNEgf2Atpi7Wy7Nqy2beSkFQINL7Y5sAMV5_w/viewform?embedded=true" width="1200" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></div>
 
 
 ## **Motivation**
@@ -296,14 +304,10 @@ See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Project
 ***
 
 ```{r}
-diet_data <- readr::read_csv(here(
-  "docs",
-  "dietary_risk_exposure_all_ages_2017.csv"
-))
-sep_age_diet_data <- read_csv(here(
-  "docs",
-  "dietary_risk_exposure_sep_ages_2017.csv"
-))
+diet_data <- readr::read_csv(here("data", "raw", 
+                       "dietary_risk_exposure_all_ages_2017.csv"))
+sep_age_diet_data <- read_csv(here("data", "raw", 
+                       "dietary_risk_exposure_sep_ages_2017.csv"))
 ```
 
 
@@ -450,10 +454,6 @@ This confirms that for each of the 15 dietary factors, our unit of observation i
 However, before we proceed with our analysis, we will want to perform some additional data wrangling. To do this, we will introduce the `pdftools` package, which will allow us to pull additional data from the manuscript itself.
 
 
-
-## **Data Wrangling**
-***
-
 While all of the mean consumption values are reported in grams, each dietary factor has a different amount that is considered optimal for consuming. To make the consumption values more comparable across factors, let's also get some data from the PDF of the paper so that we can calculate consumption of these dietary factors as percentages of the daily optimum.
 
 We are interested in this table on page 3:
@@ -462,16 +462,66 @@ We are interested in this table on page 3:
 knitr::include_graphics(here::here("img", "Table.png"))
 ```
 
-
 First let's import the PDF using the `pfd_text()` function of the `pdftools` package.
+
 ```{r}
-paper <- pdftools::pdf_text(here(
-  "docs",
-  "Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"
-))
+paper <- pdftools::pdf_text(here("data", "raw",
+"Afshin et al. 2019 - Health effects of dietary risks in 195 countries,  ... 17 - a systematic analysis for the Global Burden of Disease Study 2017.pdf"))
 ```
 
+We can save our imported data as an rda file (stands for R data file) using the `save()` function. 
+
+```{r}
+save(diet_data, sep_age_diet_data, paper, file = here::here("data", "imported", "imported_data.rda"))
+```
+
+
+## **Data Wrangling**
+***
+
+If you have been following along but stopped, we could load our imported data like so:
+
+```{r}
+load(here::here("data", "imported", "imported_data.rda"))
+```
+
+***
+<details> <summary> If you skipped the data import section click here. </summary>
+
+An RDA file (stands for R data) of the data can be found in our [GitHub repository](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/imported_data.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "imported", "imported_data.rda"))
+```
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+
+***
+
+Let's take a look at our manuscript data.
+
 We can use the `base` `summary()` function to get a sense of what the data looks like. By `base` we mean that these functions are part of the `base` package and are loaded automatically on startup of R. Thus, `library(base)` is not required.
+
 ```{r}
 summary(paper)
 ```
@@ -529,6 +579,7 @@ pdf_table %>%
 pdf_table %>%
   glimpse()
 ```
+
 In order to extract the values that we want from these character strings, we will use some additional functions from the `stringr` package. RStudio creates really helpful cheat sheets like this one which shows you all the major functions in the `stringr` package. You can download others [here](https://rstudio.com/resources/cheatsheets/){target="_blank"}.
 
 ```{r, echo = FALSE, out.width = "800px"}
@@ -1680,20 +1731,61 @@ all_age_diet_and_guidelines_long <- all_age_diet_and_guidelines %>%
 
 We now have the main variables and data formats that we need to proceed with the next steps of our analysis, including data exploration and eventually, modeling.
 
-```{r, echo = FALSE}
-save(all_age_diet_and_guidelines, all_age_diet_and_guidelines_long, diet_and_guidelines, sep_age_diet_data, file = here::here("data", "wrangled_data.rda"))
+Now we will save our wrangled data. We will save it as an rda file for ourselves and as csv files, as this is often a good option for collaborators. We need a separate csv file for each tibble. We will save these files in a directory called "wrangled" within our "data" directory of our project.
+
+```{r}
+save(all_age_diet_and_guidelines, all_age_diet_and_guidelines_long, diet_and_guidelines, sep_age_diet_data, file = here::here("data", "wrangled", "wrangled_data.rda"))
+
+write_csv(all_age_diet_and_guidelines, file = here::here("data", "wrangled", "all_age_diet_and_guidelines.csv"))
+write_csv(all_age_diet_and_guidelines_long, file = here::here("data", "wrangled", "all_age_diet_and_guidelines_long.csv"))
+write_csv(diet_and_guidelines, file = here::here("data", "wrangled", "diet_and_guidelines.csv"))
+write_csv(sep_age_diet_data, file = here::here("data", "wrangled", "sep_age_diet_data.csv"))
 ```
 
 ## **Data Exploration**
 ***
+
+If you have been following along but stopped you could load the wrangled data like so:
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+***
+<details> <summary> If you skipped the data wrangling section click here. </summary>
+
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+***
  
 ### **Exploring age collapsed data**
 ***
-
-```{r, echo = FALSE}
-# For instructors who wish to start at this section, we will load the data
-load(here::here("data", "wrangled_data.rda"))
-```
 
 Let's start by taking a look at the  percent of consumption, across all dietary factors. Again we will use the base R `summary()` function:
 
@@ -1897,10 +1989,44 @@ We can see from these plots that there appear to be age differences and gender d
 ## **Data Analysis**
 ***
 
-```{r, echo = FALSE}
-# For instructors who wish to start at this section, we will load the data
-load(here::here("data", "wrangled_data.rda"))
+If you have been following along but stopped you could load the wrangled data like so:
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
 ```
+
+***
+<details> <summary> If you skipped the data wrangling section click here. </summary>
+
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+***
 
 Recall what our main questions were:
 
@@ -2653,10 +2779,44 @@ Looking at the `anova()` output, we can see that sex and age group both have sig
 ## **Data Visualization**
 ***
 
-```{r, echo = FALSE}
-# For instructors who wish to start at this section, we will load the data
-load(here::here("data", "wrangled_data.rda"))
+If you have been following along but stopped you could load the wrangled data like so:
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
 ```
+
+***
+<details> <summary> If you are starting the case study at this section click here. </summary>
+
+An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+
+```{r}
+load(here::here("data", "wrangled", "wrangled_data.rda"))
+```
+
+
+***
+<details> <summary> Click here to see more about creating new projects in RStudio. </summary>
+
+You can create a project by going to the File menu of RStudio like so:
+
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "New_project.png"))
+```
+
+You can also do so by clicking the project button:
+
+```{r, echo = FALSE, out.width="60%"}
+knitr::include_graphics(here::here("img", "project_button.png"))
+```
+
+See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects and [here](https://github.com/jennybc/here_here) to learn more about the `here` package.
+
+</details>
+***
+</details>
+***
 
 Now that we have statistically analyzed the consumption of red meat based on the location, sex, and age group of different populations around the world. Let's make some visualizations to help with our interpretations.
 
