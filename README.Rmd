@@ -33,7 +33,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 (
 
 To cite this case study please use:
 
-Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
+Wright, Carrie and Meng, Qier and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
 
 ### Acknowledgments
 
@@ -41,6 +41,11 @@ We would like to acknowledge [Jessica Fanzo](https://bioethics.jhu.edu/people/pr
 
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
 
+### Reading Metrics
+
+The total reading time for this case study was calculated with [koRpus](https://github.com/unDocUMeantIt/koRpus): **~ 100 minutes**
+
+The Flesch-Kincaid Readability Index was also calculated with [koRpus](https://github.com/unDocUMeantIt/koRpus): **Grade 10, Age 15**
 
 ### Title 
 
@@ -262,7 +267,9 @@ This case study is appropriate for those new to R programming. It is also approp
 
 Students can evaluate consumption estimates of another dietary factor besides red meat.
 
+#### RMarkdown Compilation Time
 
+~ 80 seconds
 
 
 

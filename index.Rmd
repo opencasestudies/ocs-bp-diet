@@ -79,13 +79,49 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
+Wright, Carrie and Meng, Qier and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com/opencasestudies/ocs-bp-diet](https://github.com/opencasestudies/ocs-bp-diet). Exploring global patterns of dietary behaviors associated with health risk (Version v1.0.0).
 
 ####
 
 To access the GitHub Repository with the data for this case study see here: https://github.com/opencasestudies/ocs-bp-diet.
 
+You may also access and download the data using our `OCSdata` package. To learn more about this package including examples, see this [link](https://github.com/opencasestudies/OCSdata). Here is how you would install this package:
+
+```{r, eval=FALSE}
+install.packages("OCSdata")
+```
+
 This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
+
+***
+
+The total reading time for this case study is calculated via [koRpus](https://github.com/unDocUMeantIt/koRpus) and shown below: 
+
+```{r, echo=FALSE}
+readtable = text_stats("index.Rmd") # producing reading time markdown table
+readtime = read.so::read.md(readtable) %>% dplyr::select(Method, koRpus) %>% # reading table into dataframe, selecting relevant factors
+  dplyr::filter(Method == "Reading time") %>% # dropping unnecessary rows
+  dplyr::mutate(koRpus = paste(round(as.numeric(stringr::str_split(koRpus, " ")[[1]][1])), "minutes")) %>% # rounding reading time estimate
+  dplyr::mutate(Method = "koRpus") %>% dplyr::relocate(koRpus, .before = Method) %>% dplyr::rename(`Reading Time` = koRpus) # reorganizing table
+knitr::kable(readtime, format="markdown")
+```
+
+***
+
+**Readability Score: **
+
+A readability index estimates the reading difficulty level of a particular text. Flesch-Kincaid, FORCAST, and SMOG are three common readability indices that were calculated for this case study via [koRpus](https://github.com/unDocUMeantIt/koRpus). These indices provide an estimation of the minimum reading level required to comprehend this case study by grade and age. 
+
+```{r, echo=FALSE}
+rt = wordcountaddin::readability("index.Rmd", quiet=TRUE) # producing readability markdown table
+df = read.so::read.md(rt) %>% dplyr::select(index, grade, age) %>%  # reading table into dataframe, selecting relevant factors
+  tidyr::drop_na() %>% dplyr::mutate(grade = round(as.numeric(grade)), # dropping rows with missing values, rounding age and grade columns
+                                     age = round(as.numeric(age))
+                                     )
+knitr::kable(df, format="markdown")
+```
+
+***
 
 Please help us by filling out our survey.
 
@@ -198,6 +234,7 @@ library(ggiraph)
 library(ggforce)
 library(viridis)
 library(cowplot)
+library(OCSdata)
 ```
 
 
@@ -223,6 +260,7 @@ library(cowplot)
 [ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)| to modify facets in plots
 [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)| to plot in a color palette that is easily interpreted by colorblind individuals
 [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html){target="_blank"} | to allow plots to be combined
+[OCSdata](https://github.com/opencasestudies/OCSdata){target="_blank"} | to access and download OCS data files
 ___
 
 
@@ -321,6 +359,25 @@ See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Project
 diet_data <- readr::read_csv(here("data", "raw", 
                        "dietary_risk_exposure_all_ages_2017.csv"))
 sep_age_diet_data <- read_csv(here("data", "raw", 
+                       "dietary_risk_exposure_sep_ages_2017.csv"))
+```
+
+You may also use the `OCSdata` package to download the raw data: 
+
+```{r, eval=FALSE}
+# install.packages("OCSdata")
+library(OCSdata)
+raw_data("ocs-bp-diet", outpath = getwd())
+# This will save the raw data files in a "OCSdata/data/raw/" sub-folder 
+# in your current working directory
+```
+
+If you used the `OCSdata` package to download the raw data, you can import the data into R like so:
+
+```{r, eval=FALSE}
+diet_data <- readr::read_csv(here("OCSdata", "data", "raw", 
+                       "dietary_risk_exposure_all_ages_2017.csv"))
+sep_age_diet_data <- read_csv(here("OCSdata", "data", "raw", 
                        "dietary_risk_exposure_sep_ages_2017.csv"))
 ```
 
@@ -503,7 +560,21 @@ load(here::here("data", "imported", "imported_data.rda"))
 ***
 <details> <summary> If you skipped the data import section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found in our [GitHub repository](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/imported_data.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+First you need to install and load the `OCSdata` package:
+
+```{r, eval=FALSE}
+install.packages("OCSdata")
+library(OCSdata)
+```
+
+Then, you may load the imported data using the following code:
+
+```{r, eval=FALSE}
+imported_data("ocs-bp-diet", outpath = getwd())
+load(here::here("OCSdata", "data", "imported", "imported_data.rda"))
+```
+
+If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found in our [GitHub repository](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/imported_data.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "imported", "imported_data.rda"))
@@ -1769,7 +1840,21 @@ load(here::here("data", "wrangled", "wrangled_data.rda"))
 ***
 <details> <summary> If you skipped the data wrangling section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+First you need to install and load the `OCSdata` package:
+
+```{r, eval=FALSE}
+install.packages("OCSdata")
+library(OCSdata)
+```
+
+Then, you may load the wrangled data using the following code:
+
+```{r, eval=FALSE}
+wrangled_rda("ocs-bp-diet", outpath = getwd())
+load(here::here("OCSdata", "data", "wrangled", "wrangled_data.rda"))
+```
+
+If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "wrangled", "wrangled_data.rda"))
@@ -2013,7 +2098,21 @@ load(here::here("data", "wrangled", "wrangled_data.rda"))
 ***
 <details> <summary> If you skipped the data wrangling section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+First you need to install and load the `OCSdata` package:
+
+```{r, eval=FALSE}
+install.packages("OCSdata")
+library(OCSdata)
+```
+
+Then, you may load the wrangled data using the following code:
+
+```{r, eval=FALSE}
+wrangled_rda("ocs-bp-diet", outpath = getwd())
+load(here::here("OCSdata", "data", "wrangled", "wrangled_data.rda"))
+```
+
+If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "wrangled", "wrangled_data.rda"))
@@ -2803,7 +2902,21 @@ load(here::here("data", "wrangled", "wrangled_data.rda"))
 ***
 <details> <summary> If you are starting the case study at this section click here. </summary>
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
+First you need to install and load the `OCSdata` package:
+
+```{r, eval=FALSE}
+install.packages("OCSdata")
+library(OCSdata)
+```
+
+Then, you may load the wrangled data using the following code:
+
+```{r, eval=FALSE}
+wrangled_rda("ocs-bp-diet", outpath = getwd())
+load(here::here("OCSdata", "data", "wrangled", "wrangled_data.rda"))
+```
+
+If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
 
 ```{r}
 load(here::here("data", "wrangled", "wrangled_data.rda"))
@@ -3990,6 +4103,14 @@ Students can evaluate consumption estimates of another dietary factor besides re
 
 ```{r}
 sessionInfo()
+```
+
+**RMarkdown Compilation Time: **
+
+```{r, echo=FALSE}
+rmarkdown:::perf_timer_stop("render")
+pts = rmarkdown:::perf_timer_summary()
+cat("About", round(pts$time[1]/1000 + 10), "seconds")
 ```
 
 ### **Acknowledgments**
