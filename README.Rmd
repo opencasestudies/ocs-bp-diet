@@ -39,6 +39,8 @@ Wright, Carrie and Meng, Qier and Jager, Leah and Taub, Margaret and Hicks, Step
 
 We would like to acknowledge [Jessica Fanzo](https://bioethics.jhu.edu/people/profile/jessica-fanzo/) for assisting in framing the major direction of the case study, as well as [Ashkan Afshin](https://globalhealth.washington.edu/faculty/ashkan-afshin) and [Erin Mullany](http://www.healthdata.org/about/erin-mullany) for giving us access to the data. 
 
+We would like to acknowledge [Michael Breshock](https://mbreshock.github.io/) for his contributions to this case study and developing the `OCSdata` package.
+
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
 
 ### Reading Metrics
@@ -269,7 +271,7 @@ Students can evaluate consumption estimates of another dietary factor besides re
 
 #### RMarkdown Compilation Time
 
-~ 80 seconds
+~ 85 seconds
 
 
 
