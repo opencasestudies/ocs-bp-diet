@@ -269,10 +269,10 @@ This case study is appropriate for those new to R programming. It is also approp
 
 Students can evaluate consumption estimates of another dietary factor besides red meat.
 
-#### RMarkdown Compilation Time
+#### Estimate of RMarkdown Compilation Time:
 
-~ 85 seconds
+~ About 79 - 89 seconds
 
-
+This compilation time was measured on a PC machine operating on Windows 10. This range should only be used as an estimate as compilation time will vary with different machines and operating systems.
 
 
