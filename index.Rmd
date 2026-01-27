@@ -1412,24 +1412,18 @@ Y <- tibble(colname2 = c("A", "D", "AG", "B"))
 all_equal(X, Y, ignore_row_order = TRUE)
 all_equal(X, Y, ignore_row_order = FALSE)
 ```
-`setequal()` will report `TRUE` or `FALSE` to indicate a difference in rows if they have the same column names. 
+The `setequal()` function allows us to check if there's a difference between 2 tibbles. The `setequal()` function requires that column names match in order for it to check if there is a difference. 
 
 ```{r, eval=FALSE}
 
 setequal(X, Y) # This will not work 
 ```
 
-If we rename the column name in Y, the function will be able to indicate a difference. 
+If we rename the column name in Y, the function will be able to indicate a difference. `setequal()` will report `TRUE` or `FALSE` to indicate a difference in rows if they have the same column names. 
 
 ```{r}
 Y2 <- Y %>% rename(colname1 = colname2)
 setequal(X, Y2)
-```
-
-`setdiff()` requires that column names be the same so this will cause an error:
-
-```{r, eval = FALSE}
-setdiff(X, Y) # This will not work
 ```
 
 </details> 
@@ -1441,8 +1435,13 @@ OK, let's keep going with our data.
 How similar are the guidelines tibble and the observed consumption tibbles?
 
 ```{r, eval = FALSE}
+
+# Note: setequal() requires the same column names to compare. 
+consumption <- distinct(diet_data, dietary_risk) %>% 
+  rename(food = dietary_risk)
+
 setequal(
-  distinct(diet_data, dietary_risk),
+  consumption, 
   select(guidelines, food)
 )
 ```
@@ -1453,7 +1452,7 @@ Let's use the `setdiff` function to get more information about what is different
 
 ```{r, eval = FALSE}
 setdiff(
-  distinct(diet_data, dietary_risk),
+  consumption,
   select(guidelines, food)
 )
 ```
