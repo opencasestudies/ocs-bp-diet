@@ -3021,16 +3021,50 @@ all_age_diet_and_guidelines %>%
   ))
 ```
 
-What are the countries that have such high consumption rates?
+What are the countries that have such high consumption rates? It would be nice to be able to know what countries have the largest data points. One way to do this is using a package called `ggiraph`. This package is really helpful for creating interactive graphs. 
+
+We will use the `geom_point_interactive()` function to allow us to hover over points to display the country name. We indicate what label we want with the `tooltip` argument.
+This function is similar to the normal `geom_point()` function. Thus, we will include the same arguments as before. However, we will also split the male and female data using `facet_wrap()` to make things a bit less overwhelming.
+
+Notice that we are creating a plot object before we use the `geom_point_interactive()`.
+
+We are also rendering the plot with the `girafe()` function of the `ggiraph` package.
+
 
 ```{r}
 all_age_diet_and_guidelines %>%
   filter(food == "red meat") %>%
   filter(Relative_Percent > 100) %>% 
   arrange(desc(Relative_Percent))
+
+g <- all_age_diet_and_guidelines %>%
+  filter(food == "red meat") %>%
+  filter(Relative_Percent > 100) %>%
+  ggplot(aes(
+    y = Relative_Percent,
+    x = age_group_name,
+    fill = sex
+  )) +
+  geom_boxplot(outlier.shape = NA) +
+  facet_wrap(~sex) +
+  theme(axis.text.x = element_text(
+    angle = 70,
+    hjust = 1
+  ))
+
+g <- g + geom_point_interactive(aes(
+  color = sex,
+  tooltip = location_name
+),
+size = 2,
+position = position_jitterdodge(),
+alpha = 3 / 10
+)
+
+girafe(code = print(g))
 ```
  
- Looks like the males in Austria and Argentina have the highest consumption.
+Looks like the males in Austria and Argentina have the highest consumption.
 
  
 Now let's plot just the populations that eat less than the optimal amount by filtering for `Relative_Percent` < 100%.
@@ -3056,14 +3090,7 @@ all_age_diet_and_guidelines %>%
   ))
 ```
 
-Nice! It would be nice to be able to know what countries each data point corresponds to. One way to do this is using a package called `ggiraph`. This package is really helpful for creating interactive graphs. 
-
-We will use the `geom_point_interactive()` function to allow us to hover over points to display the country name. We indicate what label we want with the `tooltip` argument.
-This function is similar to the normal `geom_point()` function. Thus, we will include the same arguments as before. However, we will also split the male and female data using `facet_wrap()` to make things a bit less overwhelming.
-
-Notice that we are creating a plot object before we use the `geom_point_interactive()`.
-
-We are also rendering the plot with the `girafe()` function of the `ggiraph` package.
+Nice! Now let's create an interactive graph. 
 
 
 ```{r, eval = TRUE}
