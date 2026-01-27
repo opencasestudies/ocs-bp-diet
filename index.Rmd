@@ -4156,7 +4156,7 @@ This compilation time was measured on a PC machine operating on Windows 10. This
 
 We would like to acknowledge [Jessica
 Fanzo](https://bioethics.jhu.edu/people/profile/jessica-fanzo/) for
-assisting in framing the major direction of the case study, as well as [Ashkan Afshin](https://globalhealth.washington.edu/faculty/ashkan-afshin) and [Erin Mullany](http://www.healthdata.org/about/erin-mullany) for giving us access to the data.
+assisting in framing the major direction of the case study, [Ashkan Afshin](https://globalhealth.washington.edu/faculty/ashkan-afshin) and [Erin Mullany](http://www.healthdata.org/about/erin-mullany) for giving us access to the data, as well as Padmashri Saravanan and Allissa Dillman from [BioData Sage](https://www.biodatasage.com/) for reviewing and improving the case study.
 
 We would like to acknowledge [Michael Breshock](https://mbreshock.github.io/) for his contributions to this case study and developing the `OCSdata` package.
 
