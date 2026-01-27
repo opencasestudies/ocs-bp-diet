@@ -378,9 +378,9 @@ raw_data("ocs-bp-diet", outpath = getwd())
 If you used the `OCSdata` package to download the raw data, you can import the data into R like so:
 
 ```{r, eval=FALSE}
-diet_data <- readr::read_csv(here("OCSdata", "data", "raw", 
+diet_data <- readr::read_csv(here("OCS_data", "data", "raw", 
                        "dietary_risk_exposure_all_ages_2017.csv"))
-sep_age_diet_data <- read_csv(here("OCSdata", "data", "raw", 
+sep_age_diet_data <- read_csv(here("OCS_data", "data", "raw", 
                        "dietary_risk_exposure_sep_ages_2017.csv"))
 ```
 
@@ -574,7 +574,7 @@ Then, you may load the imported data using the following code:
 
 ```{r, eval=FALSE}
 imported_data("ocs-bp-diet", outpath = getwd())
-load(here::here("OCSdata", "data", "imported", "imported_data.rda"))
+load(here::here("OCS_data", "data", "imported", "imported_data.rda"))
 ```
 
 If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found in our [GitHub repository](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/imported/imported_data.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
@@ -973,10 +973,10 @@ guidelines %<>%
 guidelines
 ```
 
-If we wanted to remove the direction variable we could use the `modify_at()` function of the `purrr` package:
+If we wanted to remove the direction variable we could use the `mutate()` function of the `dplyr` package:
 
 ```{r,eval = FALSE}
-guidelines %>% purrr::modify_at("direction", ~NULL)
+guidelines %>% mutate(direction = NULL)
 ```
 
 
@@ -1070,7 +1070,7 @@ First we need to replace the empty values with `NA` using the `na_if()` function
 
 ```{r}
 guidelines %<>%
-  na_if("")
+  mutate(unit=na_if(unit, ""))
 guidelines
 ```
 
@@ -1414,7 +1414,7 @@ all_equal(X, Y, ignore_row_order = TRUE)
 all_equal(X, Y, ignore_row_order = FALSE)
 ```
 
-`seteqaul()` will report `TRUE` or `FALSE` to indicate either a difference in columns or rows
+`setequal()` will report `TRUE` or `FALSE` to indicate either a difference in columns or rows
 
 ```{r}
 setequal(X, Y)
@@ -1597,15 +1597,15 @@ guidelines %<>%
 # "optimal" variable
 guidelines %<>%
   mutate(optimal = if_else(condition = unit_optimal == "mg",
-    true = optimal / 1000,
-    false = optimal
+    true = as.numeric(optimal) / 1000,
+    false = as.numeric(optimal)
   ))
 
-# "upper_optimal" variable
+# "upper_optimal" variable 
 guidelines %<>%
   mutate(upper_optimal = if_else(condition = unit_optimal == "mg",
-    true = upper_optimal / 1000,
-    false = upper_optimal
+    true = as.numeric(upper_optimal) / 1000,
+    false = as.numeric(upper_optimal)
   ))
 
 # replace "mg" with "g" in the "unit_optimal" variable
@@ -1854,7 +1854,7 @@ Then, you may load the wrangled data using the following code:
 
 ```{r, eval=FALSE}
 wrangled_rda("ocs-bp-diet", outpath = getwd())
-load(here::here("OCSdata", "data", "wrangled", "wrangled_data.rda"))
+load(here::here("OCS_data", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
@@ -2112,7 +2112,7 @@ Then, you may load the wrangled data using the following code:
 
 ```{r, eval=FALSE}
 wrangled_rda("ocs-bp-diet", outpath = getwd())
-load(here::here("OCSdata", "data", "wrangled", "wrangled_data.rda"))
+load(here::here("OCS_data", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
@@ -2916,7 +2916,7 @@ Then, you may load the wrangled data using the following code:
 
 ```{r, eval=FALSE}
 wrangled_rda("ocs-bp-diet", outpath = getwd())
-load(here::here("OCSdata", "data", "wrangled", "wrangled_data.rda"))
+load(here::here("OCS_data", "data", "wrangled", "wrangled_data.rda"))
 ```
 
 If the package does not work for you, alternatively, an RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-diet/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-diet/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to copy and paste our code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily. 
@@ -3020,10 +3020,11 @@ What are the countries that have such high consumption rates?
 ```{r}
 all_age_diet_and_guidelines %>%
   filter(food == "red meat") %>%
-  filter(Relative_Percent > 1000)
+  filter(Relative_Percent > 100) %>% 
+  arrange(desc(Relative_Percent))
 ```
  
- Looks like the males in Laos and Timor_Leste have the highest consumption.
+ Looks like the males in Austria and Argentina have the highest consumption.
 
  
 Now let's plot just the populations that eat less than the optimal amount by filtering for `Relative_Percent` < 100%.
