@@ -249,7 +249,6 @@ library(OCSdata)
 [skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R 
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data
-[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` piping operator
 [purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble
 [tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with dplyr/stringr/tidyr/purrr
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns
@@ -650,10 +649,10 @@ knitr::include_graphics(here::here("img", "Diet_on_page3.png"))
 
 Let's use the `str_split()` function of the `stringr` package to split the data within the object called `pdf_table` by the word `"Diet"`.  Only lines from page 3 that contain the word `"Diet"` will be selected (and not `"diet"` as this function is case-sensitive). Each section of the text that contains `"Diet"` will be split into individual pieces every time the word `"Diet"` occurs and the word itself will be removed.
 
-In this case we are also using the magrittr assignment pipe or double pipe that looks like this `%<>%` of the `magrittr` package. This allows us use the `pdf_table` data as input to the later steps but also reassign the output to the same data object name.
+In this case we are also using a combination of the assignment operator and the `%>%` pipe. This allows us use the `pdf_table` data as input to the later steps but also reassign the output to the same data object name.
 
 ```{r}
-pdf_table %<>%
+pdf_table <- pdf_table %>% 
   stringr::str_split(pattern = "Diet")
 ```
 
@@ -682,7 +681,7 @@ For more information about `str_split()` see [here](http://rfunction.com/archive
 Let's separate the values within the list using the base `unlist` function, this will allow us to easily select the different substrings within the object called `pdf_table`.
 
 ```{r}
-pdf_table %<>%
+pdf_table <- pdf_table %>% 
   unlist()
 ```
 
@@ -729,7 +728,7 @@ So we will select the second through the second-to-last of the substrings. Since
 # one could subset the pdf_table like this:
 # pdf_table <- pdf_table[2:16]
 
-pdf_table %<>%
+pdf_table <- pdf_table %>% 
   str_subset(pattern = "Mean daily consumption|Mean daily intake|24 h")
 ```
 
@@ -780,7 +779,7 @@ It is important to replace these for later when we want these values to be conve
 
 
 ```{r,}
-pdf_table %<>%
+pdf_table <- pdf_table %>% 
   stringr::str_replace_all(
     pattern = "·",
     replacement = "."
@@ -899,8 +898,8 @@ Now we will create a `tibble` using this data. However, currently both `category
 
 ```{r}
 class(category)
-category %<>% unlist()
-amount %<>% unlist()
+category <- category %>%  unlist()
+amount <- amount %>% unlist()
 class(category)
 ```
 
@@ -955,7 +954,7 @@ We can use the `tidyr::separate()` function to separate the data within the amou
 # It will contain the 2nd part of the data based on the "–"
 # The "\\" are necessary - we will explain very soon
 
-guidelines %<>%
+guidelines <- guidelines %>% 
   tidyr::separate(amount,
     c("optimal", "lower", "upper"),
     sep = "\\(|–"
@@ -968,7 +967,7 @@ guidelines
 Let's also create a new variable/column in our tibble that indicates the direction of over- or under-consumption that can be harmful for each dietary factor.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>%  
   separate(category, c("direction", "food"), sep = " in ")
 guidelines
 ```
@@ -1055,7 +1054,7 @@ Notice that the values that are percentages don't have spaces between the number
 We can separate the `"optimal"` values by a space or a percent symbol `"%"` using `"|"` to indicate that we want to separate by either. In this case we will lose the "%" and will need to add it back to those values.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   separate(optimal,
     into = c("optimal", "unit"),
     sep = " |%",
@@ -1069,7 +1068,7 @@ Great, so to now we will add "`%`" to the `unit` variable for  the `"low in poly
 First we need to replace the empty values with `NA` using the `na_if()` function of the `dplyr` package.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(unit=na_if(unit, ""))
 guidelines
 ```
@@ -1078,7 +1077,7 @@ guidelines
 Then to replace the `NA` values, we can use the `replace_na()` function in the `tidyr` package and the `mutate()` function of `dplyr` to specify which values to replace, in this case the `NA` values within the variable `unit`. Essentially this variable gets reassigned with the new values, as we mostly think of the `mutate()` function as creating new variables.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   dplyr::mutate(unit = replace_na(unit, "%"))
 
 # now just to show these rows
@@ -1089,7 +1088,7 @@ guidelines %>%
 Let's also move `unit` to be the last column. We can use the `relocate()` function of the `dplyr` package to do this. For more information about the `relocate()` function see [here](https://dplyr.tidyverse.org/reference/relocate.html){target="_blank"}.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   relocate(unit, .after = last_col())
 ```
 
@@ -1123,7 +1122,7 @@ To convert these values to numeric we use the `mutate()` and `across()` function
 The `across()` function has two main arguments: (i) the columns you want to operate on and (ii) the function or list of functions to apply to each column. In this case if we look at the beginning of the `guidelines` tibble, we can see that `optimal`, `lower` and `upper` should be converted. As these three columns are sequential, we can simply put a `:` between `optimal` and `upper` to indicate that we want all the variables in between these columns to be converted. 
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(across(lower:upper, as.numeric))
 guidelines
 ```
@@ -1236,7 +1235,7 @@ Notice we didn't need this when we previously use `mutate_at()` with the `as.num
 
 ```{r}
 # Replacing "polyunsaturated" with"polyunsaturated fatty acids"
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate_at(
     vars(food),
     ~ str_replace(
@@ -1254,7 +1253,7 @@ This might be considered a better option because it is more readable as to where
 There is one last minor detail... the `direction` variable has leading spaces still. We can use `str_trim()` to fix that!
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate_at(vars(direction), str_trim)
 
 guidelines
@@ -1284,7 +1283,7 @@ select(guidelines, food)
 We are actually pretty close: there are 15 dietary factors in each data set, and the names are nearly the same. To make them match completely, we can see that we need to remove the `"Diet low in"` and `"Diet high in"` phrases from the observed consumption data.
 
 ```{r}
-diet_data %<>%
+diet_data <- diet_data %>% 
   mutate_at(
     vars(dietary_risk),
     ~ str_remove(
@@ -1293,7 +1292,7 @@ diet_data %<>%
     )
   )
 
-sep_age_diet_data %<>%
+sep_age_diet_data <- sep_age_diet_data %>% 
   mutate_at(
     vars(dietary_risk),
     ~ str_remove(
@@ -1413,11 +1412,18 @@ Y <- tibble(colname2 = c("A", "D", "AG", "B"))
 all_equal(X, Y, ignore_row_order = TRUE)
 all_equal(X, Y, ignore_row_order = FALSE)
 ```
+`setequal()` will report `TRUE` or `FALSE` to indicate a difference in rows if they have the same column names. 
 
-`setequal()` will report `TRUE` or `FALSE` to indicate either a difference in columns or rows
+```{r, eval=FALSE}
+
+setequal(X, Y) # This will not work 
+```
+
+If we rename the column name in Y, the function will be able to indicate a difference. 
 
 ```{r}
-setequal(X, Y)
+Y2 <- Y %>% rename(colname1 = colname2)
+setequal(X, Y2)
 ```
 
 `setdiff()` requires that column names be the same so this will cause an error:
@@ -1434,7 +1440,7 @@ OK, let's keep going with our data.
 
 How similar are the guidelines tibble and the observed consumption tibbles?
 
-```{r}
+```{r, eval = FALSE}
 setequal(
   distinct(diet_data, dietary_risk),
   select(guidelines, food)
@@ -1458,9 +1464,9 @@ setdiff(
 We can use the `rename()` function from `dplyr` to do this. We list the value that we want to change to first. We find "food" more intuitive now so we are going to change "dietary_risk" to "food" for the `diet_data` and the `sep_age_diet_data`:
 
 ```{r}
-diet_data %<>%
+diet_data <- diet_data %>% 
   dplyr::rename(food = dietary_risk)
-sep_age_diet_data %<>%
+sep_age_diet_data <- sep_age_diet_data %>% 
   dplyr::rename(food = dietary_risk)
 ```
 
@@ -1480,7 +1486,7 @@ Checking our original files we can see that the British spelling "fibre" is used
 Let's stick with the American spelling, so we will replace `"fibre"` in the guideline tibble.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate_at(
     vars(food),
     ~ str_replace(
@@ -1550,7 +1556,7 @@ So it looks like the `"upper"` , `"lower"` and `"unit"` variable names are overl
 We will again use the `rename` function from the `dplyr` package. We can list multiple variables to rename and separate each with a comma. We need to list the new names first.
 
 ```{r}
-guidelines %<>%
+guidelines <- guidelines %>% 
   rename(
     upper_optimal = upper,
     lower_optimal = lower,
@@ -1584,7 +1590,7 @@ In the following we mutate the values in each of the guideline numeric columns (
 
 ```{r}
 # "lower_optimal" variable
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(lower_optimal = dplyr::if_else(
     condition = unit_optimal == "mg",
     true = lower_optimal / 1000,
@@ -1595,21 +1601,21 @@ guidelines %<>%
 # If not, the corresponding "lower_optimal" (already in g) is not changed
 
 # "optimal" variable
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(optimal = if_else(condition = unit_optimal == "mg",
     true = as.numeric(optimal) / 1000,
     false = as.numeric(optimal)
   ))
 
 # "upper_optimal" variable 
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(upper_optimal = if_else(condition = unit_optimal == "mg",
     true = as.numeric(upper_optimal) / 1000,
     false = as.numeric(upper_optimal)
   ))
 
 # replace "mg" with "g" in the "unit_optimal" variable
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(unit_optimal = if_else(condition = unit_optimal == "mg",
     true = "g",
     false = unit_optimal
@@ -1624,14 +1630,14 @@ guidelines
 
 ```{r, eval = FALSE}
 # Another possible way with dplyr::case_when():
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate(lower_optimal = case_when(
     unit_optimal == "mg" ~ lower_optimal / 1000,
     unit_optimal != "mg" ~ lower_optimal
   ))
 
 # Or could use this:
-guidelines %<>%
+guidelines <- guidelines %>% 
   mutate_at(
     vars(unit_optimal),
     ~ str_replace(
@@ -1701,30 +1707,30 @@ To do this, let's calculate values of consumption that are relative to the sugge
 There are a few approaches we could take. One is to calculate a `"percentage of optimal consumption"` using the mean value for each observed factor relative to its optimal value. To do this we will use the `mutate()` function of the `dplyr`package. This will create a new variable called `Relative_Percent` that will be equal to the ratio of the `mean` value and the `optimal` value, multiplied by 100, to create a percentage relative to the optimal amount suggested.
 
 ```{r}
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   mutate(Relative_Percent = (mean / optimal) * 100)
 
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   mutate(Relative_Percent = (mean / optimal) * 100)
 ```
 
 Another option is to incorporate the range of optimal intakes and the direction that is associated with health risk. If the direction of risk is `high` and the consumption was greater than the `optimal` mean value, than the percentage is calculated based on the `upper_optimal` value, while if the direction of risk is `low` and the consumption is less than the `optimal` mean value, then the percentage is calculated based on the `lower_optimal` value. We will use the `case_when()` function of the `dplyr` package to do this. This allows us to specify values (indicated on the right side of the `~`symbol) based on specific conditions (indicated on the left side of the `~` symbol). We can specify multiple conditions using the `&` symbol.
 
 ```{r}
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   mutate(range_percent = case_when(
     direction == "high" ~ (mean / upper_optimal) * 100,
     direction == "low" ~ (mean / lower_optimal) * 100
   ))
 
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   mutate(range_percent = case_when(
     direction == "high" ~ (mean / upper_optimal) * 100,
     direction == "low" ~ (mean / lower_optimal) * 100
   ))
 
 
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   mutate(percent_over_under = case_when(
     direction == "high" & mean > upper_optimal ~
     ((mean - upper_optimal) / upper_optimal) * 100,
@@ -1735,7 +1741,7 @@ diet_and_guidelines %<>%
   ))
 
 
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   mutate(percent_over_under = case_when(
     direction == "high" & mean > upper_optimal ~
     ((mean - upper_optimal) / upper_optimal) * 100,
@@ -1750,7 +1756,7 @@ Another option is to create a binary outcome indicating whether optimal consumpt
 
 ```{r}
 
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   mutate(opt_achieved = if_else(
     condition = direction == "low" & mean > lower_optimal |
       direction == "high" & mean < upper_optimal,
@@ -1758,7 +1764,7 @@ diet_and_guidelines %<>%
     false = "No"
   ))
 
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   mutate(opt_achieved = if_else(
     condition = direction == "low" & mean > lower_optimal |
       direction == "high" & mean < upper_optimal,
@@ -2025,7 +2031,7 @@ Continuing with `ggplot2` we will now create a different type of plot. This time
 # we will create a new variable with food names with new lines
 # str_replace() is used here because we are only replacing the first instance of space
 # otherwise str_replace_all() should be used
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   mutate(
     food_to_plot =
       str_replace(
@@ -2268,7 +2274,8 @@ In this case, the slope or $\beta_{1}$ is 1 and the intercept $\beta_{0}$ is 10 
 Like this regression:
 ```{r, echo = FALSE, out.width="400ptx"}
 set.seed(13)
-thedata %<>% mutate(y2 = rnorm(20, sd = 40))
+thedata <- thedata %>% 
+  mutate(y2 = rnorm(20, sd = 40))
 
 ggplot(data = thedata, aes(x = x, y = y2)) +
   geom_smooth(
@@ -2310,9 +2317,9 @@ Before we get started, let's remove the global values from our data and set them
 ```{r}
 global <- diet_and_guidelines %>%
   filter(location_name == "Global")
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   filter(location_name != "Global")
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   filter(location_name != "Global")
 ```
 
@@ -2433,7 +2440,7 @@ Look at the results for the slope of the regression line, indicated by the `sexM
 
 
 ```{r}
-diet_and_guidelines %<>%
+diet_and_guidelines <- diet_and_guidelines %>% 
   mutate_at(vars(sex), factor)
 
 diet_and_guidelines %>%
@@ -2701,7 +2708,7 @@ The ANOVA assumptions are quite similar to the $t$-test assumptions:
 let's evaluate our assumptions for the groups we are comparing, starting with normality using Q-Q plots.  First let's make `age_group_name` a factor:
 
 ```{r}
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   mutate_at(vars(age_group_name), factor)
 ```
 
@@ -3099,7 +3106,7 @@ Let's do the same thing for the over-consuming countries. We can also take this 
 We can also add links to Wikipedia pages for these countries using the `onclick` argument. See this [link](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html){target="_blank"} for more information on using the `ggirpah` package. We will use the base `sprintf()` function to format our urls for the Wikipedia links into C style to open a new tab for the link when a user clicks on the figure.
 
 ```{r, eval = TRUE}
-all_age_diet_and_guidelines %<>%
+all_age_diet_and_guidelines <- all_age_diet_and_guidelines %>% 
   mutate(link = sprintf(
     "window.open(\"%s%s\")",
     "http://en.wikipedia.org/wiki/",
@@ -4088,7 +4095,6 @@ Students can evaluate consumption estimates of another dietary factor besides re
 [skimr](https://cran.r-project.org/web/packages/skimr/index.html){target="_blank"}      | to get an overview of data    
 [pdftools](https://cran.r-project.org/web/packages/pdftools/pdftools.pdf){target="_blank"}   | to read a PDF into R   
 [stringr](https://stringr.tidyverse.org/articles/stringr.html){target="_blank"}    | to manipulate the text within the PDF of the data   
-[magrittr](https://magrittr.tidyverse.org/articles/magrittr.html){target="_blank"}   | to use the `%<>%` piping operator  
 [purrr](https://purrr.tidyverse.org/){target="_blank"}      | to perform functions on all columns of a tibble   
 [tibble](https://tibble.tidyverse.org/){target="_blank"}     | to create data objects that we can manipulate with  dplyr/stringr/tidyr/purrr  
 [tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to separate data within a column into multiple columns 
