@@ -55,6 +55,7 @@ library(wordcountaddin)
 library(read.so)
 install.packages("skimr")
 install.packages("pdftools")
+install.packages("ggpubr")
 
 rmarkdown:::perf_timer_reset_all()
 rmarkdown:::perf_timer_start("render")
