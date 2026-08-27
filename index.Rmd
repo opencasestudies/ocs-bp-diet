@@ -303,7 +303,7 @@ There are some important limitations regarding the data from this article to kee
 
 There are also important nuances to keep in mind regarding some of the dietary factors. For example calcium consumption was calculated based on consumption of dairy products, while calcium can be acquired from other sources including plant-based sources. However in these data, the influence of plant-based consumption of calcium was not accounted for, nor was supplementation through vitamin sources. 
 
-Also, while [gender](https://www.genderspectrum.org/quick-links/understanding-gender/){target="_blank"} and [sex](https://www.who.int/genomics/gender/en/index1.html){target="_blank"} are not actually binary, the data used in this analysis only contains information for groups of individuals described as male or female. 
+Also, while [gender](https://www.thetrevorproject.org/resources/article/understanding-gender-identities-and-pronouns/){target="_blank"} and [sex](https://www.who.int/genomics/gender/en/index1.html){target="_blank"} are not actually binary, the data used in this analysis only contains information for groups of individuals described as male or female. 
 
 ## **What are the data?**
 ***
@@ -2331,7 +2331,7 @@ Since we will be covering a lot of different statistical concepts here, we will 
 
 Let's take a look at red meat.
 
-We can compare the relative percent of red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R by default) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
+We can compare the relative percent of red meat consumption of males and females around the world using the well known $t$-test using the `t.test()` function and a linear regression model using the `lm()` function (both are included in `stats` package that is installed with R by default) and we will get the **same results**. See [here](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} for additional explanation about why that is the case. [Here](https://medium.com/data-science/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} are also great sources about how many commonly known statistical tests are specialized forms of regression.
 
 Before we get started, let's think about the assumptions of both an independent samples $t$-test and linear regression.
 
@@ -4065,7 +4065,7 @@ Interested in exploring more open case studies? Visit **[opencasestudies.org](ht
 [Residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}  
 [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20$t$-test){target="_blank"}  
 [ANOVA](http://onlinestatbook.com/2/analysis_of_variance/intro.html){target="_blank"}  
-[$t$-tests and ANOVA are equivalent to regression](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} also see [here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} about how many commonly known statistical tests are specialized forms of regression  
+[$t$-tests and ANOVA are equivalent to regression](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} also see [here](https://medium.com/data-science/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} about how many commonly known statistical tests are specialized forms of regression  
 [Normal Distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"}  
 [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}  
 [Guide to residual diagnostic plots](https://data.library.virginia.edu/diagnostic-plots/) and [Examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"}  
@@ -4092,11 +4092,11 @@ Interested in exploring more open case studies? Visit **[opencasestudies.org](ht
 
 <u>Other helpful links:</u>
 
-[Long and Wide Data Formats](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}    
+[Long and Wide Data Formats](https://stefvanbuuren.name/fimd/sec-longandwide.html){target="_blank"}    
 [Distributions](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} 
 [Skewed Distributions](http://onlinestatbook.com/2/glossary/skew.html){target="_blank"} 
 [Bimodal Distribution](http://onlinestatbook.com/2/introduction/distributions.html){target="_blank"} 
-[ggplot2](https://opencasestudies.github.io/ocs-healthexpenditure/ocs-healthexpenditure.html){target="_blank"}    
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}    
 [Shapiro-Wilk Test](http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html){target="_blank"}   
 [Paired Data](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5579465/){target="_blank"}  
 [Welch's $t$-test](https://www.statisticshowto.datasciencecentral.com/welchs-test-for-unequal-variances/){target="_blank"}    
@@ -4112,7 +4112,7 @@ Interested in exploring more open case studies? Visit **[opencasestudies.org](ht
 [Two-sample Kolmogorov-Smirnov Test](https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/ks2samp.htm){target="_blank"}  
 [Type 1 Error](https://web.ma.utexas.edu/users/mks/statmistakes/errortypes.html){target="_blank"}  
 [p-value](https://towardsdatascience.com/p-values-explained-by-data-scientist-f40a746cfc8){target="_blank"}  
-[Multiple Testing](https://www.gs.washington.edu/academics/courses/akey/56008/lecture/lecture10.pdf){target="_blank"}    
+[Multiple Testing](https://web.archive.org/web/20250311064147/https://www.gs.washington.edu/academics/courses/akey/56008/lecture/lecture10.pdf){target="_blank"}    
 [Bonferroni Method of Multiple Testing Correction](http://mathworld.wolfram.com/BonferroniCorrection.html){target="_blank"}
 
 <u>Packages used in this case study: </u>
