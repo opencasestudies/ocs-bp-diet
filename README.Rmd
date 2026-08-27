@@ -76,7 +76,7 @@ In this case study we will be using data that we requested form the [Global Burd
 
 We will also be using data from a PDF of an article about the optimal consumption guidelines for these dietary factors.
 
-Previously according to their [website](https://www.chds.us/ssdb/methods/): 
+Previously according to their website: 
 
 *"The database compiles information from more than 25 different sources including peer-reviewed studies, government reports, mainstream media, non-profits, private websites, blogs, and crowd-sourced lists that have been analyzed, filtered, deconflicted, and cross-referenced. **All of the information is based on open-source information and 3rd party reporting... and may include reporting errors.**"*
 
@@ -174,7 +174,7 @@ See [this other case study](https://opencasestudies.github.io/ocs-bp-rural-and-u
 [Residual](https://www.statisticshowto.datasciencecentral.com/residual/){target="_blank"}  
 [$t$-tests](https://stattrek.com/statistics/dictionary.aspx?definition=two-sample%20$t$-test){target="_blank"}  
 [ANOVA](http://onlinestatbook.com/2/analysis_of_variance/intro.html){target="_blank"}  
-[$t$-tests and ANOVA are equivalent to regression](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} also see [here](https://towardsdatascience.com/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} about how many commonly known statistical tests are specialized forms of regression  
+[$t$-tests and ANOVA are equivalent to regression](https://scientificallysound.org/2017/06/08/$t$-test-as-linear-models-r/){target="_blank"} also see [here](https://medium.com/data-science/everything-is-just-a-regression-5a3bf22c459c){target="_blank"} and [here](https://lindeloev.github.io/tests-as-linear/){target="_blank"} about how many commonly known statistical tests are specialized forms of regression  
 [Normally Distribution](https://www.physiology.org/doi/full/10.1152/advan.00064.2017){target="_blank"}  
 [Q-Q plot](http://onlinestatbook.com/2/advanced_graphs/q-q_plots.html){target="_blank"}  
 [Guide to residual diagnostic plots](https://data.library.virginia.edu/diagnostic-plots/) and [Examples](http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/){target="_blank"}  
