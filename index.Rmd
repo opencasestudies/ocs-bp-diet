@@ -59,6 +59,7 @@ install.packages("ggpubr")
 install.packages("lmerTest")
 install.packages("ggiraph")
 install.packages("ggforce")
+install.packages("viridis")
 
 rmarkdown:::perf_timer_reset_all()
 rmarkdown:::perf_timer_start("render")
