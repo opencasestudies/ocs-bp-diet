@@ -57,6 +57,7 @@ install.packages("skimr")
 install.packages("pdftools")
 install.packages("ggpubr")
 install.packages("lmerTest")
+install.packages("ggiraph")
 
 rmarkdown:::perf_timer_reset_all()
 rmarkdown:::perf_timer_start("render")
