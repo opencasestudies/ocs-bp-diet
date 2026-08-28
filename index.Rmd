@@ -62,6 +62,7 @@ install.packages(
   type = "source"
 )
 install.packages("lmerTest")
+library(lme4)
 install.packages("ggiraph")
 install.packages("ggforce")
 install.packages("viridis")
