@@ -195,7 +195,7 @@ See [this other case study](https://opencasestudies.github.io/ocs-bp-rural-and-u
 <u>Tests of Homogeneity of Variance for 3 or more groups:</u>
 
 [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"}  
-[Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"}  
+[Fligner-Killeen](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fligner.test.html){target="_blank"}  
 [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}  
  
 
@@ -271,5 +271,4 @@ Students can evaluate consumption estimates of another dietary factor besides re
 ~ About 79 - 89 seconds
 
 This compilation time was measured on a PC machine operating on Windows 10. This range should only be used as an estimate as compilation time will vary with different machines and operating systems.
-
 
