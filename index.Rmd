@@ -56,7 +56,11 @@ library(read.so)
 install.packages("skimr")
 install.packages("pdftools")
 install.packages("ggpubr")
-install.packages("lme4")
+install.packages(
+  "https://cran.r-project.org/src/contrib/Archive/Matrix/Matrix_1.6-1.tar.gz",
+  repos = NULL,
+  type = "source"
+)
 install.packages("lmerTest")
 install.packages("ggiraph")
 install.packages("ggforce")
@@ -2739,7 +2743,7 @@ all_age_diet_and_guidelines %>%
 
 After transformation, these Q-Q plots look pretty good.
 
-Now let's look at the assumption of constant variance. There are different ways to assess this assumption across more than two groups.  [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} works well if the data appears to be quite normally distributed, while the [Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"} test is nonparametric and does not assume normality of the data.
+Now let's look at the assumption of constant variance. There are different ways to assess this assumption across more than two groups.  [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"} works well if the data appears to be quite normally distributed, while the [Fligner-Killeen](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fligner.test.html){target="_blank"} test is nonparametric and does not assume normality of the data.
 
 We will use another popular test, [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}, which is more robust to violations of normality than the Bartlett's test, but not as robust as the Fligner-Killeen test.  The null hypothesis of this test, as for the other two tests, is that the variances are equal across all of the groups.  The alternative hypothesis is that at least one pair of groups has different variances.  In symbols we would write this as
 
@@ -4095,7 +4099,7 @@ Interested in exploring more open case studies? Visit **[opencasestudies.org](ht
 <u>Tests of Homogeneity of Variance for 3 or more groups:</u>
 
 [Bartlett's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm){target="_blank"}  
-[Fligner-Killeen](http://wiki.stat.ucla.edu/socr/index.php/AP_Statistics_Curriculum_2007_NonParam_VarIndep){target="_blank"}  
+[Fligner-Killeen](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fligner.test.html){target="_blank"}  
 [Levene's test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35a.htm){target="_blank"}  
  
 
