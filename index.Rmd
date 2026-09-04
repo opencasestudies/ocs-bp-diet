@@ -46,11 +46,16 @@ knitr::opts_chunk$set(
   message = FALSE, warning = FALSE, cache = FALSE,
   fig.align = "center", out.width = "90%"
 )
-install.packages(
-  "https://cran.r-project.org/src/contrib/Archive/Matrix/Matrix_1.6-1.tar.gz",
-  repos = NULL,
-  type = "source"
-)
+# Matrix is bundled with the rendering image. Install the compatible archived
+# release only when it is genuinely absent; rebuilding it on every preview can
+# exceed the preview action's render time limit.
+if (!requireNamespace("Matrix", quietly = TRUE)) {
+  install.packages(
+    "https://cran.r-project.org/src/contrib/Archive/Matrix/Matrix_1.6-1.tar.gz",
+    repos = NULL,
+    type = "source"
+  )
+}
 library(here)
 library(knitr)
 library(magrittr)
@@ -61,8 +66,12 @@ library(read.so)
 install.packages("skimr")
 install.packages("pdftools")
 install.packages("ggpubr")
-install.packages("lmerTest")
-library(lme4)
+if (!requireNamespace("lme4", quietly = TRUE)) {
+  install.packages("lme4")
+}
+if (!requireNamespace("lmerTest", quietly = TRUE)) {
+  install.packages("lmerTest")
+}
 install.packages("ggiraph")
 install.packages("ggforce")
 install.packages("viridis")
