@@ -46,10 +46,10 @@ knitr::opts_chunk$set(
   message = FALSE, warning = FALSE, cache = FALSE,
   fig.align = "center", out.width = "90%"
 )
-# Keep the compiled mixed-model packages aligned.  lme4 links against Matrix's
-# CHOLMOD interface, so it must be rebuilt after installing this Matrix release.
+# lme4 requires Matrix >= 1.6-2: Matrix 1.6-1 has an older, incompatible
+# CHOLMOD interface. Rebuild the packages that link to Matrix afterward.
 install.packages(
-  "https://cran.r-project.org/src/contrib/Archive/Matrix/Matrix_1.6-1.tar.gz",
+  "https://cran.r-project.org/src/contrib/Archive/Matrix/Matrix_1.6-5.tar.gz",
   repos = NULL,
   type = "source"
 )
