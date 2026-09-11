@@ -15,11 +15,11 @@ spell_error_min: 0
 
 #### Other options
 # Style any R code
-style-code: false
+style-code: true
 # Would you like your markdown files to be checked for formatting
-markdown-linter: false
+markdown-linter: true
 # Would you like a readability report on your markdowns?
-readability-report: false
+readability-report: true
 # Test build the docker image if any docker-relevant files have been changed
 docker-test: false
 # Should URLs be tested periodically?
