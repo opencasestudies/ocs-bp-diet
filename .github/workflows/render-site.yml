@@ -1,0 +1,53 @@
+# Candace Savonen 2021
+# Updated April 2025
+
+name: Render website
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, staging ]
+    paths:
+      - '*.qmd'
+      - '*.Rmd'
+      - assets/*
+      - quizzes/*
+
+jobs:
+
+  yaml-check:
+    name: Load user automation choices
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+        # Use the yaml-env-action action.
+      - name: Load environment from YAML
+        uses: doughepi/yaml-env-action@v1.0.0
+        with:
+            files: config_automation.yml # Pass a space-separated list of configuration files. Rightmost files take precedence.
+    outputs:
+      toggle_website: "${{ env.RENDER_WEBSITE }}"
+      rendering_docker_image: "${{ env.RENDERING_DOCKER_IMAGE }}"
+
+  render-website:
+    name: Render website
+    needs: yaml-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+    
+      - name: Run render
+        id: render
+        uses: ottrproject/ottr-preview@main
+        with:
+          toggle_website: ${{needs.yaml-check.outputs.toggle_website}}
+          preview: false
+          token: ${{ secrets.GH_PAT }}
+          docker_image: ${{needs.yaml-check.outputs.rendering_docker_image}}
