@@ -1083,7 +1083,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Croatia,calcium,11,30 to 34,Male,continuous,0.74626895282,0.802357017,0.6980362485,g/day
 2017,Croatia,calcium,12,35 to 39,Male,continuous,0.74669054712,0.8038720305,0.6930166425,g/day
 2017,Croatia,calcium,13,40 to 44,Male,continuous,0.75519616524,0.808619641,0.69903341825,g/day
-2017,Croatia,calcium,14,45 to 49,Male,continuous,0.76988065735,0.82531777275,0.71610358650000006,g/day
+2017,Croatia,calcium,14,45 to 49,Male,continuous,0.76988065735,0.82531777275,0.71610358649999994,g/day
 2017,Croatia,calcium,15,50 to 54,Male,continuous,0.78376570142,0.8463821815,0.728536021,g/day
 2017,Croatia,calcium,16,55 to 59,Male,continuous,0.79794326774,0.866296626,0.73945662275,g/day
 2017,Croatia,calcium,17,60 to 64,Male,continuous,0.79446232682,0.85467995175,0.73770096975,g/day
@@ -2631,7 +2631,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,The Bahamas,calcium,14,45 to 49,Female,continuous,0.4777813568,0.52094010275,0.4388821555,g/day
 2017,The Bahamas,calcium,15,50 to 54,Female,continuous,0.48666064628,0.52897847675,0.445429811,g/day
 2017,The Bahamas,calcium,16,55 to 59,Female,continuous,0.49322398547,0.53955889675,0.45221795575,g/day
-2017,The Bahamas,calcium,17,60 to 64,Female,continuous,0.49119136902,0.53752115225,0.45040954774999997,g/day
+2017,The Bahamas,calcium,17,60 to 64,Female,continuous,0.49119136902,0.53752115225,0.45040954775000003,g/day
 2017,The Bahamas,calcium,18,65 to 69,Female,continuous,0.47642424816,0.52073787875,0.4347766225,g/day
 2017,The Bahamas,calcium,19,70 to 74,Female,continuous,0.45817003088,0.50125687075,0.419499027,g/day
 2017,The Bahamas,calcium,20,75 to 79,Female,continuous,0.44117199094,0.483008374,0.40319227675,g/day
@@ -3071,7 +3071,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Ecuador,calcium,19,70 to 74,Male,continuous,0.43427027543,0.48336402125,0.3892907855,g/day
 2017,Ecuador,calcium,20,75 to 79,Male,continuous,0.41645950013,0.466560368,0.37175428875,g/day
 2017,Ecuador,calcium,30,80 to 84,Male,continuous,0.38206458053,0.425406151,0.3412363235,g/day
-2017,Ecuador,calcium,31,85 to 89,Male,continuous,0.37744185339,0.42211585149999997,0.3350878005,g/day
+2017,Ecuador,calcium,31,85 to 89,Male,continuous,0.37744185339,0.42211585150000003,0.3350878005,g/day
 2017,Ecuador,calcium,32,90 to 94,Male,continuous,0.37688128685,0.42453814375,0.33744692725,g/day
 2017,Ecuador,calcium,235,95 plus,Male,continuous,0.37531768638,0.41791781225,0.337319261,g/day
 2017,Ecuador,calcium,10,25 to 29,Female,continuous,0.37911168017,0.42007346275,0.34027111025,g/day
@@ -4450,7 +4450,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Djibouti,calcium,18,65 to 69,Male,continuous,0.3185616892,0.3539349045,0.28654687425000003,g/day
 2017,Djibouti,calcium,19,70 to 74,Male,continuous,0.30757487841,0.33985281575,0.276223287,g/day
 2017,Djibouti,calcium,20,75 to 79,Male,continuous,0.29507923548,0.32833410025,0.26306984825,g/day
-2017,Djibouti,calcium,30,80 to 84,Male,continuous,0.26869792863999997,0.2986753455,0.2391651,g/day
+2017,Djibouti,calcium,30,80 to 84,Male,continuous,0.26869792864000003,0.2986753455,0.2391651,g/day
 2017,Djibouti,calcium,31,85 to 89,Male,continuous,0.26751122424,0.301508076,0.238125612,g/day
 2017,Djibouti,calcium,32,90 to 94,Male,continuous,0.26587145562,0.2934119275,0.238686636,g/day
 2017,Djibouti,calcium,235,95 plus,Male,continuous,0.26516621064,0.2938305455,0.23862740475,g/day
@@ -4914,7 +4914,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Lesotho,calcium,17,60 to 64,Female,continuous,0.17253999599,0.188418065,0.15778061125,g/day
 2017,Lesotho,calcium,18,65 to 69,Female,continuous,0.16701165921,0.18157022525,0.152824249,g/day
 2017,Lesotho,calcium,19,70 to 74,Female,continuous,0.16065182384,0.17520783075,0.148035251,g/day
-2017,Lesotho,calcium,20,75 to 79,Female,continuous,0.1540881626,0.16879090125000001,0.140665328,g/day
+2017,Lesotho,calcium,20,75 to 79,Female,continuous,0.1540881626,0.16879090124999999,0.140665328,g/day
 2017,Lesotho,calcium,30,80 to 84,Female,continuous,0.13978445732,0.15159458975,0.126975941,g/day
 2017,Lesotho,calcium,31,85 to 89,Female,continuous,0.13915507435,0.1519760675,0.12764754025,g/day
 2017,Lesotho,calcium,32,90 to 94,Female,continuous,0.13851882978,0.15135726025,0.12583912225,g/day
@@ -5213,7 +5213,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Cote d'Ivoire,calcium,16,55 to 59,Female,continuous,0.24033490238,0.26080327675,0.22194156525,g/day
 2017,Cote d'Ivoire,calcium,17,60 to 64,Female,continuous,0.23980037502,0.26170165975,0.220116513,g/day
 2017,Cote d'Ivoire,calcium,18,65 to 69,Female,continuous,0.23183506328,0.2511998485,0.21457847225,g/day
-2017,Cote d'Ivoire,calcium,19,70 to 74,Female,continuous,0.22414639624,0.24407465025,0.20577572425000001,g/day
+2017,Cote d'Ivoire,calcium,19,70 to 74,Female,continuous,0.22414639624,0.24407465025,0.20577572424999999,g/day
 2017,Cote d'Ivoire,calcium,20,75 to 79,Female,continuous,0.21453283464,0.2339521925,0.19715961975,g/day
 2017,Cote d'Ivoire,calcium,30,80 to 84,Female,continuous,0.19395225513,0.21044701075,0.17816111175,g/day
 2017,Cote d'Ivoire,calcium,31,85 to 89,Female,continuous,0.19365272985,0.2111378975,0.1777009155,g/day
@@ -7535,7 +7535,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,South Korea,fiber,13,40 to 44,Male,continuous,8.8102490663,10.16164965,7.5558676725,g/day
 2017,South Korea,fiber,14,45 to 49,Male,continuous,9.1897960404,10.58735205,7.9580642575,g/day
 2017,South Korea,fiber,15,50 to 54,Male,continuous,9.4303974584,10.930427975,8.083220875,g/day
-2017,South Korea,fiber,16,55 to 59,Male,continuous,9.7069558572,11.209381525,8.3428041274999991,g/day
+2017,South Korea,fiber,16,55 to 59,Male,continuous,9.7069558572,11.209381525,8.3428041275000009,g/day
 2017,South Korea,fiber,17,60 to 64,Male,continuous,9.6744311372,11.244310625,8.30133013,g/day
 2017,South Korea,fiber,18,65 to 69,Male,continuous,9.2148225591,10.714375875,7.91659983,g/day
 2017,South Korea,fiber,19,70 to 74,Male,continuous,9.2453918013,10.680272775,8.001385515,g/day
@@ -8149,7 +8149,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Norway,fiber,12,35 to 39,Female,continuous,10.046976768463,11.5155701234941,8.6628385771034,g/day
 2017,Norway,fiber,13,40 to 44,Female,continuous,10.2389668519424,11.7000155489896,8.96822117512445,g/day
 2017,Norway,fiber,14,45 to 49,Female,continuous,10.6167821284199,12.0999513211805,9.26114005793144,g/day
-2017,Norway,fiber,15,50 to 54,Female,continuous,11.056472591387699,12.6040288774076,9.76141169613263,g/day
+2017,Norway,fiber,15,50 to 54,Female,continuous,11.056472591387701,12.6040288774076,9.76141169613263,g/day
 2017,Norway,fiber,16,55 to 59,Female,continuous,11.5401631755599,13.2264565089677,10.0894617936457,g/day
 2017,Norway,fiber,17,60 to 64,Female,continuous,11.6461473115131,13.3561640876987,10.1402366684539,g/day
 2017,Norway,fiber,18,65 to 69,Female,continuous,11.3003695697312,12.8890389441944,9.78021573912695,g/day
@@ -9719,7 +9719,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Qatar,fiber,31,85 to 89,Female,continuous,15.155969294,18.682067975,12.147514325,g/day
 2017,Qatar,fiber,32,90 to 94,Female,continuous,15.108063374,18.688346075,12.0955605,g/day
 2017,Qatar,fiber,235,95 plus,Female,continuous,15.126720632,18.721597025,11.993757125,g/day
-2017,Saudi Arabia,fiber,10,25 to 29,Male,continuous,14.357825038,16.447375,12.374035750000001,g/day
+2017,Saudi Arabia,fiber,10,25 to 29,Male,continuous,14.357825038,16.447375,12.374035749999999,g/day
 2017,Saudi Arabia,fiber,11,30 to 34,Male,continuous,14.628885922,16.833782,12.559698125,g/day
 2017,Saudi Arabia,fiber,12,35 to 39,Male,continuous,14.87935892,17.1559979,12.894893425,g/day
 2017,Saudi Arabia,fiber,13,40 to 44,Male,continuous,15.345689708,17.5174865,13.241137325,g/day
@@ -9920,7 +9920,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Afghanistan,fiber,13,40 to 44,Female,continuous,7.0743837989,8.4009103525,5.85038223,g/day
 2017,Afghanistan,fiber,14,45 to 49,Female,continuous,7.4410933914,8.836014335,6.2539892,g/day
 2017,Afghanistan,fiber,15,50 to 54,Female,continuous,7.7816665354,9.2106562475,6.52617695,g/day
-2017,Afghanistan,fiber,16,55 to 59,Female,continuous,8.1035370188999991,9.5737512275,6.764721025,g/day
+2017,Afghanistan,fiber,16,55 to 59,Female,continuous,8.1035370189000009,9.5737512275,6.764721025,g/day
 2017,Afghanistan,fiber,17,60 to 64,Female,continuous,8.2771674739,9.8325368375,6.9279713875,g/day
 2017,Afghanistan,fiber,18,65 to 69,Female,continuous,8.0465453316,9.5635012925,6.6090941,g/day
 2017,Afghanistan,fiber,19,70 to 74,Female,continuous,7.7571147274,9.22068313,6.5240002825,g/day
@@ -11037,7 +11037,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Cape Verde,fiber,20,75 to 79,Female,continuous,11.770557412,14.065784525,9.6924407025,g/day
 2017,Cape Verde,fiber,30,80 to 84,Female,continuous,10.873593087,12.9679102,8.933148035,g/day
 2017,Cape Verde,fiber,31,85 to 89,Female,continuous,10.8014508376,13.046117825,8.9881972675,g/day
-2017,Cape Verde,fiber,32,90 to 94,Female,continuous,10.7199216547,13.009138325,8.8130834749999991,g/day
+2017,Cape Verde,fiber,32,90 to 94,Female,continuous,10.7199216547,13.009138325,8.8130834750000009,g/day
 2017,Cape Verde,fiber,235,95 plus,Female,continuous,10.8091074882,12.99845385,8.8038736125,g/day
 2017,Chad,fiber,10,25 to 29,Male,continuous,14.649184518,16.747062325,12.727773225,g/day
 2017,Chad,fiber,11,30 to 34,Male,continuous,14.872691939,17.031942425,12.894413225,g/day
@@ -11927,7 +11927,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Indonesia,seafood omega-3 fatty acids,10,25 to 29,Female,continuous,0.0217102805395934,0.0235333596025721,0.019984305155518,g/day
 2017,Indonesia,seafood omega-3 fatty acids,11,30 to 34,Female,continuous,0.0223649898528126,0.0241922924163332,0.0206586162202588,g/day
 2017,Indonesia,seafood omega-3 fatty acids,12,35 to 39,Female,continuous,0.0229159341820696,0.0246706416448132,0.0212351905031142,g/day
-2017,Indonesia,seafood omega-3 fatty acids,13,40 to 44,Female,continuous,0.0234657257939773,0.025252458712083502,0.0217676928419551,g/day
+2017,Indonesia,seafood omega-3 fatty acids,13,40 to 44,Female,continuous,0.0234657257939773,0.025252458712083498,0.0217676928419551,g/day
 2017,Indonesia,seafood omega-3 fatty acids,14,45 to 49,Female,continuous,0.0245792157132074,0.0264519592028827,0.0227377121188545,g/day
 2017,Indonesia,seafood omega-3 fatty acids,15,50 to 54,Female,continuous,0.0255937281784812,0.0278042993444254,0.0237913020939137,g/day
 2017,Indonesia,seafood omega-3 fatty acids,16,55 to 59,Female,continuous,0.0267734321190704,0.0288087322265357,0.0248540696335512,g/day
@@ -15191,7 +15191,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Paraguay,seafood omega-3 fatty acids,19,70 to 74,Male,continuous,0.060274130991,0.066692378625,0.0540445834,g/day
 2017,Paraguay,seafood omega-3 fatty acids,20,75 to 79,Male,continuous,0.05756148799,0.0645098344,0.051526342225,g/day
 2017,Paraguay,seafood omega-3 fatty acids,30,80 to 84,Male,continuous,0.050318101091,0.05657441265,0.044680373275,g/day
-2017,Paraguay,seafood omega-3 fatty acids,31,85 to 89,Male,continuous,0.050065409096999997,0.056332153975,0.044319073575,g/day
+2017,Paraguay,seafood omega-3 fatty acids,31,85 to 89,Male,continuous,0.050065409097000003,0.056332153975,0.044319073575,g/day
 2017,Paraguay,seafood omega-3 fatty acids,32,90 to 94,Male,continuous,0.050171996907,0.05651698385,0.04452219505,g/day
 2017,Paraguay,seafood omega-3 fatty acids,235,95 plus,Male,continuous,0.050033339983,0.056300614725,0.0443730795,g/day
 2017,Paraguay,seafood omega-3 fatty acids,10,25 to 29,Female,continuous,0.045590433103,0.051183047,0.0401227962,g/day
@@ -17419,7 +17419,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Bermuda,seafood omega-3 fatty acids,12,35 to 39,Female,continuous,0.175780274344,0.2518640875,0.11612733275,g/day
 2017,Bermuda,seafood omega-3 fatty acids,13,40 to 44,Female,continuous,0.181463487819,0.2689311595,0.118510766,g/day
 2017,Bermuda,seafood omega-3 fatty acids,14,45 to 49,Female,continuous,0.1869959919,0.28572306875,0.12510155675,g/day
-2017,Bermuda,seafood omega-3 fatty acids,15,50 to 54,Female,continuous,0.19477351376,0.29319181775000003,0.1293538435,g/day
+2017,Bermuda,seafood omega-3 fatty acids,15,50 to 54,Female,continuous,0.19477351376,0.29319181774999997,0.1293538435,g/day
 2017,Bermuda,seafood omega-3 fatty acids,16,55 to 59,Female,continuous,0.20114010895,0.3065931105,0.12953281225,g/day
 2017,Bermuda,seafood omega-3 fatty acids,17,60 to 64,Female,continuous,0.20234474777,0.299217854,0.13082976275,g/day
 2017,Bermuda,seafood omega-3 fatty acids,18,65 to 69,Female,continuous,0.196039058659,0.2855994625,0.13135269375,g/day
@@ -18006,7 +18006,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Thailand,fruits,14,45 to 49,Male,continuous,143.89316094,180.45302425,113.48164775,g/day
 2017,Thailand,fruits,15,50 to 54,Male,continuous,158.51849364,196.37493275,126.68014325,g/day
 2017,Thailand,fruits,16,55 to 59,Male,continuous,170.59681234,208.708139,134.37146925,g/day
-2017,Thailand,fruits,17,60 to 64,Male,continuous,176.80925524,220.56201075,141.30683199999999,g/day
+2017,Thailand,fruits,17,60 to 64,Male,continuous,176.80925524,220.56201075,141.30683200000001,g/day
 2017,Thailand,fruits,18,65 to 69,Male,continuous,171.85589194,213.86195575,139.5046235,g/day
 2017,Thailand,fruits,19,70 to 74,Male,continuous,166.73593501,205.4274665,132.12083675,g/day
 2017,Thailand,fruits,20,75 to 79,Male,continuous,159.85522887,199.8979435,127.59768475,g/day
@@ -20821,7 +20821,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Costa Rica,fruits,235,95 plus,Female,continuous,167.230098815,218.866926,124.09276475,g/day
 2017,El Salvador,fruits,10,25 to 29,Male,continuous,72.923108785,93.292602525,55.0272304,g/day
 2017,El Salvador,fruits,11,30 to 34,Male,continuous,76.635696638,98.261592125,58.09119085,g/day
-2017,El Salvador,fruits,12,35 to 39,Male,continuous,79.522748086000007,102.56951325,61.3940275,g/day
+2017,El Salvador,fruits,12,35 to 39,Male,continuous,79.522748085999993,102.56951325,61.3940275,g/day
 2017,El Salvador,fruits,13,40 to 44,Male,continuous,83.991881166,109.364138,63.407454125,g/day
 2017,El Salvador,fruits,14,45 to 49,Male,continuous,91.614046593,118.41530325,70.6061414,g/day
 2017,El Salvador,fruits,15,50 to 54,Male,continuous,99.217060042,126.6250305,75.39004225,g/day
@@ -24438,7 +24438,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Tajikistan,whole grains,11,30 to 34,Female,continuous,0.63644294198,0.82502878675,0.48213791225,g/day
 2017,Tajikistan,whole grains,12,35 to 39,Female,continuous,0.65172091849,0.851276129,0.49264701925,g/day
 2017,Tajikistan,whole grains,13,40 to 44,Female,continuous,0.67825372199,0.87679986375,0.51352114225,g/day
-2017,Tajikistan,whole grains,14,45 to 49,Female,continuous,0.67500803125,0.87752234924999994,0.50970574525,g/day
+2017,Tajikistan,whole grains,14,45 to 49,Female,continuous,0.67500803125,0.87752234925000006,0.50970574525,g/day
 2017,Tajikistan,whole grains,15,50 to 54,Female,continuous,0.67903849583,0.87962031875,0.52534246825,g/day
 2017,Tajikistan,whole grains,16,55 to 59,Female,continuous,0.67853645107,0.87520843975,0.5084724245,g/day
 2017,Tajikistan,whole grains,17,60 to 64,Female,continuous,0.67629867208,0.8824703355,0.500692554,g/day
@@ -24720,7 +24720,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Macedonia,whole grains,32,90 to 94,Female,continuous,7.9772671833,9.6424472925,6.62694655,g/day
 2017,Macedonia,whole grains,235,95 plus,Female,continuous,8.0055857821,9.565772065,6.5222513675,g/day
 2017,Montenegro,whole grains,10,25 to 29,Male,continuous,11.2982015884,13.386280575,9.3408236125,g/day
-2017,Montenegro,whole grains,11,30 to 34,Male,continuous,11.7091069081,14.174853025,9.7464868375000009,g/day
+2017,Montenegro,whole grains,11,30 to 34,Male,continuous,11.7091069081,14.174853025,9.7464868374999991,g/day
 2017,Montenegro,whole grains,12,35 to 39,Male,continuous,12.2674118023,14.508523025,10.151252325,g/day
 2017,Montenegro,whole grains,13,40 to 44,Male,continuous,12.5801621953,15.2394514,10.326296,g/day
 2017,Montenegro,whole grains,14,45 to 49,Male,continuous,12.5723437583,15.001414975,10.41045575,g/day
@@ -24918,7 +24918,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Belarus,whole grains,11,30 to 34,Female,continuous,6.2428787297,7.4249072825,5.1211445325,g/day
 2017,Belarus,whole grains,12,35 to 39,Female,continuous,6.5281409601,7.90458698,5.43750225,g/day
 2017,Belarus,whole grains,13,40 to 44,Female,continuous,6.6812753355,8.0411527725,5.4891368525,g/day
-2017,Belarus,whole grains,14,45 to 49,Female,continuous,6.6931844218,7.9949114550000004,5.50106402,g/day
+2017,Belarus,whole grains,14,45 to 49,Female,continuous,6.6931844218,7.9949114549999996,5.50106402,g/day
 2017,Belarus,whole grains,15,50 to 54,Female,continuous,6.6531318886,8.0343638175,5.4687310125,g/day
 2017,Belarus,whole grains,16,55 to 59,Female,continuous,6.5926567444,7.942516295,5.45608929,g/day
 2017,Belarus,whole grains,17,60 to 64,Female,continuous,6.6592243387,7.95570306,5.50799391,g/day
@@ -25625,7 +25625,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Israel,whole grains,13,40 to 44,Male,continuous,7.009762331,8.4326476225,5.75354785,g/day
 2017,Israel,whole grains,14,45 to 49,Male,continuous,6.9889762072,8.3540086475,5.686168105,g/day
 2017,Israel,whole grains,15,50 to 54,Male,continuous,6.9834614277,8.366859605,5.7297257675,g/day
-2017,Israel,whole grains,16,55 to 59,Male,continuous,6.9856773635,8.43301805,5.7863099375000004,g/day
+2017,Israel,whole grains,16,55 to 59,Male,continuous,6.9856773635,8.43301805,5.7863099374999996,g/day
 2017,Israel,whole grains,17,60 to 64,Male,continuous,6.9035908056,8.260644015,5.6677884125,g/day
 2017,Israel,whole grains,18,65 to 69,Male,continuous,6.9084621279,8.14804774,5.604624985,g/day
 2017,Israel,whole grains,19,70 to 74,Male,continuous,6.9350810564,8.3385804825,5.63775269,g/day
@@ -25960,7 +25960,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Argentina,whole grains,18,65 to 69,Male,continuous,15.478945239,18.844812675,12.694320525,g/day
 2017,Argentina,whole grains,19,70 to 74,Male,continuous,15.57517938,18.58901565,12.899909025,g/day
 2017,Argentina,whole grains,20,75 to 79,Male,continuous,15.53316905,18.43534235,12.75603015,g/day
-2017,Argentina,whole grains,30,80 to 84,Male,continuous,15.590069335999999,18.731980525,12.9025598,g/day
+2017,Argentina,whole grains,30,80 to 84,Male,continuous,15.590069336000001,18.731980525,12.9025598,g/day
 2017,Argentina,whole grains,31,85 to 89,Male,continuous,15.566013402,18.3960939,13.0129567,g/day
 2017,Argentina,whole grains,32,90 to 94,Male,continuous,15.656164734,18.63876255,12.930972775,g/day
 2017,Argentina,whole grains,235,95 plus,Male,continuous,15.615952007,18.6020764,12.86368905,g/day
@@ -26814,7 +26814,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Mexico,whole grains,17,60 to 64,Female,continuous,83.5072519355516,104.399414845265,65.826610910088,g/day
 2017,Mexico,whole grains,18,65 to 69,Female,continuous,88.6813241326132,109.864461020136,69.8058944335211,g/day
 2017,Mexico,whole grains,19,70 to 74,Female,continuous,74.9771060849278,94.5064464145123,58.994487067319,g/day
-2017,Mexico,whole grains,20,75 to 79,Female,continuous,85.019624145407107,106.505230204815,67.0861090648161,g/day
+2017,Mexico,whole grains,20,75 to 79,Female,continuous,85.019624145407093,106.505230204815,67.0861090648161,g/day
 2017,Mexico,whole grains,30,80 to 84,Female,continuous,55.656761390363,71.1064797828213,42.3378527693986,g/day
 2017,Mexico,whole grains,31,85 to 89,Female,continuous,73.4689662107129,92.8678142998664,56.7055006570917,g/day
 2017,Mexico,whole grains,32,90 to 94,Female,continuous,61.0228988177433,76.8498136687683,47.2185044245557,g/day
@@ -30533,7 +30533,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Czech Republic,legumes,16,55 to 59,Female,continuous,16.921470785,20.0934331,14.1392905,g/day
 2017,Czech Republic,legumes,17,60 to 64,Female,continuous,16.844906182,19.85712825,14.274169175,g/day
 2017,Czech Republic,legumes,18,65 to 69,Female,continuous,16.169693006,19.05849745,13.67728275,g/day
-2017,Czech Republic,legumes,19,70 to 74,Female,continuous,15.621166407,18.409655275,13.313971949999999,g/day
+2017,Czech Republic,legumes,19,70 to 74,Female,continuous,15.621166407,18.409655275,13.313971950000001,g/day
 2017,Czech Republic,legumes,20,75 to 79,Female,continuous,15.04886127,17.54120315,12.772318,g/day
 2017,Czech Republic,legumes,30,80 to 84,Female,continuous,13.728011156,16.037329275,11.6156577,g/day
 2017,Czech Republic,legumes,31,85 to 89,Female,continuous,13.547152653,15.867242450000001,11.464014375,g/day
@@ -31739,7 +31739,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Spain,legumes,31,85 to 89,Female,continuous,30.082130218,36.0731124,25.240895875,g/day
 2017,Spain,legumes,32,90 to 94,Female,continuous,30.20658219,35.699437525,25.386033175,g/day
 2017,Spain,legumes,235,95 plus,Female,continuous,29.84337791,35.304788675,25.002221625,g/day
-2017,Sweden,legumes,10,25 to 29,Male,continuous,15.631216262214,18.492614279942998,13.3532812191429,g/day
+2017,Sweden,legumes,10,25 to 29,Male,continuous,15.631216262214,18.492614279943002,13.3532812191429,g/day
 2017,Sweden,legumes,11,30 to 34,Male,continuous,16.19803359173,18.8517889420893,13.7445966116355,g/day
 2017,Sweden,legumes,12,35 to 39,Male,continuous,16.6424735131505,19.4660379682674,14.2336773054263,g/day
 2017,Sweden,legumes,13,40 to 44,Male,continuous,16.9396828013563,19.6658722207023,14.4845911338564,g/day
@@ -32666,7 +32666,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Honduras,legumes,19,70 to 74,Female,continuous,42.243031805,49.051545825,36.160350625,g/day
 2017,Honduras,legumes,20,75 to 79,Female,continuous,40.645955754,46.967082325,34.834426275,g/day
 2017,Honduras,legumes,30,80 to 84,Female,continuous,36.783431852,42.446623625,31.2855357,g/day
-2017,Honduras,legumes,31,85 to 89,Female,continuous,36.595851,42.41498905,31.191381624999998,g/day
+2017,Honduras,legumes,31,85 to 89,Female,continuous,36.595851,42.41498905,31.191381625000002,g/day
 2017,Honduras,legumes,32,90 to 94,Female,continuous,36.669230642,42.09599465,31.391877425,g/day
 2017,Honduras,legumes,235,95 plus,Female,continuous,36.651013339,42.290452125,31.5211513,g/day
 2017,Mexico,legumes,10,25 to 29,Male,continuous,63.3422555669727,71.1464205728443,55.9331782660344,g/day
@@ -32940,7 +32940,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Egypt,legumes,32,90 to 94,Female,continuous,38.298048578,44.358232825,33.157147875,g/day
 2017,Egypt,legumes,235,95 plus,Female,continuous,38.348473904,44.160130775,33.13351125,g/day
 2017,Iran,legumes,10,25 to 29,Male,continuous,46.7308105140427,54.0075683563408,39.9087204707532,g/day
-2017,Iran,legumes,11,30 to 34,Male,continuous,48.232839000846496,55.6201304937288,41.4468591598098,g/day
+2017,Iran,legumes,11,30 to 34,Male,continuous,48.232839000846504,55.6201304937288,41.4468591598098,g/day
 2017,Iran,legumes,12,35 to 39,Male,continuous,49.5620890544961,56.9135758090309,42.7859575727511,g/day
 2017,Iran,legumes,13,40 to 44,Male,continuous,50.2759392400666,57.9343637646519,43.6397910341265,g/day
 2017,Iran,legumes,14,45 to 49,Male,continuous,50.1556249087943,58.5294965414145,43.3530472671724,g/day
@@ -35522,7 +35522,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Maldives,milk,10,25 to 29,Male,continuous,59.926760785,76.045647325,47.735569275,g/day
 2017,Maldives,milk,11,30 to 34,Male,continuous,57.827171096,72.7050767,46.20346395,g/day
 2017,Maldives,milk,12,35 to 39,Male,continuous,56.554557261,69.2731423,45.456051725,g/day
-2017,Maldives,milk,13,40 to 44,Male,continuous,56.611961411,68.912088549999993,44.953391875,g/day
+2017,Maldives,milk,13,40 to 44,Male,continuous,56.611961411,68.912088550000007,44.953391875,g/day
 2017,Maldives,milk,14,45 to 49,Male,continuous,58.564951301,71.950406175,46.223535,g/day
 2017,Maldives,milk,15,50 to 54,Male,continuous,60.389506853,74.464331475,47.9354472,g/day
 2017,Maldives,milk,16,55 to 59,Male,continuous,62.178569615,77.414007725,49.398314925,g/day
@@ -35712,7 +35712,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Vietnam,milk,20,75 to 79,Male,continuous,10.4754882034,13.389971450000001,8.1234534875,g/day
 2017,Vietnam,milk,30,80 to 84,Male,continuous,10.4420705129,13.268271075,8.1615518725,g/day
 2017,Vietnam,milk,31,85 to 89,Male,continuous,10.4218794486,13.347817775,8.1142367575,g/day
-2017,Vietnam,milk,32,90 to 94,Male,continuous,10.3754565697,13.092380349999999,8.064502885,g/day
+2017,Vietnam,milk,32,90 to 94,Male,continuous,10.3754565697,13.092380350000001,8.064502885,g/day
 2017,Vietnam,milk,235,95 plus,Male,continuous,10.4622043438,13.2484945,8.075418875,g/day
 2017,Vietnam,milk,10,25 to 29,Female,continuous,9.696623877,12.131803675,7.579382845,g/day
 2017,Vietnam,milk,11,30 to 34,Female,continuous,9.4584811951,12.0024253,7.3206435475,g/day
@@ -35993,7 +35993,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Vanuatu,milk,16,55 to 59,Female,continuous,15.2111762823,20.4271749,11.10220415,g/day
 2017,Vanuatu,milk,17,60 to 64,Female,continuous,15.4648174298,20.251803875,11.59398225,g/day
 2017,Vanuatu,milk,18,65 to 69,Female,continuous,15.4965296522,20.574290375,11.424460525,g/day
-2017,Vanuatu,milk,19,70 to 74,Female,continuous,15.5065764989,20.50217415,11.364016275000001,g/day
+2017,Vanuatu,milk,19,70 to 74,Female,continuous,15.5065764989,20.50217415,11.364016274999999,g/day
 2017,Vanuatu,milk,20,75 to 79,Female,continuous,15.5229146943,20.40410815,11.402584925,g/day
 2017,Vanuatu,milk,30,80 to 84,Female,continuous,15.4663983398,20.029875025,11.41141355,g/day
 2017,Vanuatu,milk,31,85 to 89,Female,continuous,15.4678400401,20.4748388,11.484297975,g/day
@@ -36351,7 +36351,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Bulgaria,milk,14,45 to 49,Female,continuous,82.417641822,101.1770515,66.63688725,g/day
 2017,Bulgaria,milk,15,50 to 54,Female,continuous,85.042414483,106.92407575,67.92320715,g/day
 2017,Bulgaria,milk,16,55 to 59,Female,continuous,87.810972638,109.1099535,69.16234355,g/day
-2017,Bulgaria,milk,17,60 to 64,Female,continuous,89.751460106,111.20322350000001,72.122266175,g/day
+2017,Bulgaria,milk,17,60 to 64,Female,continuous,89.751460106,111.20322349999999,72.122266175,g/day
 2017,Bulgaria,milk,18,65 to 69,Female,continuous,89.727244425,111.265179,71.7851408,g/day
 2017,Bulgaria,milk,19,70 to 74,Female,continuous,89.563880493,109.58845925,70.64042845,g/day
 2017,Bulgaria,milk,20,75 to 79,Female,continuous,89.385585534,109.9406595,72.353622725,g/day
@@ -38762,7 +38762,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Bahrain,milk,10,25 to 29,Male,continuous,109.435206332,140.09346375,84.4291753,g/day
 2017,Bahrain,milk,11,30 to 34,Male,continuous,106.954054041,136.139669,81.662004025,g/day
 2017,Bahrain,milk,12,35 to 39,Male,continuous,104.22668311,135.5203475,78.543403675,g/day
-2017,Bahrain,milk,13,40 to 44,Male,continuous,104.390003619,134.70025525,78.921776499999993,g/day
+2017,Bahrain,milk,13,40 to 44,Male,continuous,104.390003619,134.70025525,78.921776500000007,g/day
 2017,Bahrain,milk,14,45 to 49,Male,continuous,107.340074338,136.80852625,78.92241505,g/day
 2017,Bahrain,milk,15,50 to 54,Male,continuous,110.354449641,139.35923875,84.2102162,g/day
 2017,Bahrain,milk,16,55 to 59,Male,continuous,113.071794384,145.1508355,84.45137215,g/day
@@ -39750,7 +39750,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Djibouti,milk,32,90 to 94,Female,continuous,36.16734272,45.111308525,28.620548575,g/day
 2017,Djibouti,milk,235,95 plus,Female,continuous,35.990346347,45.632438225,28.3486447,g/day
 2017,Eritrea,milk,10,25 to 29,Male,continuous,14.5826965235,19.054025625,10.944827225,g/day
-2017,Eritrea,milk,11,30 to 34,Male,continuous,14.2072873439,18.676567425000002,10.67991925,g/day
+2017,Eritrea,milk,11,30 to 34,Male,continuous,14.2072873439,18.676567424999998,10.67991925,g/day
 2017,Eritrea,milk,12,35 to 39,Male,continuous,13.8984780928,18.525060775,10.539212575,g/day
 2017,Eritrea,milk,13,40 to 44,Male,continuous,13.8897019595,18.66817635,10.4060239,g/day
 2017,Eritrea,milk,14,45 to 49,Male,continuous,14.2432210532,18.451726375,10.86731845,g/day
@@ -40384,7 +40384,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Cameroon,milk,12,35 to 39,Male,continuous,10.9240774544,13.205418675,8.9970270075,g/day
 2017,Cameroon,milk,13,40 to 44,Male,continuous,10.8488952342,12.952124975,8.9552428475,g/day
 2017,Cameroon,milk,14,45 to 49,Male,continuous,11.1468925162,13.3798555,9.19620771,g/day
-2017,Cameroon,milk,15,50 to 54,Male,continuous,11.468257349,13.942395125000001,9.3306168575,g/day
+2017,Cameroon,milk,15,50 to 54,Male,continuous,11.468257349,13.942395124999999,9.3306168575,g/day
 2017,Cameroon,milk,16,55 to 59,Male,continuous,11.8971463532,14.68831785,9.8238514025,g/day
 2017,Cameroon,milk,17,60 to 64,Male,continuous,12.0054602743,14.368625775,9.8283650175,g/day
 2017,Cameroon,milk,18,65 to 69,Male,continuous,12.0923695598,14.683507275,9.9918352725,g/day
@@ -46811,7 +46811,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Bermuda,nuts and seeds,19,70 to 74,Male,continuous,3.8866868947,6.9403209175,1.983835615,g/day
 2017,Bermuda,nuts and seeds,20,75 to 79,Male,continuous,3.5974491668,6.22347595,1.912355045,g/day
 2017,Bermuda,nuts and seeds,30,80 to 84,Male,continuous,3.28018391833,5.7948335325,1.73166667,g/day
-2017,Bermuda,nuts and seeds,31,85 to 89,Male,continuous,3.1498764955,5.49093371,1.6193461199999999,g/day
+2017,Bermuda,nuts and seeds,31,85 to 89,Male,continuous,3.1498764955,5.49093371,1.6193461200000001,g/day
 2017,Bermuda,nuts and seeds,32,90 to 94,Male,continuous,3.16564385798,5.6730579125,1.526231965,g/day
 2017,Bermuda,nuts and seeds,235,95 plus,Male,continuous,3.06159348021,5.523934845,1.5810943125,g/day
 2017,Bermuda,nuts and seeds,10,25 to 29,Female,continuous,2.9679131688,5.1451229475,1.51255783,g/day
@@ -46819,7 +46819,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Bermuda,nuts and seeds,12,35 to 39,Female,continuous,3.34798392886,5.839765895,1.6927806275,g/day
 2017,Bermuda,nuts and seeds,13,40 to 44,Female,continuous,3.5074863722,6.17477693,1.86628604,g/day
 2017,Bermuda,nuts and seeds,14,45 to 49,Female,continuous,3.6988280994,6.65313481,1.9063511275,g/day
-2017,Bermuda,nuts and seeds,15,50 to 54,Female,continuous,3.9217331889000002,6.95484137,2.0533516475,g/day
+2017,Bermuda,nuts and seeds,15,50 to 54,Female,continuous,3.9217331888999998,6.95484137,2.0533516475,g/day
 2017,Bermuda,nuts and seeds,16,55 to 59,Female,continuous,3.9680190834,7.1263273825,2.00898254,g/day
 2017,Bermuda,nuts and seeds,17,60 to 64,Female,continuous,4.0408459047,7.13574972,2.0612314675,g/day
 2017,Bermuda,nuts and seeds,18,65 to 69,Female,continuous,3.8843351227,7.20440417,1.90329166,g/day
@@ -47530,7 +47530,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Kiribati,processed meat,18,65 to 69,Male,continuous,0.38977170764,0.586448427,0.23669363225,g/day
 2017,Kiribati,processed meat,19,70 to 74,Male,continuous,0.36707412265,0.59057854475,0.22061969325,g/day
 2017,Kiribati,processed meat,20,75 to 79,Male,continuous,0.33890893425,0.52813111275,0.20333278575,g/day
-2017,Kiribati,processed meat,30,80 to 84,Male,continuous,0.29996299854,0.4653953515,0.18163168699999999,g/day
+2017,Kiribati,processed meat,30,80 to 84,Male,continuous,0.29996299854,0.4653953515,0.18163168700000001,g/day
 2017,Kiribati,processed meat,31,85 to 89,Male,continuous,0.28094492428,0.43678899025,0.16724620975,g/day
 2017,Kiribati,processed meat,32,90 to 94,Male,continuous,0.2788220045,0.4437591455,0.17322600325,g/day
 2017,Kiribati,processed meat,235,95 plus,Male,continuous,0.27794451351,0.4354623965,0.17217678,g/day
@@ -47924,7 +47924,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Mongolia,processed meat,31,85 to 89,Male,continuous,2.534689409,4.0068983925,1.553863055,g/day
 2017,Mongolia,processed meat,32,90 to 94,Male,continuous,2.24280542454,3.48499244,1.3218451425,g/day
 2017,Mongolia,processed meat,235,95 plus,Male,continuous,2.4596980531,3.73351721,1.4641122425,g/day
-2017,Mongolia,processed meat,10,25 to 29,Female,continuous,2.4331979679,3.8304635400000002,1.533874915,g/day
+2017,Mongolia,processed meat,10,25 to 29,Female,continuous,2.4331979679,3.8304635399999998,1.533874915,g/day
 2017,Mongolia,processed meat,11,30 to 34,Female,continuous,2.421119483,3.6808613,1.48900428,g/day
 2017,Mongolia,processed meat,12,35 to 39,Female,continuous,2.3928625788,3.5876843975,1.42064342,g/day
 2017,Mongolia,processed meat,13,40 to 44,Female,continuous,2.3474512171,3.5683351325,1.4960268125,g/day
@@ -48610,7 +48610,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Ukraine,processed meat,18,65 to 69,Male,continuous,3.37545300193145,5.10620418415525,2.08444256324051,g/day
 2017,Ukraine,processed meat,19,70 to 74,Male,continuous,3.14808792181599,4.8814085775893,1.9127455359148,g/day
 2017,Ukraine,processed meat,20,75 to 79,Male,continuous,2.88093765391507,4.40885820459107,1.75703380803537,g/day
-2017,Ukraine,processed meat,30,80 to 84,Male,continuous,2.5632285046109198,3.91801792668154,1.51903511905525,g/day
+2017,Ukraine,processed meat,30,80 to 84,Male,continuous,2.5632285046109202,3.91801792668154,1.51903511905525,g/day
 2017,Ukraine,processed meat,31,85 to 89,Male,continuous,2.45728142632778,3.72906469676979,1.49444963493854,g/day
 2017,Ukraine,processed meat,32,90 to 94,Male,continuous,2.42987916382758,3.72045721046289,1.4831333294952,g/day
 2017,Ukraine,processed meat,235,95 plus,Male,continuous,2.39473554787594,3.66214041754389,1.45296749716692,g/day
@@ -51083,7 +51083,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Afghanistan,processed meat,16,55 to 59,Female,continuous,0.24216399285,0.37833860075,0.1496130035,g/day
 2017,Afghanistan,processed meat,17,60 to 64,Female,continuous,0.233957991394,0.35831563775,0.14072375,g/day
 2017,Afghanistan,processed meat,18,65 to 69,Female,continuous,0.221935787517,0.341384809,0.13493318075,g/day
-2017,Afghanistan,processed meat,19,70 to 74,Female,continuous,0.2062789733,0.30950547900000003,0.128348693,g/day
+2017,Afghanistan,processed meat,19,70 to 74,Female,continuous,0.2062789733,0.30950547899999997,0.128348693,g/day
 2017,Afghanistan,processed meat,20,75 to 79,Female,continuous,0.191472597314,0.287267535,0.119983436,g/day
 2017,Afghanistan,processed meat,30,80 to 84,Female,continuous,0.170955676032,0.26261327525,0.10527803975,g/day
 2017,Afghanistan,processed meat,31,85 to 89,Female,continuous,0.164685161367,0.2605549795,0.10131164225,g/day
@@ -51384,7 +51384,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Equatorial Guinea,processed meat,17,60 to 64,Female,continuous,2.6801131846,4.1508820375,1.636302245,g/day
 2017,Equatorial Guinea,processed meat,18,65 to 69,Female,continuous,2.5959659022,3.9617937275,1.6043656825,g/day
 2017,Equatorial Guinea,processed meat,19,70 to 74,Female,continuous,2.4271510151,3.64790387,1.55777317,g/day
-2017,Equatorial Guinea,processed meat,20,75 to 79,Female,continuous,2.2153043574,3.39589744,1.3495738075000001,g/day
+2017,Equatorial Guinea,processed meat,20,75 to 79,Female,continuous,2.2153043574,3.39589744,1.3495738074999999,g/day
 2017,Equatorial Guinea,processed meat,30,80 to 84,Female,continuous,1.92523280391,2.936746045,1.2188308875,g/day
 2017,Equatorial Guinea,processed meat,31,85 to 89,Female,continuous,1.85344733973,2.82604349,1.148375215,g/day
 2017,Equatorial Guinea,processed meat,32,90 to 94,Female,continuous,1.8472419707,2.8521991,1.138730845,g/day
@@ -51832,7 +51832,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Tanzania,processed meat,15,50 to 54,Female,continuous,0.78584870399,1.1899992575,0.491997142,g/day
 2017,Tanzania,processed meat,16,55 to 59,Female,continuous,0.77239159889,1.19466981,0.4730140025,g/day
 2017,Tanzania,processed meat,17,60 to 64,Female,continuous,0.75498918181,1.172851775,0.47767505225,g/day
-2017,Tanzania,processed meat,18,65 to 69,Female,continuous,0.70825871075,1.07514698,0.43832146574999997,g/day
+2017,Tanzania,processed meat,18,65 to 69,Female,continuous,0.70825871075,1.07514698,0.43832146575000003,g/day
 2017,Tanzania,processed meat,19,70 to 74,Female,continuous,0.66290882139,1.03316213,0.41430497075,g/day
 2017,Tanzania,processed meat,20,75 to 79,Female,continuous,0.60816150418,0.91849343975,0.377353366,g/day
 2017,Tanzania,processed meat,30,80 to 84,Female,continuous,0.53341612957,0.819686606,0.3299403935,g/day
@@ -52319,7 +52319,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Ghana,processed meat,31,85 to 89,Female,continuous,0.76748713057,1.19966724,0.4639309705,g/day
 2017,Ghana,processed meat,32,90 to 94,Female,continuous,0.77648751901,1.179992475,0.49753047525,g/day
 2017,Ghana,processed meat,235,95 plus,Female,continuous,0.7116223848,1.08821863,0.4439238315,g/day
-2017,Guinea,processed meat,10,25 to 29,Male,continuous,1.07712883387,1.6836409975,0.65393186700000006,g/day
+2017,Guinea,processed meat,10,25 to 29,Male,continuous,1.07712883387,1.6836409975,0.65393186699999994,g/day
 2017,Guinea,processed meat,11,30 to 34,Male,continuous,1.06102581594,1.6137439375,0.65939741025,g/day
 2017,Guinea,processed meat,12,35 to 39,Male,continuous,1.06015253232,1.59711073,0.65227704025,g/day
 2017,Guinea,processed meat,13,40 to 44,Male,continuous,1.05218097351,1.5957432375,0.6494906315,g/day
@@ -53320,7 +53320,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Timor-Leste,polyunsaturated fatty acids,18,65 to 69,Male,continuous,0.0108283337672,0.01307867485,0.00909733874,% energy/day
 2017,Timor-Leste,polyunsaturated fatty acids,19,70 to 74,Male,continuous,0.0108164494102,0.012915757275,0.0088498023125,% energy/day
 2017,Timor-Leste,polyunsaturated fatty acids,20,75 to 79,Male,continuous,0.0107044760041,0.0128095949,0.0088957848,% energy/day
-2017,Timor-Leste,polyunsaturated fatty acids,30,80 to 84,Male,continuous,0.0106120141994,0.012794880599999999,0.008708713665,% energy/day
+2017,Timor-Leste,polyunsaturated fatty acids,30,80 to 84,Male,continuous,0.0106120141994,0.012794880600000001,0.008708713665,% energy/day
 2017,Timor-Leste,polyunsaturated fatty acids,31,85 to 89,Male,continuous,0.0105482633956,0.012778404775,0.0086498335,% energy/day
 2017,Timor-Leste,polyunsaturated fatty acids,32,90 to 94,Male,continuous,0.0105820289505,0.012682504425,0.0086004324875,% energy/day
 2017,Timor-Leste,polyunsaturated fatty acids,235,95 plus,Male,continuous,0.0105748769462,0.0129216766,0.008717499115,% energy/day
@@ -54063,7 +54063,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Hungary,polyunsaturated fatty acids,11,30 to 34,Male,continuous,0.049270381598,0.055293494825,0.0428989987,% energy/day
 2017,Hungary,polyunsaturated fatty acids,12,35 to 39,Male,continuous,0.050024516078,0.056301249075,0.04419775875,% energy/day
 2017,Hungary,polyunsaturated fatty acids,13,40 to 44,Male,continuous,0.050665975863,0.0568965715,0.044608913925,% energy/day
-2017,Hungary,polyunsaturated fatty acids,14,45 to 49,Male,continuous,0.051534859423,0.057983880274999997,0.0458984419,% energy/day
+2017,Hungary,polyunsaturated fatty acids,14,45 to 49,Male,continuous,0.051534859423,0.057983880275000003,0.0458984419,% energy/day
 2017,Hungary,polyunsaturated fatty acids,15,50 to 54,Male,continuous,0.052189550239,0.059426866825,0.04587903675,% energy/day
 2017,Hungary,polyunsaturated fatty acids,16,55 to 59,Male,continuous,0.052578831768,0.059858181875,0.046355897125,% energy/day
 2017,Hungary,polyunsaturated fatty acids,17,60 to 64,Male,continuous,0.052376858957,0.05889790545,0.046424038425,% energy/day
@@ -54376,7 +54376,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Latvia,polyunsaturated fatty acids,235,95 plus,Male,continuous,0.051469700788,0.061632890375,0.042321809925,% energy/day
 2017,Latvia,polyunsaturated fatty acids,10,25 to 29,Female,continuous,0.048436046453,0.058051932675,0.040062542175,% energy/day
 2017,Latvia,polyunsaturated fatty acids,11,30 to 34,Female,continuous,0.049189676331,0.058243700625,0.040588306075,% energy/day
-2017,Latvia,polyunsaturated fatty acids,12,35 to 39,Female,continuous,0.049711247407,0.05901775105,0.041467154975000003,% energy/day
+2017,Latvia,polyunsaturated fatty acids,12,35 to 39,Female,continuous,0.049711247407,0.05901775105,0.041467154974999997,% energy/day
 2017,Latvia,polyunsaturated fatty acids,13,40 to 44,Female,continuous,0.050602975657,0.060416612475,0.04210528635,% energy/day
 2017,Latvia,polyunsaturated fatty acids,14,45 to 49,Female,continuous,0.051042711858,0.0611220315,0.042643862175,% energy/day
 2017,Latvia,polyunsaturated fatty acids,15,50 to 54,Female,continuous,0.051295156474,0.0610671204,0.042912189875,% energy/day
@@ -56043,7 +56043,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Colombia,polyunsaturated fatty acids,11,30 to 34,Male,continuous,0.045678280173,0.050128832275,0.0414182489,% energy/day
 2017,Colombia,polyunsaturated fatty acids,12,35 to 39,Male,continuous,0.046126950418,0.050516447975,0.0417647187,% energy/day
 2017,Colombia,polyunsaturated fatty acids,13,40 to 44,Male,continuous,0.047011748964,0.05177107715,0.0425931156,% energy/day
-2017,Colombia,polyunsaturated fatty acids,14,45 to 49,Male,continuous,0.04757445484,0.052687332925,0.043390448400000003,% energy/day
+2017,Colombia,polyunsaturated fatty acids,14,45 to 49,Male,continuous,0.04757445484,0.052687332925,0.043390448399999997,% energy/day
 2017,Colombia,polyunsaturated fatty acids,15,50 to 54,Male,continuous,0.048087876633,0.05287274355,0.04329861055,% energy/day
 2017,Colombia,polyunsaturated fatty acids,16,55 to 59,Male,continuous,0.048744073816,0.053610028975,0.044345229825,% energy/day
 2017,Colombia,polyunsaturated fatty acids,17,60 to 64,Male,continuous,0.048734821083,0.053577236775,0.044185452425,% energy/day
@@ -59768,7 +59768,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Uzbekistan,red meat,16,55 to 59,Male,continuous,32.844532767,44.55912455,23.769843,g/day
 2017,Uzbekistan,red meat,17,60 to 64,Male,continuous,31.372239363,42.60914095,22.639346475,g/day
 2017,Uzbekistan,red meat,18,65 to 69,Male,continuous,29.360714652,39.7213652,21.290747575,g/day
-2017,Uzbekistan,red meat,19,70 to 74,Male,continuous,28.154026493,38.703681950000004,20.13143835,g/day
+2017,Uzbekistan,red meat,19,70 to 74,Male,continuous,28.154026493,38.703681949999996,20.13143835,g/day
 2017,Uzbekistan,red meat,20,75 to 79,Male,continuous,26.249940837,35.8886544,18.8281761,g/day
 2017,Uzbekistan,red meat,30,80 to 84,Male,continuous,22.586413658,30.7156271,16.0360569,g/day
 2017,Uzbekistan,red meat,31,85 to 89,Male,continuous,22.28429551,30.682559625,15.739744925,g/day
@@ -59922,7 +59922,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Czech Republic,red meat,20,75 to 79,Male,continuous,42.62087053,57.393014275,31.1027296,g/day
 2017,Czech Republic,red meat,30,80 to 84,Male,continuous,36.262885314,47.899956825,26.57082065,g/day
 2017,Czech Republic,red meat,31,85 to 89,Male,continuous,36.135335441,48.788082025,26.403735575,g/day
-2017,Czech Republic,red meat,32,90 to 94,Male,continuous,35.693540708,47.738309674999996,26.113117825,g/day
+2017,Czech Republic,red meat,32,90 to 94,Male,continuous,35.693540708,47.738309675000004,26.113117825,g/day
 2017,Czech Republic,red meat,235,95 plus,Male,continuous,35.802664448,48.15960775,25.949838275,g/day
 2017,Czech Republic,red meat,10,25 to 29,Female,continuous,39.419453431,54.38197705,28.183962,g/day
 2017,Czech Republic,red meat,11,30 to 34,Female,continuous,39.535951626,55.9793826,26.996025875,g/day
@@ -60585,7 +60585,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Andorra,red meat,32,90 to 94,Male,continuous,44.515019894,62.665184000000004,30.87264125,g/day
 2017,Andorra,red meat,235,95 plus,Male,continuous,44.210220379,61.252445925,28.9877386,g/day
 2017,Andorra,red meat,10,25 to 29,Female,continuous,49.281543766,76.4555091,31.656322525,g/day
-2017,Andorra,red meat,11,30 to 34,Female,continuous,49.442698499,74.9923516,31.686509225000002,g/day
+2017,Andorra,red meat,11,30 to 34,Female,continuous,49.442698499,74.9923516,31.686509224999998,g/day
 2017,Andorra,red meat,12,35 to 39,Female,continuous,49.6103314,76.330184375,31.5895825,g/day
 2017,Andorra,red meat,13,40 to 44,Female,continuous,48.853993413,74.49687985,30.645914075,g/day
 2017,Andorra,red meat,14,45 to 49,Female,continuous,46.946182264,70.8513558,30.6223918,g/day
@@ -61135,7 +61135,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Spain,red meat,18,65 to 69,Female,continuous,34.245952681,47.616999,24.1302713,g/day
 2017,Spain,red meat,19,70 to 74,Female,continuous,32.990345088,45.5460482,23.714123,g/day
 2017,Spain,red meat,20,75 to 79,Female,continuous,31.343207364,43.163277625,22.04698585,g/day
-2017,Spain,red meat,30,80 to 84,Female,continuous,27.370609912,38.501981549999996,19.24020765,g/day
+2017,Spain,red meat,30,80 to 84,Female,continuous,27.370609912,38.501981550000004,19.24020765,g/day
 2017,Spain,red meat,31,85 to 89,Female,continuous,27.129090163,38.663885975,18.67189075,g/day
 2017,Spain,red meat,32,90 to 94,Female,continuous,26.858821898,37.583520125,18.729441875,g/day
 2017,Spain,red meat,235,95 plus,Female,continuous,26.889167378,38.01893165,18.856496875,g/day
@@ -61568,7 +61568,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Dominican Republic,red meat,16,55 to 59,Male,continuous,21.735197944,30.0351188,15.1742118,g/day
 2017,Dominican Republic,red meat,17,60 to 64,Male,continuous,20.771787284,29.359399725,14.53287725,g/day
 2017,Dominican Republic,red meat,18,65 to 69,Male,continuous,19.84031847,27.3322801,14.1350578,g/day
-2017,Dominican Republic,red meat,19,70 to 74,Male,continuous,18.6049632,26.151771975,12.877434300000001,g/day
+2017,Dominican Republic,red meat,19,70 to 74,Male,continuous,18.6049632,26.151771975,12.877434299999999,g/day
 2017,Dominican Republic,red meat,20,75 to 79,Male,continuous,17.582073923,24.9933348,12.3728906,g/day
 2017,Dominican Republic,red meat,30,80 to 84,Male,continuous,15.0153491919,20.745515425,10.651492675,g/day
 2017,Dominican Republic,red meat,31,85 to 89,Male,continuous,14.9138449807,20.45984355,10.282866925,g/day
@@ -61600,7 +61600,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Grenada,red meat,18,65 to 69,Male,continuous,17.243986953,29.509683025,8.779948835,g/day
 2017,Grenada,red meat,19,70 to 74,Male,continuous,16.4630039655,28.92106705,8.4753102825,g/day
 2017,Grenada,red meat,20,75 to 79,Male,continuous,15.444924367,26.694292575,7.8633824,g/day
-2017,Grenada,red meat,30,80 to 84,Male,continuous,13.641832856,24.62516405,7.0541070574999996,g/day
+2017,Grenada,red meat,30,80 to 84,Male,continuous,13.641832856,24.62516405,7.0541070575000004,g/day
 2017,Grenada,red meat,31,85 to 89,Male,continuous,13.4330080897,23.043472925,6.98404844,g/day
 2017,Grenada,red meat,32,90 to 94,Male,continuous,13.4288633606,23.8979767,6.9759792025,g/day
 2017,Grenada,red meat,235,95 plus,Male,continuous,13.4256279334,23.591358725,7.2570870125,g/day
@@ -62156,7 +62156,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Panama,red meat,19,70 to 74,Female,continuous,19.521865689,27.060929425,13.986136375,g/day
 2017,Panama,red meat,20,75 to 79,Female,continuous,18.397239893,25.7928236,13.295916975,g/day
 2017,Panama,red meat,30,80 to 84,Female,continuous,15.5408652453,21.803484675,10.866551475,g/day
-2017,Panama,red meat,31,85 to 89,Female,continuous,15.609704002400001,22.0660875,10.86852025,g/day
+2017,Panama,red meat,31,85 to 89,Female,continuous,15.609704002399999,22.0660875,10.86852025,g/day
 2017,Panama,red meat,32,90 to 94,Female,continuous,15.4899629455,21.5898531,10.97512745,g/day
 2017,Panama,red meat,235,95 plus,Female,continuous,15.411252018,21.01834305,10.69506045,g/day
 2017,Venezuela,red meat,10,25 to 29,Male,continuous,36.268071738,47.3230419,27.0143134,g/day
@@ -62794,7 +62794,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Yemen,red meat,12,35 to 39,Male,continuous,9.5109509321,12.466042975,7.0349258625,g/day
 2017,Yemen,red meat,13,40 to 44,Male,continuous,9.3830250742,12.4867367,7.0843257325,g/day
 2017,Yemen,red meat,14,45 to 49,Male,continuous,9.0666426052,12.0343183,6.648225845,g/day
-2017,Yemen,red meat,15,50 to 54,Male,continuous,8.7392510647,11.368405599999999,6.4314946075,g/day
+2017,Yemen,red meat,15,50 to 54,Male,continuous,8.7392510647,11.368405600000001,6.4314946075,g/day
 2017,Yemen,red meat,16,55 to 59,Male,continuous,8.4023729169,11.13950665,6.1182808525,g/day
 2017,Yemen,red meat,17,60 to 64,Male,continuous,8.0435280786,10.996708225,5.92075291,g/day
 2017,Yemen,red meat,18,65 to 69,Male,continuous,7.5989985859,10.18848225,5.60052275,g/day
@@ -64520,7 +64520,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Guam,red meat,13,40 to 44,Female,continuous,31.939146089,51.52117695,17.906331175,g/day
 2017,Guam,red meat,14,45 to 49,Female,continuous,31.748015423,49.77366225,18.665764775,g/day
 2017,Guam,red meat,15,50 to 54,Female,continuous,30.036814889,45.84923055,17.924733025,g/day
-2017,Guam,red meat,16,55 to 59,Female,continuous,28.405120731,43.853351675,16.540229449999998,g/day
+2017,Guam,red meat,16,55 to 59,Female,continuous,28.405120731,43.853351675,16.540229450000002,g/day
 2017,Guam,red meat,17,60 to 64,Female,continuous,27.593796285,43.602276725,16.395064125,g/day
 2017,Guam,red meat,18,65 to 69,Female,continuous,26.366605646,41.259977525,15.865360225,g/day
 2017,Guam,red meat,19,70 to 74,Female,continuous,24.898370752,38.9133657,14.41347675,g/day
@@ -64597,7 +64597,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,"Virgin Islands, U.S.",red meat,15,50 to 54,Male,continuous,33.526217335,52.4640456,19.98837585,g/day
 2017,"Virgin Islands, U.S.",red meat,16,55 to 59,Male,continuous,32.728696801,50.6965063,19.74387025,g/day
 2017,"Virgin Islands, U.S.",red meat,17,60 to 64,Male,continuous,31.231830989,49.348073425,18.52712875,g/day
-2017,"Virgin Islands, U.S.",red meat,18,65 to 69,Male,continuous,29.292231825000002,47.284798,17.6841352,g/day
+2017,"Virgin Islands, U.S.",red meat,18,65 to 69,Male,continuous,29.292231824999998,47.284798,17.6841352,g/day
 2017,"Virgin Islands, U.S.",red meat,19,70 to 74,Male,continuous,28.286974972,44.393211275,16.3576169,g/day
 2017,"Virgin Islands, U.S.",red meat,20,75 to 79,Male,continuous,25.971563793,40.6827187,15.753622475,g/day
 2017,"Virgin Islands, U.S.",red meat,30,80 to 84,Male,continuous,22.9489258251,36.5041473,14.188296725,g/day
@@ -64705,7 +64705,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Global,sodium,18,65 to 69,Female,continuous,5.53423423402775,6.13563206380851,5.00344409835108,g/day
 2017,Global,sodium,19,70 to 74,Female,continuous,5.18218621933882,5.7448540897382,4.71589924698934,g/day
 2017,Global,sodium,20,75 to 79,Female,continuous,4.98632627816137,5.47526016598264,4.58470392626151,g/day
-2017,Global,sodium,30,80 to 84,Female,continuous,4.7258611548575296,5.10770778012529,4.35549601166993,g/day
+2017,Global,sodium,30,80 to 84,Female,continuous,4.7258611548575304,5.10770778012529,4.35549601166993,g/day
 2017,Global,sodium,31,85 to 89,Female,continuous,4.76264578204797,5.10639986645133,4.42855839397585,g/day
 2017,Global,sodium,32,90 to 94,Female,continuous,4.69733340982851,5.03319000250475,4.40450054405039,g/day
 2017,Global,sodium,235,95 plus,Female,continuous,4.76255549012278,5.09352303004086,4.44396308120433,g/day
@@ -64945,7 +64945,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Maldives,sodium,18,65 to 69,Female,continuous,7.0464562712,8.82341827,5.35384807,g/day
 2017,Maldives,sodium,19,70 to 74,Female,continuous,6.5680773776,8.333424265,5.00298001,g/day
 2017,Maldives,sodium,20,75 to 79,Female,continuous,6.7714056273,8.8281546175,5.18907373,g/day
-2017,Maldives,sodium,30,80 to 84,Female,continuous,6.2551429904999996,8.1058290475,4.82518017,g/day
+2017,Maldives,sodium,30,80 to 84,Female,continuous,6.2551429905000004,8.1058290475,4.82518017,g/day
 2017,Maldives,sodium,31,85 to 89,Female,continuous,6.0472982159,7.81319047,4.616131545,g/day
 2017,Maldives,sodium,32,90 to 94,Female,continuous,5.7722611727,7.343551115,4.4995667475,g/day
 2017,Maldives,sodium,235,95 plus,Female,continuous,5.7883753344,7.4782759675,4.439090865,g/day
@@ -65135,7 +65135,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Fiji,sodium,13,40 to 44,Male,continuous,2.3911755265,3.194559115,1.7329101425,g/day
 2017,Fiji,sodium,14,45 to 49,Male,continuous,2.891714955,3.87249633,2.125138245,g/day
 2017,Fiji,sodium,15,50 to 54,Male,continuous,3.1162626163,4.1607534975,2.2687294375,g/day
-2017,Fiji,sodium,16,55 to 59,Male,continuous,4.3592312371,5.877733395,3.2133650774999998,g/day
+2017,Fiji,sodium,16,55 to 59,Male,continuous,4.3592312371,5.877733395,3.2133650775000002,g/day
 2017,Fiji,sodium,17,60 to 64,Male,continuous,5.1039553012,6.9149791425,3.7838831125,g/day
 2017,Fiji,sodium,18,65 to 69,Male,continuous,6.747547193,8.849923955,4.9764663725,g/day
 2017,Fiji,sodium,19,70 to 74,Male,continuous,6.1723463376,8.2134494375,4.43937933,g/day
@@ -66527,7 +66527,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Belgium,sodium,10,25 to 29,Female,continuous,2.9176960976,3.7783205275,2.2814868575,g/day
 2017,Belgium,sodium,11,30 to 34,Female,continuous,2.9699116299,3.3889693875,2.5618745925,g/day
 2017,Belgium,sodium,12,35 to 39,Female,continuous,2.9550535726,3.3100008675,2.6091563625,g/day
-2017,Belgium,sodium,13,40 to 44,Female,continuous,3.1630475910999998,3.6915795475,2.7169130275,g/day
+2017,Belgium,sodium,13,40 to 44,Female,continuous,3.1630475911000002,3.6915795475,2.7169130275,g/day
 2017,Belgium,sodium,14,45 to 49,Female,continuous,3.1135177704,3.994331105,2.353510575,g/day
 2017,Belgium,sodium,15,50 to 54,Female,continuous,3.0192738302,3.4709843375,2.6098045775,g/day
 2017,Belgium,sodium,16,55 to 59,Female,continuous,3.1289592833,3.9981891,2.41078555,g/day
@@ -68543,7 +68543,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Saudi Arabia,sodium,16,55 to 59,Female,continuous,3.7639514383,4.763700405,2.8764817775,g/day
 2017,Saudi Arabia,sodium,17,60 to 64,Female,continuous,3.7517224975,4.79516969,2.8241448125,g/day
 2017,Saudi Arabia,sodium,18,65 to 69,Female,continuous,3.71117541,4.8442939775,2.8750949825,g/day
-2017,Saudi Arabia,sodium,19,70 to 74,Female,continuous,3.7209916144,4.7286578949999996,2.874056135,g/day
+2017,Saudi Arabia,sodium,19,70 to 74,Female,continuous,3.7209916144,4.7286578950000004,2.874056135,g/day
 2017,Saudi Arabia,sodium,20,75 to 79,Female,continuous,3.7992473754,4.91599837,2.8621416175,g/day
 2017,Saudi Arabia,sodium,30,80 to 84,Female,continuous,3.8667607739,4.9825964025,2.9551707325,g/day
 2017,Saudi Arabia,sodium,31,85 to 89,Female,continuous,3.9635817654,5.026049195,3.10302863,g/day
@@ -68881,7 +68881,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Pakistan,sodium,235,95 plus,Female,continuous,5.2107068492,6.6462081675,4.0590608275,g/day
 2017,Angola,sodium,10,25 to 29,Male,continuous,3.1088451127,4.17777025,2.29167701,g/day
 2017,Angola,sodium,11,30 to 34,Male,continuous,2.8744985162,3.83713965,2.088244405,g/day
-2017,Angola,sodium,12,35 to 39,Male,continuous,3.1221616804,4.1424009999999996,2.296493445,g/day
+2017,Angola,sodium,12,35 to 39,Male,continuous,3.1221616804,4.1424010000000004,2.296493445,g/day
 2017,Angola,sodium,13,40 to 44,Male,continuous,3.0968178384,4.135456995,2.24122726,g/day
 2017,Angola,sodium,14,45 to 49,Male,continuous,3.0144912618,3.9646448325,2.231651215,g/day
 2017,Angola,sodium,15,50 to 54,Male,continuous,2.8210337193,3.748008425,2.0100371625,g/day
@@ -72361,7 +72361,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Andorra,sugar-sweetened beverages,235,95 plus,Female,continuous,37.634953,65.349175,19.121675,g/day
 2017,Austria,sugar-sweetened beverages,10,25 to 29,Male,continuous,200.74312,289.34825,130.933,g/day
 2017,Austria,sugar-sweetened beverages,11,30 to 34,Male,continuous,172.752412,266.06175,105.9755,g/day
-2017,Austria,sugar-sweetened beverages,12,35 to 39,Male,continuous,153.11933199999999,237.5975,93.012625,g/day
+2017,Austria,sugar-sweetened beverages,12,35 to 39,Male,continuous,153.11933200000001,237.5975,93.012625,g/day
 2017,Austria,sugar-sweetened beverages,13,40 to 44,Male,continuous,133.410851,214.73425,74.90555,g/day
 2017,Austria,sugar-sweetened beverages,14,45 to 49,Male,continuous,113.626958,170.62025,70.942975,g/day
 2017,Austria,sugar-sweetened beverages,15,50 to 54,Male,continuous,98.382557,148.7625,61.80875,g/day
@@ -79045,7 +79045,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Antigua and Barbuda,trans fatty acids,18,65 to 69,Female,continuous,0.0032487540715,0.00413612515,0.002473837295,% energy/day
 2017,Antigua and Barbuda,trans fatty acids,19,70 to 74,Female,continuous,0.0032977793038,0.0042138686625,0.002535231215,% energy/day
 2017,Antigua and Barbuda,trans fatty acids,20,75 to 79,Female,continuous,0.0033586799773,0.004348457885,0.0025481511375,% energy/day
-2017,Antigua and Barbuda,trans fatty acids,30,80 to 84,Female,continuous,0.0034093967971,0.0044163180600000004,0.00262964804,% energy/day
+2017,Antigua and Barbuda,trans fatty acids,30,80 to 84,Female,continuous,0.0034093967971,0.0044163180599999996,0.00262964804,% energy/day
 2017,Antigua and Barbuda,trans fatty acids,31,85 to 89,Female,continuous,0.0034137335846,0.004339087325,0.0026126850825,% energy/day
 2017,Antigua and Barbuda,trans fatty acids,32,90 to 94,Female,continuous,0.0034248463046,0.004344131035,0.00262048511,% energy/day
 2017,Antigua and Barbuda,trans fatty acids,235,95 plus,Female,continuous,0.0034221745504,0.0043648174350000004,0.00261645815,% energy/day
@@ -81385,7 +81385,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Namibia,trans fatty acids,18,65 to 69,Female,continuous,0.0021742825562,0.0024315041775,0.00193203475,% energy/day
 2017,Namibia,trans fatty acids,19,70 to 74,Female,continuous,0.0022035093747,0.002478590015,0.00195542073,% energy/day
 2017,Namibia,trans fatty acids,20,75 to 79,Female,continuous,0.002242029787,0.0025068148149999998,0.0019928031875,% energy/day
-2017,Namibia,trans fatty acids,30,80 to 84,Female,continuous,0.0022710060761,0.0025366104650000002,0.00203207828,% energy/day
+2017,Namibia,trans fatty acids,30,80 to 84,Female,continuous,0.0022710060761,0.0025366104649999998,0.00203207828,% energy/day
 2017,Namibia,trans fatty acids,31,85 to 89,Female,continuous,0.0022679702298,0.00253630789,0.0020306348275,% energy/day
 2017,Namibia,trans fatty acids,32,90 to 94,Female,continuous,0.0022691608161,0.0025517590325,0.00203069649,% energy/day
 2017,Namibia,trans fatty acids,235,95 plus,Female,continuous,0.0022710483632,0.002545462005,0.0020325632975,% energy/day
@@ -84114,7 +84114,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Andorra,vegetables,17,60 to 64,Female,continuous,252.06287231,345.36327775,176.12130325,g/day
 2017,Andorra,vegetables,18,65 to 69,Female,continuous,241.25282993,334.9667145,163.79736075,g/day
 2017,Andorra,vegetables,19,70 to 74,Female,continuous,230.83436551,320.19047275,163.381633,g/day
-2017,Andorra,vegetables,20,75 to 79,Female,continuous,214.831197867,299.28553899999997,151.94755475,g/day
+2017,Andorra,vegetables,20,75 to 79,Female,continuous,214.831197867,299.28553900000003,151.94755475,g/day
 2017,Andorra,vegetables,30,80 to 84,Female,continuous,193.33189447,264.503033,136.013438,g/day
 2017,Andorra,vegetables,31,85 to 89,Female,continuous,190.60977048,264.84226625,133.54072925,g/day
 2017,Andorra,vegetables,32,90 to 94,Female,continuous,190.04519068,257.0284615,132.27647125,g/day
@@ -85927,7 +85927,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Jordan,vegetables,15,50 to 54,Male,continuous,256.62380441,330.931826,194.55164425,g/day
 2017,Jordan,vegetables,16,55 to 59,Male,continuous,259.53059058,337.767949,196.76203275,g/day
 2017,Jordan,vegetables,17,60 to 64,Male,continuous,254.6682649,327.27238275,194.540943,g/day
-2017,Jordan,vegetables,18,65 to 69,Male,continuous,246.00695554,319.20663724999997,188.8570465,g/day
+2017,Jordan,vegetables,18,65 to 69,Male,continuous,246.00695554,319.20663725000003,188.8570465,g/day
 2017,Jordan,vegetables,19,70 to 74,Male,continuous,233.02191116,304.921083,175.86609475,g/day
 2017,Jordan,vegetables,20,75 to 79,Male,continuous,221.15541456,288.44451325,166.85632375,g/day
 2017,Jordan,vegetables,30,80 to 84,Male,continuous,194.05625122,251.703101,148.722481,g/day
@@ -86081,7 +86081,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Palestine,vegetables,19,70 to 74,Male,continuous,155.149209007,217.5443295,107.94859925,g/day
 2017,Palestine,vegetables,20,75 to 79,Male,continuous,147.421051701,208.36146325,100.801795075,g/day
 2017,Palestine,vegetables,30,80 to 84,Male,continuous,130.698779693,182.351985,91.5346074,g/day
-2017,Palestine,vegetables,31,85 to 89,Male,continuous,129.271596126,180.73808424999999,88.7288125,g/day
+2017,Palestine,vegetables,31,85 to 89,Male,continuous,129.271596126,180.73808425000001,88.7288125,g/day
 2017,Palestine,vegetables,32,90 to 94,Male,continuous,128.693268439,174.26817675,89.382024525,g/day
 2017,Palestine,vegetables,235,95 plus,Male,continuous,128.12689068,180.81377325,88.30294815,g/day
 2017,Palestine,vegetables,10,25 to 29,Female,continuous,141.891589281,196.1159745,99.068425125,g/day
@@ -86208,7 +86208,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Syria,vegetables,11,30 to 34,Female,continuous,145.433761697,204.4293935,101.67582975,g/day
 2017,Syria,vegetables,12,35 to 39,Female,continuous,149.108250322,207.17254525,105.4262135,g/day
 2017,Syria,vegetables,13,40 to 44,Female,continuous,153.327886913,214.7769335,107.6126765,g/day
-2017,Syria,vegetables,14,45 to 49,Female,continuous,155.535397718,217.29480375,106.21982224999999,g/day
+2017,Syria,vegetables,14,45 to 49,Female,continuous,155.535397718,217.29480375,106.21982225000001,g/day
 2017,Syria,vegetables,15,50 to 54,Female,continuous,156.563937167,218.3025725,111.16158325,g/day
 2017,Syria,vegetables,16,55 to 59,Female,continuous,157.530699326,219.626208,111.8518755,g/day
 2017,Syria,vegetables,17,60 to 64,Female,continuous,156.861697331,221.131968,108.6094245,g/day
@@ -87106,7 +87106,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Tanzania,vegetables,235,95 plus,Male,continuous,74.274218776,88.225096875,61.444850925,g/day
 2017,Tanzania,vegetables,10,25 to 29,Female,continuous,83.631763444,101.165525,68.416852175,g/day
 2017,Tanzania,vegetables,11,30 to 34,Female,continuous,85.757797981,103.458751,69.6296671,g/day
-2017,Tanzania,vegetables,12,35 to 39,Female,continuous,87.983341566000007,105.7790315,72.035879625,g/day
+2017,Tanzania,vegetables,12,35 to 39,Female,continuous,87.983341565999993,105.7790315,72.035879625,g/day
 2017,Tanzania,vegetables,13,40 to 44,Female,continuous,89.799873542,108.968606,73.448191975,g/day
 2017,Tanzania,vegetables,14,45 to 49,Female,continuous,90.813672009,110.1661935,74.977379175,g/day
 2017,Tanzania,vegetables,15,50 to 54,Female,continuous,91.779192084,110.90518125,75.06055985,g/day
@@ -87615,7 +87615,7 @@ year_id,location_name,food,age_group_id,age_group_name,sex,parameter,mean,upper,
 2017,Guinea,vegetables,32,90 to 94,Male,continuous,83.841655231,106.62277775,62.654729475,g/day
 2017,Guinea,vegetables,235,95 plus,Male,continuous,83.023300117,108.11025475,63.732231925,g/day
 2017,Guinea,vegetables,10,25 to 29,Female,continuous,93.163049718,116.87613575,70.232535925,g/day
-2017,Guinea,vegetables,11,30 to 34,Female,continuous,95.370032056,124.27509825,72.325099625000007,g/day
+2017,Guinea,vegetables,11,30 to 34,Female,continuous,95.370032056,124.27509825,72.325099624999993,g/day
 2017,Guinea,vegetables,12,35 to 39,Female,continuous,98.173895022,124.79625775,73.8340242,g/day
 2017,Guinea,vegetables,13,40 to 44,Female,continuous,99.626745071,126.80628375,76.471724375,g/day
 2017,Guinea,vegetables,14,45 to 49,Female,continuous,100.801981376,128.27456375,77.669061325,g/day
