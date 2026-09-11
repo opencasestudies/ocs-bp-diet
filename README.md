@@ -2,6 +2,7 @@
 
 OpenCaseStudies
 ===============
+[![Render website](https://github.com/opencasestudies/ocs-bp-diet/actions/workflows/render-site.yml/badge.svg)](https://github.com/opencasestudies/ocs-bp-diet/actions/workflows/render-site.yml)
 
 ### Important Links
 
