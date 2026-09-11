@@ -1013,7 +1013,7 @@ See [here](https://cran.r-project.org/web/packages/stringr/vignettes/regular-exp
 The `str_count()` function counts the number of instances of a character string. In this case we will look for individual characters but you could also search for words or phrases.
 
 ```{r}
-regextest <- readr::read_file(here("docs", "regEx.txt"))
+regextest <- readr::read_file(here("resources", "regEx.txt"))
 regextest
 ```
 
